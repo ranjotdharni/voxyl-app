@@ -17,9 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from teams import urls as teams_urls
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('v1/', include('rest_framework.urls')),
+    path('', TemplateView.as_view(template_name='dist/index.html'), name='landing'),
     #path('teams/', include(teams_urls))
 ]
