@@ -15,13 +15,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from teams import urls as teams_urls
 from django.views.generic import TemplateView
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.utils.decorators import method_decorator
+from . import auth
+
+class BaseView(TemplateView):
+    template_name = 'index.html'
+
+    @method_decorator(ensure_csrf_cookie)
+    def dispatch(self, *args, **kwargs):
+        return super(BaseView, self).dispatch(*args, **kwargs)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('v1/', include('rest_framework.urls')),
-    path('', TemplateView.as_view(template_name='dist/index.html'), name='landing'),
+    path('v1/login', auth.LoginApiView.as_view(), name='login'),
     #path('teams/', include(teams_urls))
+    re_path(r'.*', BaseView.as_view(template_name='index.html'), name='index'),
 ]
+#TemplateView.as_view(template_name='dist/index.html')

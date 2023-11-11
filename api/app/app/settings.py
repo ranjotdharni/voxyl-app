@@ -27,9 +27,9 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = 'django-insecure-_ds$!l1rd6cc_3djwak9w^#^xnljpvte3kz8@3_f7ndfhrty&+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -42,11 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'teams',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -111,6 +113,28 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+
+    'DEFAULT_THROTTLE_CLASSES': [
+
+        'rest_framework.throttling.AnonRateThrottle',
+
+        'rest_framework.throttling.UserRateThrottle'
+
+    ],
+
+    'DEFAULT_THROTTLE_RATES': {
+
+        'anon': '10/min',
+
+        'user': '20/min'
+
+    }
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -127,11 +151,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'assets/'
+STATIC_URL = '/assets/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'app/templates/dist/assets',
+    BASE_DIR / 'app/templates/assets',
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
