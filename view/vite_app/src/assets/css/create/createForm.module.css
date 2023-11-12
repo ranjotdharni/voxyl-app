@@ -1,0 +1,102 @@
+input {
+    background-color: rgba(0, 0, 0, 0);
+    border-bottom: solid 1px var(--base-White-100-100) !important;
+    outline: none;
+}
+
+.headLabel {
+    position: relative;
+    top: 2.5%;
+    left: 5%;
+    font-size: larger;
+}
+
+.form {
+    margin: auto;
+    margin-top: 3%;
+    min-width: 25em;
+    width: 35%;
+    aspect-ratio: 15 / 19;
+    background-color: var(--base-Black-100-100);
+    border-radius: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    box-shadow: -10px 15px 25px 10px rgba(0, 0, 0, 0.33);
+}
+
+.formHeaderWrapper {
+    width: 100%;
+    height: 5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+
+.formHeader {
+    color: var(--lime-Green-100-100);
+    margin-left: 5%;
+    font-size: 1.75em;
+}
+
+.wrapper {
+    width: 90%;
+    position: relative;
+    left: 5%;
+}
+
+.nameWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.firstNameWrapper {
+    width: 48%;
+}
+
+.lastNameWrapper {
+    width: 48%;
+}
+
+.emailWrapper {
+
+}
+
+.userWrapper {
+
+}
+
+.passWrapper {
+
+}
+
+.confirmWrapper {
+
+}
+
+.submitButton {
+    width: 15%;
+    position: relative;
+    left: 80%;
+    font-family: 'JetBrains Mono', sans-serif;
+    border-radius: 1em;
+    background-color: rgba(0, 0, 0, 0);
+    color: var(--base-Green-100-100);
+    border: solid 1px var(--base-Green-100-100);
+    cursor: default;
+    transition: border 0.3s ease-out, background 0.3s ease-out, color 0.3s ease-out;
+}
+
+.submitReady {
+    border: none;
+    background-color: var(--lime-Green-100-100);
+    color: var(--base-Black-100-100);
+}
+
+.submitReady:hover {
+    cursor: pointer !important;
+}

@@ -1,0 +1,43 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #ffffff;
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px #23232329;
+}
+
+.wrapper {
+    width: 100%;
+}
+
+.inLabel {
+    transition: all 0.25s ease-out;
+    display: inline-block;
+    z-index: 1;
+    position: absolute;
+    padding-left: 0.25em;
+}
+
+.inInput {
+    color: var(--base-White-100-100);
+    width: 100%;
+    z-index: 2;
+    position: relative;
+    font-family: 'JetBrains Mono', sans-serif;
+}
+
+.wrapper:focus-within > .inLabel {
+    position: relative;
+    font-size: 0.75em;
+    padding: 0;
+    color: var(--lime-Green-100-100) !important;
+}
+
+.active {
+    position: relative;
+    font-size: 0.75em;
+    padding: 0;
+    color: var(--lime-Green-100-100) !important;
+}

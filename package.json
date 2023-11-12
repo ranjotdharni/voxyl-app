@@ -1,0 +1,6 @@
+{
+    "scripts": {
+        "main": "cd view/vite_app && npm run test",
+        "view": "cd view/vite_app && npm run dev"
+    }
+}

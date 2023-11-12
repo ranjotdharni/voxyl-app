@@ -16,11 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
-from teams import urls as teams_urls
+from auth import urls as auth_urls
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
-from . import auth
 
 class BaseView(TemplateView):
     template_name = 'index.html'
@@ -32,7 +31,8 @@ class BaseView(TemplateView):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('v1/', include('rest_framework.urls')),
-    path('v1/login', auth.LoginApiView.as_view(), name='login'),
+    path('v1/auth/', include(auth_urls)),
+    #path('v1/login', auth.LoginApiView.as_view(), name='login'),
     #path('teams/', include(teams_urls))
     re_path(r'.*', BaseView.as_view(template_name='index.html'), name='index'),
 ]

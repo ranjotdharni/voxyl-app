@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Login from "./components/Login"
-import Landing from "./components/Landing"
+import Landing from "./pages/Landing"
+import Create from "./pages/Create"
+import Login from "./pages/Login"
+import './index.css'
 
 function App() {
 
@@ -8,8 +10,16 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route index element={<Landing />} />
-        <Route path="login" element={<Login />} />
+
+        <Route path="entry">
+          <Route index element={<Create />} />
+
+          <Route path="login" element={<Login />} />
+
+        </Route>
+
       </Routes>
+
     </BrowserRouter>
   )
 }
