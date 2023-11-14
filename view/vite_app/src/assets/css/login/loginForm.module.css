@@ -18,7 +18,7 @@ input {
     margin-top: 3%;
     min-width: 25em;
     width: 35%;
-    aspect-ratio: 15 / 19;
+    aspect-ratio: 15 / 13;
     background-color: var(--base-Grey-200-005);
     border-radius: 1.5rem;
     display: flex;

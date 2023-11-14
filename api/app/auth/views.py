@@ -1,14 +1,34 @@
+from django.http import HttpResponse
+from django.shortcuts import redirect
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from rest_framework.views import APIView
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from django.db import IntegrityError
 
 @method_decorator(csrf_protect, name='dispatch')
 class LoginApiView(APIView):
-    throttle_classes = [UserRateThrottle, AnonRateThrottle]
-    
+    def put(self, request):
+        data = request.data
+
+        username = data['user']
+        passkey = data['pass']
+
+        if username and passkey:
+            user = authenticate(request, username=username, password=passkey)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        
+        return Response({"error": "Username or Password Incorrect."}, status=status.HTTP_400_BAD_REQUEST)
+
     def post(self, request):
         headers = request.headers
         print("Headers: ", headers, "\n")
@@ -16,4 +36,38 @@ class LoginApiView(APIView):
         data = request.data
         print("Body Data: ", data, "\n")
 
-        return Response({"message": "successful request!"}, status=status.HTTP_200_OK)
+        first_name = data['first']
+        last_name = data['last']
+        user = data['user']
+        email = data['email']
+        passkey = data['pass']
+
+        if (passkey != data['confirm']):
+            return Response({"error": "Passwords must match."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.create_user(username=user, password=passkey, email=email)
+        except IntegrityError:
+            return Response({"error": "Username or Email already exists."}, status=status.HTTP_400_BAD_REQUEST)
+
+        user.first_name = first_name
+        user.last_name = last_name
+
+        user.save()
+
+        user = authenticate(request, username=user, password=passkey)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        
+        return Response({"error": "Fatal Error. Please Try Again Later."}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+@method_decorator(login_required(login_url='/entry/'), name='dispatch')
+@method_decorator(csrf_protect, name='dispatch')
+class TestApiView(APIView):
+    def get(self, request):
+        print(request.headers)
+
+        return HttpResponse({"success": True}, status=status.HTTP_200_OK)

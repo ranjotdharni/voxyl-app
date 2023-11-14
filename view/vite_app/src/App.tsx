@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Landing from "./pages/Landing"
+import Layout from "./pages/Layout"
 import Create from "./pages/Create"
 import Login from "./pages/Login"
 import './index.css'
@@ -9,7 +9,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<Landing />} />
+        <Route index element={<Layout><p style={{color: 'white', position: 'relative', zIndex: 1}}>This is the Logged in Home Page!</p></Layout>} />
 
         <Route path="entry">
           <Route index element={<Create />} />

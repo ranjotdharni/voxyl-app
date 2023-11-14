@@ -1,10 +1,12 @@
 import styles from '../../assets/css/create/createForm.module.css'
 import CSRFToken from '../CSRFToken'
-import { formSubmit } from '../../globals'
-import CustomInput from './CustomInput'
+import { SUCCESS_PATH, formSubmit } from '../../globals'
+import CustomInput from '../CustomInput'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function CreateForm() {
+    const navigation = useNavigate()
 
     const [first, setFirst] = useState('')
     const [last, setLast] = useState('')
@@ -47,7 +49,14 @@ export default function CreateForm() {
 
         let response = await formSubmit(e)
 
-        console.log(response.message)
+        if (response.error === undefined)
+        {
+            navigation(SUCCESS_PATH)
+        }
+        else
+        {
+            throwError(response.error)
+        }
     }
 
     return (
@@ -61,35 +70,35 @@ export default function CreateForm() {
             <label className={styles.headLabel}>Enter Your Name</label>
             <div className={styles.wrapper + ' ' + styles.nameWrapper}>
                 <div className={styles.firstNameWrapper}>
-                    <CustomInput label='First:' type='text' name='first' color='#093a3e' borderColor='#ebf2fa' callback={setFirst} />
+                    <CustomInput label='First' type='text' name='first' color='#093a3e' borderColor='#ebf2fa' callback={setFirst} />
                 </div>
 
                 <div className={styles.lastNameWrapper}>
-                    <CustomInput label='Last:' type='text' name='last' color='#093a3e' borderColor='#ebf2fa' callback={setLast} />
+                    <CustomInput label='Last' type='text' name='last' color='#093a3e' borderColor='#ebf2fa' callback={setLast} />
                 </div>
             </div>
 
             <label className={styles.headLabel}>Enter Your Email</label>
-            <div className={styles.wrapper + ' ' + styles.emailWrapper}>
-                <CustomInput label='Email:' type='email' name='email' color='#093a3e' borderColor='#ebf2fa' callback={setEmail} />
+            <div className={styles.wrapper}>
+                <CustomInput label='Email' type='email' name='email' color='#093a3e' borderColor='#ebf2fa' callback={setEmail} />
             </div>
 
             <label className={styles.headLabel}>Make a Username</label>
-            <div className={styles.wrapper + ' ' + styles.userWrapper}>
-                <CustomInput label='Username:' type='text' name='user' color='#093a3e' borderColor='#ebf2fa' callback={setUser} />
+            <div className={styles.wrapper}>
+                <CustomInput label='Username' type='text' name='user' color='#093a3e' borderColor='#ebf2fa' callback={setUser} />
             </div>
 
             <label className={styles.headLabel}>Make a Password</label>
-            <div className={styles.wrapper + ' ' + styles.passWrapper}>
-                <CustomInput label='Password:' type='password' name='pass' color='#093a3e' borderColor='#ebf2fa' callback={setPass} />
+            <div className={styles.wrapper}>
+                <CustomInput label='Password' type='password' name='pass' color='#093a3e' borderColor='#ebf2fa' callback={setPass} />
             </div>
 
             <label className={styles.headLabel}>Confirm Your Password</label>
-            <div className={styles.wrapper + ' ' + styles.confirmWrapper}>
-                <CustomInput label='Confirm Password:' type='password' name='confirm' color='#093a3e' borderColor='#ebf2fa' callback={setConfirm} />
+            <div className={styles.wrapper}>
+                <CustomInput label='Confirm Password' type='password' name='confirm' color='#093a3e' borderColor='#ebf2fa' callback={setConfirm} />
             </div>
 
-            <label>{error}</label>
+            <label className={styles.error}>{error}</label>
             <button className={styles.submitButton + (isFormFilled() && isPassGood() ? ' ' + styles.submitReady : '')} type="submit">Submit</button>
         </form>
     )

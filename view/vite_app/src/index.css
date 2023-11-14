@@ -7,6 +7,8 @@
   --base-Grey-100-100: #0f0f0f;
   --base-Grey-200-100: #121314;
 
+  --base-Grey-200-005: #1213142c;
+
   --base-Green-100-100: #093a3e;
 
   --lime-Green-100-100: #66FF07;
@@ -22,7 +24,6 @@
 body {
   font-family: 'JetBrains Mono', sans-serif;
   margin: 0;
-  background-color: var(--base-Grey-100-100);
 }
 
 a, p, label {

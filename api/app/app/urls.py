@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 from django.urls import path, include, re_path
 from auth import urls as auth_urls
 from django.views.generic import TemplateView
@@ -24,6 +25,14 @@ from django.utils.decorators import method_decorator
 class BaseView(TemplateView):
     template_name = 'index.html'
 
+    #@method_decorator(login_required)
+    @method_decorator(ensure_csrf_cookie)
+    def dispatch(self, *args, **kwargs):
+        return super(BaseView, self).dispatch(*args, **kwargs)
+    
+class OpenView(TemplateView):
+    template_name = 'index.html'
+    
     @method_decorator(ensure_csrf_cookie)
     def dispatch(self, *args, **kwargs):
         return super(BaseView, self).dispatch(*args, **kwargs)

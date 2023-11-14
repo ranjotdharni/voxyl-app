@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import styles from '../../assets/css/create/customInput.module.css'
+import styles from '../assets/css/create/customInput.module.css'
 
 export default function CustomInput({ label, type, name, color, borderColor, callback } : { label: string, type: string, name: string, color: string, borderColor: string, callback?: (value: string) => void }) {
     const [active, setActive] = useState('')
