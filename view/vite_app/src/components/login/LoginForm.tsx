@@ -1,6 +1,6 @@
 import styles from '../../assets/css/login/loginForm.module.css'
 import CSRFToken from '../CSRFToken'
-import { SUCCESS_PATH, formSubmit } from '../../globals'
+import { SUCCESS_PATH, fetchToApi } from '../../globals'
 import CustomInput from '../CustomInput'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -25,14 +25,21 @@ export default function LoginForm() {
     }
 
     async function handleSubmit(e: any) {
+        e.preventDefault()
+
         if (!isFormFilled())
         {
-            e.preventDefault()
             throwError('Please fill all fields.')
             return
         }
 
-        let response = await formSubmit(e)
+        const meta: Array<[string, string | Blob]> = [
+            ['user', user],
+            ['pass', pass],
+        ]
+
+        let response = await fetchToApi("/v1/auth/login/", "PUT", meta)
+        //let response = await formSubmit(e)
 
         if (response.error === undefined)
         {

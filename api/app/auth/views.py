@@ -1,10 +1,11 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -25,16 +26,12 @@ class LoginApiView(APIView):
 
         if user is not None:
             login(request, user)
-            return redirect('/')
+            return Response({"success": "true"}, status=status.HTTP_200_OK)
         
-        return Response({"error": "Username or Password Incorrect."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "Username Not Found/Credentials Incorrect."}, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
-        headers = request.headers
-        print("Headers: ", headers, "\n")
-
         data = request.data
-        print("Body Data: ", data, "\n")
 
         first_name = data['first']
         last_name = data['last']
@@ -59,15 +56,16 @@ class LoginApiView(APIView):
 
         if user is not None:
             login(request, user)
-            return redirect('/')
+            return Response({"success": "true"}, status=status.HTTP_200_OK)
         
-        return Response({"error": "Fatal Error. Please Try Again Later."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "Fatal Error. Please Try Again."}, status=status.HTTP_400_BAD_REQUEST)
         
 
 @method_decorator(login_required(login_url='/entry/'), name='dispatch')
 @method_decorator(csrf_protect, name='dispatch')
 class TestApiView(APIView):
-    def get(self, request):
-        print(request.headers)
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
 
+    def get(self, request):
         return HttpResponse({"success": True}, status=status.HTTP_200_OK)

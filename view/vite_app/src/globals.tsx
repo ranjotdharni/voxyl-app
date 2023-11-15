@@ -35,20 +35,28 @@ export function getCookieValue(cookie: string) {
     return false;
   }*/
 
-export async function formSubmit(e: any) {
-    e.preventDefault()
+export async function fetchToApi(localPath: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE', metaData: Array<[string, string | Blob]>) {
+    /*const data = new FormData()
 
-    let data: { [key: string]: string | Object | Array<Object> } = {}
-
-    new FormData(e.target).forEach((v, k) => {
-        data[k] = v
+    metaData.forEach((obj) => {
+        data.append(obj[0], obj[1])
     })
 
-    let response = await Promise.resolve(await fetch(e.target.action, {
+    data.append('csrfmiddlewaretoken', getCookieValue(getCookie('csrftoken')))*/
+
+    let data: {[key: string]: string | Blob} = {}
+
+    metaData.forEach((v) => {
+        data[v[0]] = v[1]
+    })
+
+    let response = await Promise.resolve(await fetch(bakedOrigin + localPath, {
         credentials: 'include',
-        method: e.target.method,
+        method: method,
         mode: 'same-origin',
         headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
             'X-CSRFToken': getCookieValue(getCookie('csrftoken')),
         },
         body: JSON.stringify(data),
@@ -63,7 +71,7 @@ export function Authenticate() {
     const redirect = useNavigate()
     
     async function grabAuth() {
-        let result = await fetch(bakedOrigin + '/v1/auth/access')
+        let result = await fetch(bakedOrigin + '/v1/auth/access/')
         
         if (result.redirected && result.url.startsWith(bakedOrigin + '/entry'))
         {
