@@ -1,12 +1,13 @@
 import styles from '../../assets/css/create/createForm.module.css'
 import CSRFToken from '../CSRFToken'
-import { SUCCESS_PATH, fetchToApi } from '../../globals'
+import { SUCCESS_PATH, fetchToApi, stringAfterLastChar } from '../../globals'
 import CustomInput from '../CustomInput'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, MouseEvent } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export default function CreateForm() {
     const navigation = useNavigate()
+    const { next } = useParams()
 
     const [first, setFirst] = useState('')
     const [last, setLast] = useState('')
@@ -15,6 +16,12 @@ export default function CreateForm() {
     const [pass, setPass] = useState('')
     const [confirm, setConfirm] = useState('')
     const [error, setError] = useState('')
+
+    function handleSwitch(e: MouseEvent<HTMLButtonElement>) {
+        e.preventDefault()
+        let nextUrl = '/entry/login' + (next !== undefined ? `/next=${encodeURIComponent(stringAfterLastChar(next, '='))}` : '')
+        navigation(nextUrl)
+    }
 
     function throwError(arg1: string) {
         setError(arg1)
@@ -61,7 +68,7 @@ export default function CreateForm() {
 
         if (response.error === undefined)
         {
-            navigation(SUCCESS_PATH)
+            (next !== undefined ? navigation(decodeURIComponent(stringAfterLastChar(next, '='))) : navigation(SUCCESS_PATH))
         }
         else
         {
@@ -109,7 +116,11 @@ export default function CreateForm() {
             </div>
 
             <label className={styles.error}>{error}</label>
-            <button className={styles.submitButton + (isFormFilled() && isPassGood() ? ' ' + styles.submitReady : '')} type="submit">Submit</button>
+
+            <div className={styles.buttonWrapper}>
+                <button onClick={handleSwitch} className={styles.switchButton} type='button'>Log In</button>
+                <button className={styles.submitButton + (isFormFilled() && isPassGood() ? ' ' + styles.submitReady : '')} type="submit">Submit</button>
+            </div>
         </form>
     )
 }

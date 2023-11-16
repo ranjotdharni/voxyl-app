@@ -28,6 +28,14 @@ input:-webkit-autofill:active{
     font-family: 'JetBrains Mono', sans-serif;
 }
 
+.inputActive {
+    border-color: var(--lime-Green-100-100) !important;
+}
+
+.wrapper:focus-within input {
+    border-color: var(--lime-Green-100-100) !important;
+}
+
 .wrapper:focus-within > .inLabel {
     position: relative;
     font-size: 0.75em;

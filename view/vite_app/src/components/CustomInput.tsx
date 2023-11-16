@@ -7,7 +7,7 @@ export default function CustomInput({ label, type, name, color, borderColor, cal
     return (
         <label className={styles.wrapper}>
             <span className={styles.inLabel + (active !== '' ? ' ' + styles.active : '')} style={{color: color}} >{label}</span>
-            <input onChange={(e) => {setActive(e.target.value); callback ? callback(e.target.value) : () => {}}} value={active} placeholder=' ' type={type} name={name} className={styles.inInput} style={{borderBottom: 'solid 1px ' + borderColor}} />
+            <input onChange={(e) => {setActive(e.target.value); (callback ? callback(e.target.value) : () => {})}} value={active} placeholder=' ' type={type} name={name} className={styles.inInput + (active !== '' ? ' ' + styles.inputActive : '')} style={{borderBottom: 'solid 1px ' + borderColor}} />
         </label>
     )
 }

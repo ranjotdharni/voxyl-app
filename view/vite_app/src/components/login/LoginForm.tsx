@@ -1,16 +1,23 @@
 import styles from '../../assets/css/login/loginForm.module.css'
 import CSRFToken from '../CSRFToken'
-import { SUCCESS_PATH, fetchToApi } from '../../globals'
+import { SUCCESS_PATH, fetchToApi, stringAfterLastChar } from '../../globals'
 import CustomInput from '../CustomInput'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { MouseEvent, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export default function LoginForm() {
     const navigation = useNavigate()
+    const { next } = useParams()
 
     const [user, setUser] = useState('')
     const [pass, setPass] = useState('')
     const [error, setError] = useState('')
+
+    function handleSwitch(e: MouseEvent<HTMLButtonElement>) {
+        e.preventDefault()
+        let nextUrl = '/entry' + (next !== undefined ? `/next=${encodeURIComponent(stringAfterLastChar(next, '='))}` : '')
+        navigation(nextUrl)
+    }
 
     function throwError(arg1: string) {
         setError(arg1)
@@ -43,7 +50,7 @@ export default function LoginForm() {
 
         if (response.error === undefined)
         {
-            navigation(SUCCESS_PATH)
+            (next !== undefined ? navigation(decodeURIComponent(stringAfterLastChar(next, '='))) : navigation(SUCCESS_PATH))
         }
         else
         {
@@ -70,7 +77,11 @@ export default function LoginForm() {
             </div>
 
             <label className={styles.error}>{error}</label>
-            <button className={styles.submitButton + (isFormFilled() ? ' ' + styles.submitReady : '')} type="submit">Log In</button>
+
+            <div className={styles.buttonWrapper}>
+                <button onClick={handleSwitch} className={styles.switchButton} type='button'>Sign Up</button>
+                <button className={styles.submitButton + (isFormFilled() ? ' ' + styles.submitReady : '')} type="submit">Log In</button>
+            </div>
         </form>
     )
 }

@@ -11,10 +11,10 @@ function App() {
       <Routes>
         <Route index element={<Layout><p style={{color: 'white', position: 'relative', zIndex: 1}}>This is the Logged in Home Page!</p></Layout>} />
 
-        <Route path="entry">
+        <Route path="entry/:next?">
           <Route index element={<Create />} />
 
-          <Route path="login" element={<Login />} />
+          <Route path="login/:next?" element={<Login />} />
 
         </Route>
 

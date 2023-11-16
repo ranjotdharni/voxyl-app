@@ -3,6 +3,14 @@ import { useNavigate } from "react-router-dom";
 export const bakedOrigin: string = window.location.origin
 export const SUCCESS_PATH: string = '/'
 
+export function stringAfterLastChar(str: string, char: string) {
+    const lastIndex = str.lastIndexOf(char);
+    if (lastIndex === -1) {
+      return str;
+    }
+    return str.slice(lastIndex + 1);
+  }
+
 export function getCookie(name: string) {
     let cookieValue = '';
     if (document.cookie && document.cookie !== '') {
@@ -64,6 +72,11 @@ export async function fetchToApi(localPath: string, method: 'GET' | 'POST' | 'PU
         middle => middle.json()
     ))
 
+    if (response.redirect !== undefined) {
+        const redirect = useNavigate()
+        redirect(response.redirect)
+    }
+
     return response
 }
 
@@ -75,7 +88,7 @@ export function Authenticate() {
         
         if (result.redirected && result.url.startsWith(bakedOrigin + '/entry'))
         {
-            redirect('/entry/login?next=' + window.location.pathname)
+            redirect('/entry/login/next=' + encodeURIComponent(window.location.pathname))
         }
     }
     
@@ -91,6 +104,6 @@ export function validateResponse(arg1: Response) {
 
     if (arg1.redirected && arg1.url.startsWith(bakedOrigin + '/entry'))
     {
-        redirect('/entry/login?next=' + window.location.pathname)
+        redirect('/entry/login/next=' + encodeURIComponent(window.location.pathname))
     }
 }
