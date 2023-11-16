@@ -1,10 +1,30 @@
 .mainWrapper {
+    overflow-y: scroll;
+    scrollbar-width: 0;
     position: relative;
+    top: 0;
+    left: 0;
     z-index: 1;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     display: grid;
-    align-items: center;
-    grid-template-columns: repeat(2, minmax(400px, 50%));
-    grid-template-rows: 50% 50%;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-areas: 
+    "create edit"
+    "create search";
+}
+
+.mainWrapper::-webkit-scrollbar {
+    display: none;
+}
+
+@media (max-width: 700px) {
+    .mainWrapper {
+        grid-template-rows: repeat(3, minmax(500px, 40%));
+        grid-template-areas: 
+        "create create"
+        "edit edit"
+        "search search";
+    }
 }
