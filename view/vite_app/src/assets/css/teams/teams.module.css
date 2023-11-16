@@ -1,0 +1,10 @@
+.mainWrapper {
+    position: relative;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(2, minmax(400px, 50%));
+    grid-template-rows: 50% 50%;
+}
