@@ -3,6 +3,17 @@ import { useNavigate } from "react-router-dom";
 export const bakedOrigin: string = window.location.origin
 export const SUCCESS_PATH: string = '/'
 
+export function clamp(min: number, ideal: number, max: number)
+{
+    if (ideal < min)
+        return min
+
+    if (ideal > max)
+        return max
+
+        return ideal
+}
+
 export function stringAfterLastChar(str: string, char: string) {
     const lastIndex = str.lastIndexOf(char);
     if (lastIndex === -1) {

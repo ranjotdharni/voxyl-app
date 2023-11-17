@@ -4,7 +4,7 @@ export default function TeamsCreateView() {
     return (
         <div className={styles.gridItemWrapper}>
             <div className={styles.mainContainer + ' basicContainer'}>
-
+                
             </div>
         </div>
     )
