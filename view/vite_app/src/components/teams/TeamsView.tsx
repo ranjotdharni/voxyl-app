@@ -1,6 +1,6 @@
-import styles from '../../assets/css/teams/components/teamsCreateView.module.css'
+import styles from '../../assets/css/teams/components/teamsView.module.css'
 
-export default function TeamsCreateView() {
+export default function TeamsView() {
     return (
         <div className={styles.gridItemWrapper}>
             <div className={styles.mainContainer + ' basicContainer'}>

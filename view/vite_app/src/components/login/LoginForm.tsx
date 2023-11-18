@@ -68,12 +68,12 @@ export default function LoginForm() {
 
             <label className={styles.headLabel}>Username</label>
             <div className={styles.wrapper}>
-                <CustomInput label='Username' type='text' name='user' color='#093a3e' borderColor='#ebf2fa' callback={setUser} />
+                <CustomInput init={user} label='Username' type='text' name='user' color='#093a3e' borderColor='#ebf2fa' callback={setUser} />
             </div>
 
             <label className={styles.headLabel}>Password</label>
             <div className={styles.wrapper}>
-                <CustomInput label='Password' type='password' name='pass' color='#093a3e' borderColor='#ebf2fa' callback={setPass} />
+                <CustomInput init={pass} label='Password' type='password' name='pass' color='#093a3e' borderColor='#ebf2fa' callback={setPass} />
             </div>
 
             <label className={styles.error}>{error}</label>

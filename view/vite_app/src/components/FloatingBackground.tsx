@@ -9,9 +9,19 @@ export default function FloatingBackground() {
     let blobCount = 6;
     const arr = new Array(blobCount).fill(0)
 
+    let timeout: number | undefined
+
     window.addEventListener('resize', () => {
-        setWidth(window.innerWidth)
-        setHeight(window.innerHeight)
+        if (timeout !== undefined)
+        {
+            window.clearTimeout(timeout)
+        }
+
+        timeout = window.setTimeout(() => {
+            setWidth(window.innerWidth)
+            setHeight(window.innerHeight)
+            timeout = undefined
+        }, 1000)
     })
 
     return (

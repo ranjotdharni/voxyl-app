@@ -31,7 +31,7 @@ export default function Scrollbar({ scrollRef } : { scrollRef: RefObject<HTMLEle
         }
 
         setVisible(scrollRef.current!.scrollHeight - scrollRef.current!.clientHeight !== 0)
-        window.setTimeout(updateValues, 1000)
+        timeout = window.setTimeout(updateValues, 1000)
     })
 
     if (visible)
