@@ -6,7 +6,7 @@ function NewName({ value, setValue } : { value: string, setValue: (arg1: string)
     return (
         <div className={styles.contentNameWrapper + ' ' + styles.contentTypeWrapper}>
             <label className={styles.CreateNameLabel}>Enter Name:</label>
-            <div className={styles.CreateNameInput}><CustomInput init={value} callback={setValue} label='Team Name' type='text' name='teamName' color='#093a3e' borderColor='#ebf2fa' /></div>
+            <div className={styles.CreateNameInput}><CustomInput init={value} callback={setValue} label='Team Name' type='text' name='teamName' color='#093a3e' borderColor='#093a3e' /></div>
         </div>
     )
 }

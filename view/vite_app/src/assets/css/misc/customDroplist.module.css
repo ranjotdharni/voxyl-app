@@ -1,0 +1,76 @@
+.wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.selector {
+    width: inherit;
+    height: inherit;
+    color: var(--lime-Green-100-100);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    border: solid 1px rgba(10, 10, 10, 0.15);
+    background-color: rgba(10, 10, 10, 0.2);
+    backdrop-filter: blur(5px);
+    box-shadow: 5px 5px 55px 5px rgba(0, 0, 0, 0.33);
+    border-radius: 0.25em;
+}
+
+.listbox {
+    display: none;
+    margin-top: 2%;
+    border: solid 1px rgba(10, 10, 10, 0.15);
+    background-color: rgba(10, 10, 10, 0.2);
+    backdrop-filter: blur(5px);
+    box-shadow: 5px 5px 55px 5px rgba(0, 0, 0, 0.33);
+    border-radius: 0.25em;
+}
+
+.listbox:hover {
+    display: block;
+}
+
+.selector:focus ~ .listbox {
+    display: block;
+}
+
+.selector:hover {
+    cursor: pointer;
+}
+
+.item {
+    text-align: center;
+    color: var(--base-White-100-100);
+}
+
+.item:hover {
+    cursor: pointer;
+    color: var(--base-Black-100-100);
+    background-color: var(--lime-Green-100-100);
+}
+
+.icon {
+    position: absolute;
+    width: 5%;
+    left: 95%;
+    text-align: center;
+    transition: transform 0.15s linear, color 0.05s ease-in;
+    color: var(--base-Green-100-100);
+}
+
+.wrapper:hover .icon {
+    color: var(--lime-Green-100-100);
+    transform: rotateZ(180deg);
+}
+
+.selector:hover > .icon {
+    color: var(--lime-Green-100-100);
+    transform: none;
+}
+
+.wrapper:focus-within .icon {
+    color: var(--lime-Green-100-100);
+    transform: rotateZ(180deg);
+}

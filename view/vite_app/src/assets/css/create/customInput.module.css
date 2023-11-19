@@ -26,6 +26,7 @@ input:-webkit-autofill:active{
     z-index: 2;
     position: relative;
     font-family: 'JetBrains Mono', sans-serif;
+    border-color: var(--base-Green-100-100) !important;
 }
 
 .inputActive {
