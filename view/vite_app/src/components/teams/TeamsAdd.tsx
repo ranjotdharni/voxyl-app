@@ -23,7 +23,7 @@ export default function TeamsAdd() {
                 </div>
                 <div className={styles.configWrapper}>
                     <div className={styles.droplistWrapper}><CustomDroplist selected={selected} payload={payload} callback={setSelected} /></div>
-                    <div className={styles.searchWrapper}><div className={styles.searchContainer}><CustomInput label='Username' type='text' name='search' color='#ebf2fa' borderColor='#ffffff' init={search} callback={setSearch} /></div></div>
+                    <div className={styles.searchWrapper}><div className={styles.searchContainer}><CustomInput label='Search by Name, Username, or Email...' type='text' name='search' color='#093a3e' borderColor='#ffffff' init={search} callback={setSearch} /></div></div>
                 </div>
                 <div className={styles.listWrapper}>
 
