@@ -1,17 +1,28 @@
+/** @jsxImportSource @emotion/react */
+
 import styles from '../../assets/css/login/loginForm.module.css'
 import CSRFToken from '../CSRFToken'
 import { SUCCESS_PATH, fetchToApi, stringAfterLastChar } from '../../globals'
+import { Context } from '../context/ThemeContext'
 import CustomInput from '../CustomInput'
-import { MouseEvent, useState } from 'react'
+import { MouseEvent, useContext, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { css } from '@emotion/react'
 
 export default function LoginForm() {
+    const theme = useContext(Context)
     const navigation = useNavigate()
     const { next } = useParams()
 
     const [user, setUser] = useState('')
     const [pass, setPass] = useState('')
     const [error, setError] = useState('')
+
+    const beforeStyles = css`
+        :before {
+            color: ${theme.primary.tertiary}
+        }
+    `
 
     function handleSwitch(e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault()
@@ -59,28 +70,28 @@ export default function LoginForm() {
     }
 
     return (
-        <form className={styles.form} onSubmit={handleSubmit} action="/v1/auth/login" method="put">
+        <form className={styles.form} style={{backgroundColor: theme.background}} onSubmit={handleSubmit} action="/v1/auth/login" method="put">
             <CSRFToken />
 
             <div className={styles.formHeaderWrapper}>
-                <p className={styles.formHeader}>Log in to PitCrew</p>
+                <p className={styles.formHeader} style={{color: theme.primary.header}}>Log in to PitCrew</p>
             </div>
 
-            <label className={styles.headLabel}>Username</label>
+            <label className={styles.headLabel} style={{color: theme.primary.subheader}}>Username</label>
             <div className={styles.wrapper}>
-                <CustomInput init={user} label='Username' type='text' name='user' color='#093a3e' borderColor='#ebf2fa' callback={setUser} />
+                <CustomInput init={user} label='Create a Username' type='text' name='user' callback={setUser} />
             </div>
 
-            <label className={styles.headLabel}>Password</label>
+            <label className={styles.headLabel} style={{color: theme.primary.subheader}}>Password</label>
             <div className={styles.wrapper}>
-                <CustomInput init={pass} label='Password' type='password' name='pass' color='#093a3e' borderColor='#ebf2fa' callback={setPass} />
+                <CustomInput init={pass} label='Create a Password' type='password' name='pass' callback={setPass} />
             </div>
 
             <label className={styles.error}>{error}</label>
 
-            <div className={styles.buttonWrapper}>
-                <button onClick={handleSwitch} className={styles.switchButton} type='button'>Sign Up</button>
-                <button className={styles.submitButton + (isFormFilled() ? ' ' + styles.submitReady : '')} type="submit">Log In</button>
+            <div css={beforeStyles} className={styles.buttonWrapper}>
+                <button onClick={handleSwitch} className={styles.switchButton} style={{color: theme.background, borderColor: theme.primary.header, backgroundColor: theme.primary.header}} type='button'>Sign Up</button>
+                <button className={styles.submitButton + (isFormFilled() ? ' ' + styles.submitReady : '')} style={(isFormFilled() ? {color: theme.background, borderColor: theme.primary.highlight, backgroundColor: theme.primary.highlight} : {color: theme.primary.subtext, borderColor: theme.primary.subtext, backgroundColor: theme.background})} type="submit">Log In</button>
             </div>
         </form>
     )

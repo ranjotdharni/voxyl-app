@@ -1,3 +1,7 @@
+* {
+    overflow: hidden;
+}
+
 input {
     background-color: rgba(0, 0, 0, 0);
     border-bottom: solid 1px var(--base-White-100-100) !important;
@@ -19,7 +23,6 @@ input {
     min-width: 25em;
     width: 35%;
     aspect-ratio: 15 / 19;
-    background-color: var(--base-Grey-200-005);
     border-radius: 1.5rem;
     display: flex;
     flex-direction: column;
@@ -41,7 +44,6 @@ input {
 
 
 .formHeader {
-    color: var(--lime-Green-100-100);
     margin-left: 5%;
     font-size: 1.75em;
 }
@@ -78,9 +80,8 @@ input {
     width: 20%;
     font-family: 'JetBrains Mono', sans-serif;
     border-radius: 1em;
-    background-color: rgba(0, 0, 0, 0);
-    color: var(--base-Green-100-100);
-    border: solid 1px var(--base-Green-100-100);
+    border-style: solid;
+    border-width: 1px;
     cursor: default;
     margin-right: 5%;
     transition: border 0.3s ease-out, background 0.3s ease-out, color 0.3s ease-out;
@@ -91,22 +92,17 @@ input {
     font-family: 'JetBrains Mono', sans-serif;
     border-radius: 1em;
     border: none;
-    background-color: var(--lime-Green-100-100);
-    color: var(--base-Black-100-100);
     margin-right: 2%;
 }
 
 .buttonWrapper::before {
     font-size: x-small;
     content: "Already Have an Account?";
-    color: #e0e0e0a2;
     margin-right: 1%;
 }
 
 .submitReady {
     border: none;
-    background-color: var(--lime-Green-100-100);
-    color: var(--base-Black-100-100);
 }
 
 .switchButton:hover {

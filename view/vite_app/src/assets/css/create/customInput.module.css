@@ -21,32 +21,22 @@ input:-webkit-autofill:active{
 }
 
 .inInput {
-    color: var(--base-White-100-100);
     width: 100%;
     z-index: 2;
     position: relative;
     font-family: 'JetBrains Mono', sans-serif;
-    border-color: var(--base-Green-100-100) !important;
-}
-
-.inputActive {
-    border-color: var(--lime-Green-100-100) !important;
-}
-
-.wrapper:focus-within input {
-    border-color: var(--lime-Green-100-100) !important;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
 }
 
 .wrapper:focus-within > .inLabel {
     position: relative;
     font-size: 0.75em;
     padding: 0;
-    color: var(--lime-Green-100-100) !important;
 }
 
 .active {
     position: relative;
     font-size: 0.75em;
     padding: 0;
-    color: var(--lime-Green-100-100) !important;
 }

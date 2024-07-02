@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { Context } from './context/ThemeContext';
 import styles from '../assets/css/floatingBackground/page.module.css'
 
 
 export default function FloatingBackground() {
+    const theme = useContext(Context)
     const [width, setWidth] = useState(window.innerWidth)
     const [height, setHeight] = useState(window.innerHeight)
 
@@ -35,9 +37,9 @@ export default function FloatingBackground() {
 				    <feBlend in2="goo" in="SourceGraphic" result="mix" />
 			    </filter>
 			    <linearGradient id="MyGradient">
-                    <stop offset="5%" stopColor="#093a3e"/>
-					<stop offset="40%" stopColor="#900C3F"/>
-					<stop offset="100%"  stopColor="#093a3e"/>
+                    <stop offset="5%" stopColor={theme.bubbles.start}/>
+					<stop offset="40%" stopColor={theme.bubbles.middle}/>
+					<stop offset="100%"  stopColor={theme.bubbles.stop}/>
 			    </linearGradient> 
 		    </defs>
 		    <mask id="maska">
