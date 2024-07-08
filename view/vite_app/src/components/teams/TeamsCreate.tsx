@@ -36,6 +36,10 @@ export default function TeamsCreate() {
         "mainContainer": {
             backgroundColor: theme.background
         },
+        "containerHeader": {
+            color: theme.glowBase, 
+            textShadow: theme.glowLight
+        },
         "submit": {
             backgroundColor: '#ffffff00',
             borderColor: theme.primary.subtext,
@@ -69,7 +73,7 @@ export default function TeamsCreate() {
         <div className={styles.gridItemWrapper}>
             <div className={styles.mainContainer} style={inlineStyles.mainContainer}>
                 <div className={styles.containerHeaderWrapper}>
-                    <p className={styles.containerHeader} style={{color: theme.glowBase, textShadow: theme.glowLight}}>Create New Team</p>
+                    <p className={styles.containerHeader} style={inlineStyles.containerHeader}>Create New Team</p>
                 </div>
                 <div className={styles.contentWrapper}>
                     <NewName value={newName} setValue={setNewName}/>

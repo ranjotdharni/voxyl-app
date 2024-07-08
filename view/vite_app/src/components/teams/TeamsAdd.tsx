@@ -1,11 +1,25 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { Context } from '../context/ThemeContext'
+import CSS from 'csstype'
 import styles from '../../assets/css/teams/components/teamsAdd.module.css'
 import CustomDroplist from '../CustomDroplist'
 import CustomInput from '../CustomInput'
 
 export default function TeamsAdd() {
+    const theme = useContext(Context)
+
     const [selected, setSelected] = useState(0)
     const [search, setSearch] = useState('')
+
+    const inlineStyles: {[key: string]: CSS.Properties} = {
+        "mainContainer": {
+            backgroundColor: theme.background
+        },
+        "title": {
+            color: theme.glowBase, 
+            textShadow: theme.glowLight
+        }
+    }
 
     const payload = [
         {id: Math.floor(Math.random() * 1000000), name: 'Dev'},
@@ -17,19 +31,10 @@ export default function TeamsAdd() {
 
     return (
         <div className={styles.gridItemWrapper}>
-            <div className={styles.mainContainer + ' basicContainer'}>
+            <div className={styles.mainContainer} style={inlineStyles.mainContainer}>
                 <div className={styles.headerWrapper}>
-                    <p className={styles.header}>Add Team Members</p>
-                </div>
-                <div className={styles.configWrapper}>
-                    <div className={styles.droplistWrapper}><CustomDroplist selected={selected} payload={payload} callback={setSelected} /></div>
-                    <div className={styles.searchWrapper}><div className={styles.searchContainer}><CustomInput label='Search by Name, Username, or Email...' type='text' name='search' init={search} callback={setSearch} /></div></div>
-                </div>
-                <div className={styles.listWrapper}>
-
-                </div>
-                <div className={styles.buttonsWrapper}>
-
+                    <div className={styles.droplistWrapper}><CustomDroplist selected={selected} payload={payload} callback={setSelected} relativeContainerWidth={40} relativeContainerUnits='%'/></div>
+                    <p className={styles.title} style={inlineStyles.title}>Add Team Member</p>
                 </div>
             </div>
         </div>
