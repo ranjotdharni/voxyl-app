@@ -1,16 +1,20 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 
-// #0e544a
+// Neon Constants
+const jadeGlowBase: string = '#caeddd'
+const jadeGlowTheme: string = '#127a6a'
 
 // Keep items in alphabetical order
-interface Theme {
+export interface Theme {
     bubbles: {
         start: string,
         middle: string,
         stop: string
     },
     background: string,
+    glowLight: string,
+    glowBase: string,
     highlightedBackground: {
         start: string,
         middle: string,
@@ -33,6 +37,11 @@ const jadeTheme: Theme = {
         stop: '#00120F'
     },
     background: '#1f1f1f',
+    glowLight: `0px 0px 12px ${jadeGlowBase},
+           0px 0px 2px ${jadeGlowTheme}, 0px 0px 3px ${jadeGlowTheme}, 0px 0px 4px ${jadeGlowTheme},
+           0px 0px 10px ${jadeGlowTheme}, 0px 0px 20px ${jadeGlowTheme}, 0px 0px 40px ${jadeGlowTheme},
+           0px 0px 50px ${jadeGlowTheme}, 0px 0px 70px ${jadeGlowTheme}, 0px 0px 100px ${jadeGlowTheme}`,
+    glowBase: jadeGlowBase,
     highlightedBackground: {
         start: '',
         middle: '',
@@ -44,7 +53,7 @@ const jadeTheme: Theme = {
         text: '',
         subtext: '#0c3629',
         highlight: '#8fc7bf',
-        tertiary: '#e0e0e0a2',
+        tertiary: '#e0e0e01a',
     }
 }
 
@@ -55,6 +64,8 @@ export const Context = React.createContext<Theme>({
         stop: ''
     },
     background: '',
+    glowLight: '',
+    glowBase: '',
     highlightedBackground: {
         start: '',
         middle: '',

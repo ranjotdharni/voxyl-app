@@ -31,12 +31,13 @@ input:-webkit-autofill:active{
 
 .wrapper:focus-within > .inLabel {
     position: relative;
-    font-size: 0.75em;
     padding: 0;
 }
 
 .active {
     position: relative;
-    font-size: 0.75em;
     padding: 0;
 }
+
+/*  */
+/* 0.75em */ 

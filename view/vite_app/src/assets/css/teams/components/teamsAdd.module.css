@@ -13,7 +13,7 @@
 }
 
 .headerWrapper {
-    width: 100%;
+    width: auto;
     height: 15%;
     text-align: end;
     padding-right: 10%;

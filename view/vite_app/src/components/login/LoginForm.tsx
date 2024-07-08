@@ -79,12 +79,12 @@ export default function LoginForm() {
 
             <label className={styles.headLabel} style={{color: theme.primary.subheader}}>Username</label>
             <div className={styles.wrapper}>
-                <CustomInput init={user} label='Create a Username' type='text' name='user' callback={setUser} />
+                <CustomInput init={user} label='Enter a Username' type='text' name='user' callback={setUser} />
             </div>
 
             <label className={styles.headLabel} style={{color: theme.primary.subheader}}>Password</label>
             <div className={styles.wrapper}>
-                <CustomInput init={pass} label='Create a Password' type='password' name='pass' callback={setPass} />
+                <CustomInput init={pass} label='Enter Password' type='password' name='pass' callback={setPass} />
             </div>
 
             <label className={styles.error}>{error}</label>

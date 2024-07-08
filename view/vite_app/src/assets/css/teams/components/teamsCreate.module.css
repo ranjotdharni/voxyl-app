@@ -9,21 +9,21 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    border-radius: 1.5rem;
 }
 
 .containerHeaderWrapper {
-    padding-right: 5%;
-    padding-left: 5%;
-    height: 10%;
+    position: relative;
+    left: 5%;
+    height: 15%;
+    width: 60%;
+    top: 5%;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    align-items: center;
 }
 
 .containerHeader {
-    color: var(--lime-Green-100-100);
-    text-align: end;
-    line-height: 0.5em;
+    margin: 0;
     font-size: 1.5rem;
 }
 
@@ -38,10 +38,8 @@
 }
 
 .contentTypeWrapper {
-    border: solid 1px rgba(10, 10, 10, 0.15);
-    background-color: rgba(10, 10, 10, 0.2);
+    border: solid 1px;
     backdrop-filter: blur(5px);
-    box-shadow: 5px 5px 55px 5px rgba(0, 0, 0, 0.33);
     overflow: hidden;
     width: 90%;
 }
@@ -66,7 +64,11 @@
 }
 
 .CreateNameInput {
-    width: 72%;
+    position: relative;
+    width: 70%;
+    height: 80%;
+    top: 10%;
+    margin-right: 2%;
 }
 
 .CreateDescriptionInput {
@@ -93,7 +95,10 @@
 }
 
 .error {
+    position: relative;
+    font-size: 0.75em;
     width: auto;
+    top: -1em;
     color: var(--stash-Red-100-100);
 }
 
@@ -102,17 +107,16 @@
     height: 60%;
     font-family: 'JetBrains Mono', sans-serif;
     border-radius: 1em;
-    background-color: rgba(0, 0, 0, 0);
-    color: var(--base-Green-100-100);
-    border: solid 1px var(--base-Green-100-100);
+    border: solid 1px;
     cursor: default;
     transition: border 0.3s ease-out, background 0.3s ease-out, color 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .submitReady {
     border: none;
-    background-color: var(--lime-Green-100-100);
-    color: var(--base-Black-100-100);
 }
 
 .submitReady:hover {
