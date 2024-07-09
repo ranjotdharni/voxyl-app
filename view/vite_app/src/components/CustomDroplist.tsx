@@ -50,7 +50,7 @@ export default function CustomDroplist( { selected, payload, relativeContainerWi
     return (
         <div css={WrapperStyles} className={styles.wrapper}>
             <div tabIndex={0} className={styles.selector} style={inlineStyles.selector}>
-                {payload[selected].name}
+                {payload.length !== 0 ? payload[selected].name : ''}
                 <span style={inlineStyles.icon}><IoChevronDownOutline className={styles.icon}/></span>
             </div>
             <div className={styles.listbox} style={inlineStyles.listbox}>

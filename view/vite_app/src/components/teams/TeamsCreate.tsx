@@ -1,8 +1,9 @@
 import styles from '../../assets/css/teams/components/teamsCreate.module.css'
 import CustomInput from '../CustomInput'
-import { useContext, useState } from 'react'
+import { MouseEvent, useContext, useState } from 'react'
 import CSS from 'csstype'
 import { Context, Theme } from '../context/ThemeContext'
+import { fetchToApi } from '../../globals'
 
 function NewName({ value, setValue } : { value: string, setValue: (arg1: string) => void }) {
     const theme: Theme = useContext(Context)
@@ -63,10 +64,22 @@ export default function TeamsCreate() {
         return newName !== '' && teamDesc !== ''
     }
 
-    function handleSubmit() {
-        if (!isSubmitReady()) {
-            throwError('Check your values.')
+    async function handleSubmit(e: MouseEvent<HTMLButtonElement>) {
+        e.preventDefault()
+
+        if (!isSubmitReady())
+        {
+            throwError('Please fill all fields.')
+            return
         }
+
+        const meta: Array<[string, string | Blob]> = [
+            ['name', newName],
+            ['desc', teamDesc],
+        ]
+
+        let response = await fetchToApi("/v1/teams/create/", "POST", meta)
+        console.log(response)
     }
 
     return (

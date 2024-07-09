@@ -1,9 +1,10 @@
-import { ChangeEvent, useContext, useState } from 'react'
+import { ChangeEvent, MouseEvent, useContext, useEffect, useState } from 'react'
 import { Context } from '../context/ThemeContext'
 import CSS from 'csstype'
 import styles from '../../assets/css/teams/components/teamsAdd.module.css'
 import CustomDroplist from '../CustomDroplist'
 import CustomInput from '../CustomInput'
+import { fetchToApi } from '../../globals'
 
 const STRING_TRIM_LIMIT: number = 18
 
@@ -13,12 +14,18 @@ interface Result {
     email: string
 }
 
+interface Team {
+    id: string,
+    name: string
+}
+
 export default function TeamsAdd() {
     const theme = useContext(Context)
 
     const [selected, setSelected] = useState<number>(0)
     const [search, setSearch] = useState<string>('')
-    const [searchResults, setSearchResults] = useState<Result[]>([{id: 345675893474567, name: 'Frontend', email: 'asdasd@gmail.com'}])
+    const [teams, setTeams] = useState<Team[]>([])
+    const [searchResults, setSearchResults] = useState<Result[]>([])
     const [selectedResults, setSelectedResults] = useState<Result[]>([])
 
     const inlineStyles: {[key: string]: CSS.Properties} = {
@@ -70,14 +77,6 @@ export default function TeamsAdd() {
         }
     }
 
-    const payload = [
-        {id: 234523456876567, name: 'Dev'},
-        {id: 745745673456346, name: 'Management'},
-        {id: 123453145234564, name: 'HR'},
-        {id: 845846734563456, name: 'Backend'},
-        {id: 345675675474567, name: 'Frontend'}
-    ]
-
     function stringTrimmer(str: string | number): string {
         if ((str as string).length > STRING_TRIM_LIMIT) {
             return `${(str as string).substring(0, STRING_TRIM_LIMIT - 3)}...`
@@ -105,16 +104,37 @@ export default function TeamsAdd() {
         }
     }
 
+    async function handleSearch(e: MouseEvent<HTMLButtonElement>) {
+        e.preventDefault()
+
+        const meta: Array<[string, string | Blob]> = [
+            ['search', search],
+        ]
+
+        let response = await fetchToApi("/v1/teams/add/query/", "PUT", meta)
+        setSearchResults(response)
+    }
+
+    async function handleFetch() {
+        let response = await fetchToApi("/v1/teams/view/", "GET", [])
+        console.log(response)
+        setTeams(response)
+    }
+
+    useEffect(() => {
+        handleFetch()
+    }, [])
+
     return (
         <div className={styles.gridItemWrapper}>
             <div className={styles.mainContainer} style={inlineStyles.mainContainer}>
                 <div className={styles.headerWrapper}>
-                    <div className={styles.droplistWrapper}><CustomDroplist selected={selected} payload={payload} callback={setSelected} relativeContainerWidth={40} relativeContainerUnits='%'/></div>
+                    <div className={styles.droplistWrapper}><CustomDroplist selected={selected} payload={teams} callback={setSelected} relativeContainerWidth={40} relativeContainerUnits='%'/></div>
                     <p className={styles.title} style={inlineStyles.title}>Add Team Member</p>
                 </div>
                 <div className={styles.searchBar}>
                     <div className={styles.inputWrapper}><CustomInput label='Search User by Id, Name, Email' type='text' name='search' init={search} color={theme.primary.highlight} callback={setSearch} /></div>
-                    <button className={styles.submitButton} style={(search.trim() !== '' ? inlineStyles.submitButtonReady : inlineStyles.submitButton)}>Search</button>
+                    <button className={styles.submitButton} style={(search.trim() !== '' ? inlineStyles.submitButtonReady : inlineStyles.submitButton)} onClick={handleSearch}>Search</button>
                 </div>
                 <div className={styles.searchResults} style={inlineStyles.searchResults}>
                     <div className={styles.resultHeader} style={inlineStyles.resultHeader}>
@@ -139,7 +159,7 @@ export default function TeamsAdd() {
                     </div>
                 </div>
                 <div className={styles.addWrapper}>
-                    <button className={styles.addButton} style={(search.trim() !== '' ? inlineStyles.addButtonReady : inlineStyles.addButton)}>Add</button>
+                    <button className={styles.addButton} style={(selectedResults.length !== 0 ? inlineStyles.addButtonReady : inlineStyles.addButton)}>Add</button>
                 </div>
             </div>
         </div>

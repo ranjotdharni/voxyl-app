@@ -69,19 +69,37 @@ export async function fetchToApi(localPath: string, method: 'GET' | 'POST' | 'PU
         data[v[0]] = v[1]
     })
 
-    let response = await Promise.resolve(await fetch(bakedOrigin + localPath, {
-        credentials: 'include',
-        method: method,
-        mode: 'same-origin',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookieValue(getCookie('csrftoken')),
-        },
-        body: JSON.stringify(data),
-    }).then(
-        middle => middle.json()
-    ))
+    let response
+
+    if (method === 'GET') {
+        response = await Promise.resolve(await fetch(bakedOrigin + localPath, {
+            credentials: 'include',
+            method: method,
+            mode: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookieValue(getCookie('csrftoken')),
+            }
+        }).then(
+            middle => middle.json()
+        ))
+    }
+    else {
+        response = await Promise.resolve(await fetch(bakedOrigin + localPath, {
+            credentials: 'include',
+            method: method,
+            mode: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookieValue(getCookie('csrftoken')),
+            },
+            body: JSON.stringify(data)
+        }).then(
+            middle => middle.json()
+        ))
+    }
 
     if (response.redirect !== undefined) {
         const redirect = useNavigate()
