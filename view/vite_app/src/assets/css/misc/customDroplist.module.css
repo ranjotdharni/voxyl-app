@@ -22,10 +22,9 @@
     flex-direction: column;
     margin-top: 2%;
     border: solid 1px rgba(10, 10, 10, 0.15);
-    background-color: rgba(10, 10, 10, 0.2);
-    backdrop-filter: blur(5px);
     box-shadow: 5px 5px 55px 5px rgba(0, 0, 0, 0.33);
     border-radius: 0.25em;
+    z-index: 3;
 }
 
 .listbox:hover {

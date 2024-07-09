@@ -6,25 +6,25 @@ import { Context } from './context/ThemeContext';
 import { css } from '@emotion/react'
 
 // Set 'label' to empty string to disable placeholder animations/resizing and make the component more compact (less sizing issues)
-export default function CustomInput({ label, type, name, init, callback } : { label: string, type: string, name: string, init: string, callback?: (value: string) => void }) {
+export default function CustomInput({ label, type, name, init, color, highlight, callback } : { label: string, type: string, name: string, init: string, color?: string, highlight?: string, callback?: (value: string) => void }) {
     const theme = useContext(Context)
 
     const SpanStyles = css`
-        color: ${theme.primary.subtext} !important;
+        color: ${color ? color : theme.primary.subtext} !important;
     `
     
     const TextStyles = css`
-        border-color: ${theme.primary.subtext} !important;
+        border-color: ${color ? color : theme.primary.subtext} !important;
 
         &:focus {
-            color: ${theme.primary.highlight} !important;
-            border-color: ${theme.primary.highlight} !important;
+            color: ${highlight ? highlight : theme.primary.highlight} !important;
+            border-color: ${highlight ? highlight : theme.primary.highlight} !important;
         }
     `
 
     const activeStyles = css`
         &:focus-within > span {
-            color: ${theme.primary.highlight} !important;
+            color: ${highlight ? highlight : theme.primary.highlight} !important;
         }
     `
     

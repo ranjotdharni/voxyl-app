@@ -27,6 +27,7 @@ export interface Theme {
         subtext: string,
         highlight: string
         tertiary: string,
+        quaternary: string
     }
 }
 
@@ -54,6 +55,7 @@ const jadeTheme: Theme = {
         subtext: '#0c3629',
         highlight: '#8fc7bf',
         tertiary: '#e0e0e01a',
+        quaternary: '#b0b0b0'
     }
 }
 
@@ -78,6 +80,7 @@ export const Context = React.createContext<Theme>({
         subtext: '',
         highlight: '',
         tertiary: '',
+        quaternary: ''
     }
 })
 

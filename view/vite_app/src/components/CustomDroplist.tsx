@@ -15,9 +15,11 @@ export default function CustomDroplist( { selected, payload, relativeContainerWi
     
     const inlineStyles: {[key: string]: CSS.Properties} = {
         "listbox": {
-            width: `${relativeContainerWidth}${relativeContainerUnits}`
+            width: `${relativeContainerWidth}${relativeContainerUnits}`,
+            backgroundColor: theme.background
         },
         "selector": {
+            backgroundColor: theme.background,
             color: theme.primary.highlight,
             border: `solid 1px ${theme.primary.tertiary}`
         },

@@ -1,6 +1,7 @@
 .gridItemWrapper {
     grid-area: search;
     padding: 1em;
+    overflow: hidden;
 }
 
 .mainContainer {
@@ -17,7 +18,7 @@
     position: relative;
     width: 90%;
     height: 15%;
-    top: 5%;
+    margin-top: 2.5%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -30,4 +31,133 @@
 
 .title {
     font-size: 1.5em;
+}
+
+.searchBar {
+    width: 90%;
+    height: 20%;
+    margin-top: 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.inputWrapper {
+    width: 70%;
+}
+
+.submitButton {
+    width: 15%;
+    border: solid 1px;
+    font-family: 'JetBrains Mono';
+    border-radius: 1em;
+    cursor: pointer;
+}
+
+.searchResults {
+    width: 80%;
+    height: 40%;
+    margin-top: 1%;
+    overflow: hidden;
+}
+
+.resultHeader {
+    position: sticky;
+    width: 100%;
+    height: 20% !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    border-bottom: solid 1px;
+}
+
+.resultHeader div {
+    font-size: 0.75em;
+    border-left: solid 1px;
+    border-right: solid 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.resultHeader div:nth-child(1) {
+    height: 100%;
+    width: 4%;
+}
+
+.resultHeader div:nth-child(2) {
+    height: 100%;
+    width: 32%;
+}
+
+.resultHeader div:nth-child(3) {
+    height: 100%;
+    width: 32%;
+}
+
+.resultHeader div:nth-child(4) {
+    height: 100%;
+    width: 32%;
+}
+
+.resultWrapper {
+    width: 100%;
+    height: 80%;
+    overflow-y: scroll;
+}
+
+.resultItem {
+    width: 100%;
+    height: 1em !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    border-bottom: solid 1px;
+}
+
+.resultItem div {
+    font-size: 0.75em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.resultItem div:nth-child(1) {
+    height: 100%;
+    width: 4%;
+}
+
+.resultItem div:nth-child(2) {
+    height: 100%;
+    width: 32%;
+}
+
+.resultItem div:nth-child(3) {
+    height: 100%;
+    width: 32%;
+}
+
+.resultItem div:nth-child(4) {
+    height: 100%;
+    width: 32%;
+}
+
+.addWrapper {
+    width: 80%;
+    height: 7.5%;
+    margin-top: 1.25%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.addButton {
+    width: 15%;
+    border: solid 1px;
+    font-family: 'JetBrains Mono';
+    border-radius: 1em;
+    cursor: pointer;
 }
