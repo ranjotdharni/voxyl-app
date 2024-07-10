@@ -13,6 +13,7 @@ export interface Theme {
         stop: string
     },
     background: string,
+    error: string,
     glowLight: string,
     glowBase: string,
     highlightedBackground: {
@@ -38,6 +39,7 @@ const jadeTheme: Theme = {
         stop: '#00120F'
     },
     background: '#1f1f1f',
+    error: '#910f2f',
     glowLight: `0px 0px 12px ${jadeGlowBase},
            0px 0px 2px ${jadeGlowTheme}, 0px 0px 3px ${jadeGlowTheme}, 0px 0px 4px ${jadeGlowTheme},
            0px 0px 10px ${jadeGlowTheme}, 0px 0px 20px ${jadeGlowTheme}, 0px 0px 40px ${jadeGlowTheme},
@@ -66,6 +68,7 @@ export const Context = React.createContext<Theme>({
         stop: ''
     },
     background: '',
+    error: '',
     glowLight: '',
     glowBase: '',
     highlightedBackground: {

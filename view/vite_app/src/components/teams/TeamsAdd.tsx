@@ -5,6 +5,7 @@ import styles from '../../assets/css/teams/components/teamsAdd.module.css'
 import CustomDroplist from '../CustomDroplist'
 import CustomInput from '../CustomInput'
 import { fetchToApi } from '../../globals'
+import useError from '../../hooks/useError'
 
 const STRING_TRIM_LIMIT: number = 18
 
@@ -24,6 +25,7 @@ export default function TeamsAdd() {
 
     const [selected, setSelected] = useState<number>(0)
     const [search, setSearch] = useState<string>('')
+    const [error, throwError] = useError('')
     const [teams, setTeams] = useState<Team[]>([])
     const [searchResults, setSearchResults] = useState<Result[]>([])
     const [selectedResults, setSelectedResults] = useState<Result[]>([])
@@ -74,6 +76,9 @@ export default function TeamsAdd() {
         },
         "checkbox": {
             accentColor: theme.primary.highlight
+        },
+        "error": {
+            color: theme.error
         }
     }
 
@@ -85,17 +90,21 @@ export default function TeamsAdd() {
         return str as string
     }
 
+    function addReady(): boolean {
+        return selectedResults.length !== 0
+    }
+
     function handleChange(e: ChangeEvent<HTMLInputElement>, idx: number) {
         if (e.target.checked) {
             const newItem: Result = searchResults[idx]
-            const newArray: Result[] = selectedResults
+            const newArray: Result[] = [...selectedResults]
             newArray.push(newItem)
             setSelectedResults(newArray)
             return  // Return statement very important here!!!
         }
 
         const oldItem: Result = searchResults[idx]
-        const newArray: Result[] = selectedResults
+        const newArray: Result[] = [...selectedResults]
         const itemIdx: number = newArray.indexOf(oldItem)
 
         if (itemIdx > -1) {
@@ -107,18 +116,56 @@ export default function TeamsAdd() {
     async function handleSearch(e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault()
 
+        if (teams.length === 0) {
+            throwError('Create a team first')
+            return
+        }
+
         const meta: Array<[string, string | Blob]> = [
             ['search', search],
+            ['team', teams[selected].id]
         ]
 
         let response = await fetchToApi("/v1/teams/add/query/", "PUT", meta)
+
+        if (response.length === 0) {
+            throwError('No Results')
+            return
+        }
+
         setSearchResults(response)
     }
 
     async function handleFetch() {
         let response = await fetchToApi("/v1/teams/view/", "GET", [])
-        console.log(response)
         setTeams(response)
+    }
+
+    async function addMembers(e: MouseEvent<HTMLButtonElement>) {
+        e.preventDefault()
+
+        if (selectedResults.length === 0) {
+            throwError('Please select some fields')
+            return
+        }
+        else if (teams.length === 0) {
+            throwError('Create a team first')
+            return
+        }
+
+        const meta: Array<[string, string | Blob]> = [
+            ['addData', JSON.stringify({"team": teams[selected].id, "list": JSON.stringify(selectedResults)})],
+        ]
+
+        let response = await fetchToApi("/v1/teams/view/", "POST", meta)
+
+        if (response.error !== undefined) {
+            throwError(response.error)
+            return
+        }
+
+        if (response.success)
+            throwError(response.message || 'Crew Member Added')
     }
 
     useEffect(() => {
@@ -159,7 +206,8 @@ export default function TeamsAdd() {
                     </div>
                 </div>
                 <div className={styles.addWrapper}>
-                    <button className={styles.addButton} style={(selectedResults.length !== 0 ? inlineStyles.addButtonReady : inlineStyles.addButton)}>Add</button>
+                    <p className={styles.error} style={inlineStyles.error}>{error}</p>
+                    <button onClick={addMembers} className={styles.addButton} style={(addReady() ? inlineStyles.addButtonReady : inlineStyles.addButton)}>Add</button>
                 </div>
             </div>
         </div>

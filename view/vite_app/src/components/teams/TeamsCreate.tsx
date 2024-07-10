@@ -79,7 +79,6 @@ export default function TeamsCreate() {
         ]
 
         let response = await fetchToApi("/v1/teams/create/", "POST", meta)
-        console.log(response)
     }
 
     return (
@@ -100,11 +99,3 @@ export default function TeamsCreate() {
         </div>
     )
 }
-
-/*
-`text-shadow: 1px 1px 12px #bcd1ce, -1px -1px 12px #bcd1ce,
-            1px -1px 12px #bcd1ce, -1px 1px 12px #bcd1ce,
-            0px 0px 2px #bcd1ce, 0px 0px 3px #bcd1ce, 0px 0px 4px #bcd1ce,
-            0px 0px 10px #8fc7bf, 0px 0px 20px #8fc7bf, 0px 0px 40px #8fc7bf,
-            0px 0px 50px #8fc7bf, 0px 0px 70px #8fc7bf, 0px 0px 100px #8fc7bf`
-*/

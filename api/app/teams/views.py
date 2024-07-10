@@ -41,6 +41,37 @@ class TeamsView(APIView):
             res.append(resItem)
 
         return Response(res, status=status.HTTP_200_OK)
+    
+    def post(self, request):
+        data = request.data
+
+        if not request.user.is_authenticated:
+            return Response({"error": "Fatal Error."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        message = 'Crew Members Added'
+        rawAddData = data['addData']
+        addData = json.loads(rawAddData)
+        team_id = addData['team']
+        add_list = json.loads(addData['list'])
+
+        team = None
+
+        try:
+            team = Team.objects.get(id=team_id)
+        except Team.DoesNotExist:
+            return Response({"error": "Team Not Found"}, status=status.HTTP_400_BAD_REQUEST)
+
+        for item in add_list:
+            try:
+                user = User.objects.get(username=item['id'])
+                team.members.add(user)
+                team.save()
+            except Exception as e:
+                message = 'Some Users not found'
+
+            
+
+        return Response({"success": "true", "message": message}, status=status.HTTP_200_OK)
 
 
 
@@ -81,10 +112,23 @@ class TeamsAdd(APIView):
         data = request.data
 
         if not request.user.is_authenticated:
-            return Response({"error": "Fatal Error."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Unauthorized"}, status=status.HTTP_400_BAD_REQUEST)
 
+        team_id = data['team']
         search_query = data['search']
-        users = serializers.serialize('json', User.objects.all().filter(Q(username__contains=search_query) | Q(first_name__contains=search_query) | Q(last_name__contains=search_query) | Q(email__contains=search_query)))
+
+        try:
+            current_team = Team.objects.get(id=team_id)
+        except Team.DoesNotExist:
+            return Response({"error": "Team Not Found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        users = serializers.serialize('json', User.objects.all().filter(
+            Q(username__contains=search_query) | 
+            Q(first_name__contains=search_query) | 
+            Q(last_name__contains=search_query) | 
+            Q(email__contains=search_query)
+        ).exclude(username=request.user.username).exclude(username__in=current_team.members.values_list('username', flat=True)))
+
         data = json.loads(users)
         res = []
         for item in data:
@@ -99,3 +143,7 @@ class TeamsAdd(APIView):
             res.append(resItem)
 
         return Response(res, status=status.HTTP_200_OK)
+
+
+
+
