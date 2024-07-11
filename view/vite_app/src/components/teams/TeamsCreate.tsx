@@ -11,7 +11,7 @@ function NewName({ value, setValue } : { value: string, setValue: (arg1: string)
 
     return (
         <div className={styles.contentNameWrapper + ' ' + styles.contentTypeWrapper} style={{borderColor: theme.primary.tertiary}}>
-            <label className={styles.CreateNameLabel}>Enter Name:</label>
+            <div className={styles.CreateNameLabelWrapper}><label className={styles.CreateNameLabel}>Enter Name:</label></div>
             <div className={styles.CreateNameInput}><CustomInput init={value} callback={setValue} label='' type='text' name='teamName' /></div>
         </div>
     )
