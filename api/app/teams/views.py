@@ -27,18 +27,51 @@ class TeamsView(APIView):
         if not request.user.is_authenticated:
             return Response({"error": "Fatal Error."}, status=status.HTTP_400_BAD_REQUEST)
         
-        teams = serializers.serialize('json', Team.objects.all().filter(owner=request.user.username))
+        teams = Team.objects.all().filter(owner=request.user.username)
+        members = []
+        memberData = []
+
+        for team in teams:
+            instance = team.members.all()
+            members.append(serializers.serialize('json', instance))
+
+        for i in range(len(members)):
+            memberData.append(json.loads(members[i]))
+
+        teams = serializers.serialize('json', teams)
         data = json.loads(teams)
-        res = []
-        for item in data:
+        res = {"crew": [], "members": []}
+
+        for x in range(len(data)):
+            userItems = []
             resItem = {
                 "id": None,
                 "name": None,
-                "email": None
+                "about": None
             }
-            resItem["id"] = item['pk']
-            resItem["name"] = item['fields']['name']
-            res.append(resItem)
+
+            resItem["id"] = data[x]['pk']
+            resItem["name"] = data[x]['fields']['name']
+            resItem["about"] = data[x]['fields']['description']
+            res["crew"].append(resItem)
+
+            for y in range(len(memberData[x])):
+                userItem = {
+                    "id": None,
+                    "username": None,
+                    "first": None,
+                    "last": None,
+                    "email": None
+                }
+
+                userItem["id"] = memberData[x][y]['pk']
+                userItem["username"] = memberData[x][y]['fields']['username']
+                userItem["first"] = memberData[x][y]['fields']['first_name']
+                userItem["last"] = memberData[x][y]['fields']['last_name']
+                userItem["email"] = memberData[x][y]['fields']['email']
+                userItems.append(userItem)
+                
+            res["members"].append(userItems)
 
         return Response(res, status=status.HTTP_200_OK)
     
@@ -95,6 +128,8 @@ class TeamsCreate(APIView):
         team_owner = request.user.username
 
         team = Team(name=team_name, description=team_desc, owner=team_owner)
+        team.save()
+        team.members.add(request.user)
         team.save()
 
         return Response({"success": "true"}, status=status.HTTP_200_OK)

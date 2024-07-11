@@ -1,6 +1,6 @@
 import styles from '../../assets/css/teams/components/teamsCreate.module.css'
 import CustomInput from '../CustomInput'
-import { MouseEvent, useContext, useState } from 'react'
+import { MouseEvent, useContext, useEffect, useState } from 'react'
 import CSS from 'csstype'
 import { Context, Theme } from '../context/ThemeContext'
 import { fetchToApi } from '../../globals'
@@ -27,7 +27,7 @@ function NewDescription({ value, setValue } : { value: string, setValue: (arg1: 
     )
 }
 
-export default function TeamsCreate() {
+export default function TeamsCreate({ fetch, triggerFetch } : { fetch: boolean, triggerFetch: () => void}) {
     const [newName, setNewName] = useState<string>('')
     const [teamDesc, setTeamDesc] = useState<string>('')
     const [error, throwError] = useError('')
@@ -75,6 +75,7 @@ export default function TeamsCreate() {
 
         if (response.success) {
             throwError('Crew Created')
+            triggerFetch()
             return
         }
 
@@ -85,6 +86,10 @@ export default function TeamsCreate() {
             throwError('Fatal Error')
         }
     }
+
+    useEffect(() => {
+        // do something
+    }, [fetch])
 
     return (
         <div className={styles.gridItemWrapper}>

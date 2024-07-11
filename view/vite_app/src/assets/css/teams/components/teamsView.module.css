@@ -33,6 +33,8 @@
 .memberContainer {
     width: 85%;
     height: 40%;
+    display: flex;
+    flex-direction: column;
 }
 
 .memberTitleContainer {
@@ -51,12 +53,14 @@
 }
 
 .userDroplistWrapper {
-    width: 50%;
+    width: 20em;
 }
 
 .roleContainer {
     width: 85%;
     height: 40%;
+    display: flex;
+    flex-direction: column;
 }
 
 .roleTitleContainer {
@@ -104,4 +108,112 @@
 
 .roleSelectedMember {
     font-size: 0.75rem;
+}
+
+.memberBody {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.picContainer {
+    width: 35%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.pic {
+    width: 50%;
+    aspect-ratio: 1 / 1;
+    margin-top: 20%;
+    border: solid 2px;
+    border-radius: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    width: 85%;
+    height: 85%;
+}
+
+.profileLink {
+    margin-top: 10%;
+    font-size: 0.6rem;
+}
+
+.profileLink:hover {
+    cursor: pointer;
+    color: #2a54c7;
+}
+
+.bioContainer {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: start;
+}
+
+.bioTitle {
+    font-size: 1.25rem;
+    margin: 0;
+    margin-top: 3%;
+}
+
+.bioItem {
+    font-size: 0.75rem;
+    margin: 0;
+    margin-top: 1%;
+}
+
+.statsButtonContainer {
+    position: relative;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center
+}
+
+.statsButton {
+    font-family: 'JetBrains Mono';
+    font-size: 0.75em;
+    width: 8rem;
+    height: 100%;
+    border: solid 1px;
+    border-radius: 0.25rem;
+    background: linear-gradient(90deg, hsla(197, 100%, 63%, 1) 0%, hsla(294, 100%, 55%, 1) 100%);
+}
+
+.statsButton:hover {
+    cursor: pointer;
+}
+
+.roleBody {
+    flex: 1;
+}
+
+.errorWrapper {
+    position: absolute;
+    width: 49%;
+    height: 5%;
+    top: 93%;
+    left: 0.5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: start;
+}
+
+.error {
+    font-size: 0.75rem;
+    margin-left: 5%;
 }

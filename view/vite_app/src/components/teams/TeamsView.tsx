@@ -2,16 +2,21 @@ import { useContext, useEffect, useState } from 'react'
 import styles from '../../assets/css/teams/components/teamsView.module.css'
 import { Context } from '../context/ThemeContext'
 import CSS from 'csstype'
-import CustomDroplist from '../CustomDroplist'
+import CustomDroplist, { PayloadItem } from '../CustomDroplist'
+import { FiUser } from "react-icons/fi"
+import { fetchToApi } from '../../globals'
+import useError from '../../hooks/useError'
 
-export default function TeamsView() {
-    const [teams, setTeams] = useState<{id: string, name: string}[]>([{id: '5234612435', name: 'Frontend'}, {id: '346245234523', name: 'Backend'}])
-    const [members, setMembers] = useState<{id: string, name: string}[][]>([
-        [{id: '08963435', name: 'Jamie Lannister'}, {id: '345236754', name: 'James Maslow'}],
-        [{id: '09834502', name: 'Brendan Fraiser'}, {id: '987567754', name: 'Timothy Doan'}, {id: '7563456756', name: 'Norman Osborn'}, {id: '0985340923', name: 'Barry Allen'}],
-    ])
+export default function TeamsView({ fetch, triggerFetch } : { fetch: boolean, triggerFetch: () => void }) {
+    const [error, throwError] = useError('')
+    const [teams, setTeams] = useState<PayloadItem[]>([])
+    const [members, setMembers] = useState<Array<PayloadItem[]>>([[]])
     const [selectedTeam, setSelectedTeam] = useState<number>(0)
     const [selectedMember, setSelectedMember] = useState<number[]>([0])
+
+    if (false) {
+        triggerFetch
+    }
 
     const theme = useContext(Context)
 
@@ -37,6 +42,25 @@ export default function TeamsView() {
         },
         "roleSelectedMember": {
             color: theme.primary.highlight
+        }, 
+        "pic": {
+            borderColor: theme.primary.header
+        },
+        "icon": {
+            color: theme.primary.highlight
+        },
+        "bioTitle": {
+            color: theme.primary.header
+        },
+        "bioItem": {
+            color: theme.primary.highlight
+        },
+        "statsButton": {
+            borderColor: theme.primary.highlight,
+            color: theme.primary.subheader
+        },
+        "error": {
+            color: theme.error
         }
     }
 
@@ -46,20 +70,40 @@ export default function TeamsView() {
         setSelectedMember(newSelection)
     }
 
-    function grabData() {
-        // grab data
-        // remember details of async and await functions!!!!!!!!
+    async function grabData() {
+        await fetchToApi("/v1/teams/view/", "GET", []).then((response) => {
+            if (response.error !== undefined) {
+                throwError(response.error)
+                return
+            }
+    
+            setTeams(response.crew)
+            const newMembers = response.members
+            for (var i = 0; i < newMembers.length; i++) {
+                for (var j = 0; j < newMembers[i].length; j++) {
+                    newMembers[i][j]['name'] = `${newMembers[i][j]['last']}, ${newMembers[i][j]['first']}`
+                }
+            }
 
-        const selectographer = []
-        for (var i = 0; i < teams.length; i++) {
-            selectographer.push(0)
-        }
-        setSelectedMember(selectographer)
+            setMembers(newMembers)
+            setSelectedTeam(0)
+    
+            const selectographer = []
+            for (var i = 0; i < teams.length; i++) {
+                selectographer.push(0)
+            }
+            setSelectedMember(selectographer)
+            updateSelectedMember(0)
+        })
     }
 
     useEffect(() => {
         grabData()
     }, [])
+
+    useEffect(() => {
+        grabData()
+    }, [fetch])
 
     return (
         <div className={styles.gridItemWrapper}>
@@ -73,6 +117,32 @@ export default function TeamsView() {
                         <h2 className={styles.memberTitle} style={inlineStyles.memberTitle}>Crew Members</h2>
                         <div className={styles.userDroplistWrapper}><CustomDroplist selected={selectedMember[selectedTeam]} payload={members[selectedTeam]} callback={updateSelectedMember} relativeContainerWidth={20} relativeContainerUnits='em'/></div>
                     </div>
+                    <div className={styles.memberBody}>
+                        <div className={styles.picContainer}>
+                            <div className={styles.pic} style={inlineStyles.pic}>
+                                <FiUser className={styles.icon} style={inlineStyles.icon} />
+                            </div>
+                            <a className={styles.profileLink}>View Profile</a>
+                        </div>
+                        <div className={styles.bioContainer}>
+                            {
+                                members[selectedTeam][selectedMember[selectedTeam]] !== undefined ? 
+                                <>
+                                    <p className={styles.bioTitle} style={inlineStyles.bioTitle}>Member Name</p>
+                                    <p className={styles.bioItem} style={inlineStyles.bioItem}>{members[selectedTeam][selectedMember[selectedTeam]].name}</p>
+                                    <p className={styles.bioTitle} style={inlineStyles.bioTitle}>Tag</p>
+                                    <p className={styles.bioItem} style={inlineStyles.bioItem}>{`#${members[selectedTeam][selectedMember[selectedTeam]].username}`}</p>
+                                    <p className={styles.bioTitle} style={inlineStyles.bioTitle}>Email</p>
+                                    <p className={styles.bioItem} style={inlineStyles.bioItem}>{members[selectedTeam][selectedMember[selectedTeam]].email}</p>
+
+                                    <div className={styles.statsButtonContainer}>
+                                        <button className={styles.statsButton} style={inlineStyles.statsButton}>View Statistics</button>
+                                    </div>
+                                </> :
+                                <></>
+                            }
+                        </div>
+                    </div>
                 </div>
                 <div className={styles.roleContainer}>
                     <div className={styles.roleTitleContainer} style={inlineStyles.memberTitleContainer}>
@@ -80,10 +150,16 @@ export default function TeamsView() {
                         <div className={styles.roleSelectedWrapper}>
                             <label className={styles.roleSelectedLabel} style={inlineStyles.roleSelectedLabel}>Currently Viewing</label>
                             <div className={styles.roleSelectedContainer} style={inlineStyles.roleSelectedContainer}>
-                                <p className={styles.roleSelectedMember} style={inlineStyles.roleSelectedMember}>{members[selectedTeam][selectedMember[selectedTeam]].name}</p>
+                                <p className={styles.roleSelectedMember} style={inlineStyles.roleSelectedMember}>{members.length !== 0 && members[selectedTeam].length !== 0 && members[selectedTeam][selectedMember[selectedTeam]] !== undefined ? members[selectedTeam][selectedMember[selectedTeam]].name : 'Select a Member'}</p>
                             </div>
                         </div>
                     </div>
+                    <div className={styles.roleBody}>
+                        
+                    </div>
+                </div>
+                <div className={styles.errorWrapper}>
+                    <p className={styles.error} style={inlineStyles.error}>{error}</p>
                 </div>
             </div>
         </div>

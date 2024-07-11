@@ -20,7 +20,7 @@ interface Team {
     name: string
 }
 
-export default function TeamsAdd() {
+export default function TeamsAdd({ fetch, triggerFetch } : { fetch: boolean, triggerFetch: () => void}) {
     const theme = useContext(Context)
 
     const [selected, setSelected] = useState<number>(0)
@@ -138,7 +138,12 @@ export default function TeamsAdd() {
 
     async function handleFetch() {
         let response = await fetchToApi("/v1/teams/view/", "GET", [])
-        setTeams(response)
+
+        if (response.error !== undefined) {
+            throwError(response.error)
+        }
+
+        setTeams(response.crew)
     }
 
     async function addMembers(e: MouseEvent<HTMLButtonElement>) {
@@ -166,11 +171,19 @@ export default function TeamsAdd() {
 
         if (response.success)
             throwError(response.message || 'Crew Member Added')
+        triggerFetch()
     }
 
     useEffect(() => {
         handleFetch()
     }, [])
+
+    useEffect(() => {
+        handleFetch()
+        setSearch('')
+        setSearchResults([])
+        setSelectedResults([])
+    }, [fetch])
 
     return (
         <div className={styles.gridItemWrapper}>
