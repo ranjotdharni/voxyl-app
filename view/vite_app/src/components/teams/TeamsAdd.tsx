@@ -20,7 +20,7 @@ interface Team {
     name: string
 }
 
-export default function TeamsAdd({ fetch, triggerFetch } : { fetch: boolean, triggerFetch: () => void}) {
+export default function TeamsAdd({ fetch, triggerFetch } : { fetch: boolean, triggerFetch: () => void }) {
     const theme = useContext(Context)
 
     const [selected, setSelected] = useState<number>(0)

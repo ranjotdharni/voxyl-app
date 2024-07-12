@@ -105,6 +105,24 @@ class TeamsView(APIView):
             
 
         return Response({"success": "true", "message": message}, status=status.HTTP_200_OK)
+    
+    def delete(self, request):
+        data = request.data
+        team = data['id']
+        drop = data['username']
+
+        if not request.user.is_authenticated:
+            return Response({"error": "Fatal Auth Error."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        dropFrom = Team.objects.get(id=team)
+
+        if dropFrom.owner == drop:
+            return Response({"error": "Crew Chief cannot be dropped, transfer ownership first or disband"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        dropping = User.objects.get(username=drop)
+
+        dropFrom.members.remove(dropping)
+        return Response({"success": "true"}, status=status.HTTP_200_OK)
 
 
 
@@ -133,6 +151,26 @@ class TeamsCreate(APIView):
         team.save()
 
         return Response({"success": "true"}, status=status.HTTP_200_OK)
+    
+    def delete(self, request):
+        data = request.data
+        disband = data['id']
+
+        if not request.user.is_authenticated:
+            return Response({"error": "Fatal Auth Error."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        teams = Team.objects.all().filter(owner=request.user.username)
+        if (len(teams) < 2):
+            return Response({"error": "You must have 1 crew at a minimum"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        
+        team = Team.objects.get(id=disband)
+        if (team.owner != request.user.username):
+            return Response({"error": "Only Crew Chief can disband a crew"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+        team.delete()
+        return Response({"success": "true"}, status=status.HTTP_200_OK)
+    
+
     
 @method_decorator(login_required(login_url='/entry/'), name='dispatch')
 @method_decorator(csrf_protect, name='dispatch')

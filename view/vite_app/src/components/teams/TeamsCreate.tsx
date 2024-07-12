@@ -27,7 +27,7 @@ function NewDescription({ value, setValue } : { value: string, setValue: (arg1: 
     )
 }
 
-export default function TeamsCreate({ fetch, triggerFetch } : { fetch: boolean, triggerFetch: () => void}) {
+export default function TeamsCreate({ fetch, triggerFetch } : { fetch: boolean, triggerFetch: () => void }) {
     const [newName, setNewName] = useState<string>('')
     const [teamDesc, setTeamDesc] = useState<string>('')
     const [error, throwError] = useError('')

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { MouseEvent, useContext, useEffect, useState } from 'react'
 import styles from '../../assets/css/teams/components/teamsView.module.css'
 import { Context } from '../context/ThemeContext'
 import CSS from 'csstype'
@@ -6,17 +6,14 @@ import CustomDroplist, { PayloadItem } from '../CustomDroplist'
 import { FiUser } from "react-icons/fi"
 import { fetchToApi } from '../../globals'
 import useError from '../../hooks/useError'
+import { Confirm } from '../misc/ConfirmModal'
 
-export default function TeamsView({ fetch, triggerFetch } : { fetch: boolean, triggerFetch: () => void }) {
+export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: boolean, triggerFetch: () => void, setModal: (slug: Confirm) => void}) {
     const [error, throwError] = useError('')
     const [teams, setTeams] = useState<PayloadItem[]>([])
     const [members, setMembers] = useState<Array<PayloadItem[]>>([[]])
     const [selectedTeam, setSelectedTeam] = useState<number>(0)
     const [selectedMember, setSelectedMember] = useState<number[]>([0])
-
-    if (false) {
-        triggerFetch
-    }
 
     const theme = useContext(Context)
 
@@ -77,7 +74,6 @@ export default function TeamsView({ fetch, triggerFetch } : { fetch: boolean, tr
                 return
             }
     
-            setTeams(response.crew)
             const newMembers = response.members
             for (var i = 0; i < newMembers.length; i++) {
                 for (var j = 0; j < newMembers[i].length; j++) {
@@ -85,15 +81,75 @@ export default function TeamsView({ fetch, triggerFetch } : { fetch: boolean, tr
                 }
             }
 
-            setMembers(newMembers)
             setSelectedTeam(0)
+            updateSelectedMember(0)
+            setTeams(response.crew)
+            setMembers(newMembers)
     
             const selectographer = []
             for (var i = 0; i < teams.length; i++) {
                 selectographer.push(0)
             }
             setSelectedMember(selectographer)
-            updateSelectedMember(0)
+        })
+    }
+
+    async function disbandCrew() {
+        const meta: Array<[string, string | Blob]> = [
+            ['id', teams[selectedTeam].id as string]
+        ]
+
+        await fetchToApi("/v1/teams/create/", "DELETE", meta).then(response => {
+            if (response.success) {
+                throwError(`${teams[selectedTeam].name} was Disbanded`)
+                triggerFetch()
+                return
+            }
+
+            throwError(response.error)
+        })
+    }
+
+    async function dropMember() {
+        const meta: Array<[string, string | Blob]> = [
+            ['id', teams[selectedTeam].id as string],
+            ['username', members[selectedTeam][selectedMember[selectedTeam]].username]
+        ]
+
+        await fetchToApi("/v1/teams/view/", "DELETE", meta).then(response => {
+            if (response.success) {
+                throwError(`${members[selectedTeam][selectedMember[selectedTeam]].name} was dropped from this crew`)
+                const deleteIdx: number = selectedMember[selectedTeam]
+                updateSelectedMember(Math.max(deleteIdx - 1, 0))
+                const newMembers = [...members]
+                newMembers[selectedTeam].splice(deleteIdx, 1)
+                setMembers(newMembers)
+                return
+            }
+
+            throwError(response.error)
+        })
+    }
+
+    function handleDisband(e: MouseEvent<HTMLButtonElement>) {
+        e.preventDefault()
+
+        setModal({
+            title: 'Are You Sure?',
+            message: 'This will permanently delete this crew. THIS ACTION CANNOT BE UNDONE!',
+            question: 'Do you still want to continue?',
+            callback: disbandCrew
+        })
+    }
+
+    function handleDrop(e: MouseEvent<HTMLButtonElement>) {
+        e.preventDefault()
+
+        setModal({
+            title: 'Are You Sure?',
+            message: 'This will remove this member from this crew unless they are manually re-added.',
+            question: 'Do you still want to continue?',
+            callback: dropMember
         })
     }
 
@@ -112,6 +168,7 @@ export default function TeamsView({ fetch, triggerFetch } : { fetch: boolean, tr
                     <div className={styles.droplistWrapper}><CustomDroplist selected={selectedTeam} payload={teams} callback={setSelectedTeam} color={theme.primary.highlight} highlight={theme.primary.header} relativeContainerWidth={20} relativeContainerUnits='em'/></div>
                     <p className={styles.title} style={inlineStyles.title}>View Your Crews</p>
                 </div>
+                <div className={styles.deleteWrapper}><button className={styles.delete} onClick={handleDisband}>Disband</button></div>
                 <div className={styles.memberContainer}>
                     <div className={styles.memberTitleContainer} style={inlineStyles.memberTitleContainer}>
                         <h2 className={styles.memberTitle} style={inlineStyles.memberTitle}>Crew Members</h2>
@@ -137,6 +194,7 @@ export default function TeamsView({ fetch, triggerFetch } : { fetch: boolean, tr
 
                                     <div className={styles.statsButtonContainer}>
                                         <button className={styles.statsButton} style={inlineStyles.statsButton}>View Statistics</button>
+                                        <button className={styles.dropButton} onClick={handleDrop}>Drop This Member</button>
                                     </div>
                                 </> :
                                 <></>
