@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
-from teams.models import Team
+from teams.models import Team, Member, PERMISSIONS
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
 
@@ -57,8 +57,8 @@ class LoginApiView(APIView):
 
         default_team = Team(name='Your Team', description='This is your default team.', owner=user.username)
         default_team.save()
-        default_team.members.add(user)
-        default_team.save()
+        team_member = Member(user=user, team=default_team, permissions=PERMISSIONS["CREW_CHIEF"]["level"])
+        team_member.save()
 
         if user is not None:
             login(request, user)

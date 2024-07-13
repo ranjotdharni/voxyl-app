@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 from django.db.models import Q
-from teams.models import Team
+from teams.models import Team, Member
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
 from django.core import serializers
@@ -32,11 +32,14 @@ class TeamsView(APIView):
         memberData = []
 
         for team in teams:
-            instance = team.members.all()
-            members.append(serializers.serialize('json', instance))
+            member = Member.objects.filter(team=team)
+            members.append(member)
 
-        for i in range(len(members)):
-            memberData.append(json.loads(members[i]))
+        for items in members:
+            memberUsers = []
+            for item in items:
+                memberUsers.append(item.user)
+            memberData.append(json.loads(serializers.serialize('json', memberUsers)))
 
         teams = serializers.serialize('json', teams)
         data = json.loads(teams)
@@ -97,8 +100,8 @@ class TeamsView(APIView):
         for item in add_list:
             try:
                 user = User.objects.get(username=item['id'])
-                team.members.add(user)
-                team.save()
+                member = Member(user=user, team=team)
+                member.save()
             except Exception as e:
                 message = 'Some Users not found'
 
@@ -109,21 +112,20 @@ class TeamsView(APIView):
     def delete(self, request):
         data = request.data
         team = data['id']
-        drop = data['username']
+        member = data['username']
 
         if not request.user.is_authenticated:
             return Response({"error": "Fatal Auth Error."}, status=status.HTTP_400_BAD_REQUEST)
         
         dropFrom = Team.objects.get(id=team)
+        drop = User.objects.get(username=member)
 
-        if dropFrom.owner == drop:
+        if dropFrom.owner == drop.username:
             return Response({"error": "Crew Chief cannot be dropped, transfer ownership first or disband"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-        dropping = User.objects.get(username=drop)
-
-        dropFrom.members.remove(dropping)
+        dropping = Member.objects.filter(user=drop, team=dropFrom)
+        dropping.delete()
         return Response({"success": "true"}, status=status.HTTP_200_OK)
-
 
 
 @method_decorator(login_required(login_url='/entry/'), name='dispatch')
@@ -195,12 +197,18 @@ class TeamsAdd(APIView):
         except Team.DoesNotExist:
             return Response({"error": "Team Not Found"}, status=status.HTTP_404_NOT_FOUND)
         
+        existingMembers = Member.objects.filter(team=current_team)
+        discriminate = []
+
+        for member in existingMembers:
+            discriminate.append(member.user.username)
+        
         users = serializers.serialize('json', User.objects.all().filter(
             Q(username__contains=search_query) | 
             Q(first_name__contains=search_query) | 
             Q(last_name__contains=search_query) | 
             Q(email__contains=search_query)
-        ).exclude(username=request.user.username).exclude(username__in=current_team.members.values_list('username', flat=True)))
+        ).exclude(username=request.user.username).exclude(username__in=discriminate))
 
         data = json.loads(users)
         res = []

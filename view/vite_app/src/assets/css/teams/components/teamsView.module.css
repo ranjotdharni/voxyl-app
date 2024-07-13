@@ -43,7 +43,7 @@
     font-family: 'JetBrains Mono';
     border-radius: 0.25em;
     border: none;
-    background-color: rgb(207, 55, 55);
+    background-color: crimson;
     color: #f0f8ff;
 }
 
@@ -227,7 +227,7 @@
     height: 100%;
     border: none;
     border-radius: 0.25rem;
-    background-color: rgb(207, 55, 55);
+    background-color: crimson;
     color: #f0f8ff;
 }
 
