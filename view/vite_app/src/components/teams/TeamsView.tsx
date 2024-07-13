@@ -4,7 +4,7 @@ import { Context } from '../context/ThemeContext'
 import CSS from 'csstype'
 import CustomDroplist, { PayloadItem } from '../CustomDroplist'
 import { FiUser } from "react-icons/fi"
-import { fetchToApi } from '../../globals'
+import { fetchToApi, PERMISSIONS } from '../../globals'
 import useError from '../../hooks/useError'
 import { Confirm } from '../misc/ConfirmModal'
 
@@ -14,6 +14,7 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
     const [members, setMembers] = useState<Array<PayloadItem[]>>([[]])
     const [selectedTeam, setSelectedTeam] = useState<number>(0)
     const [selectedMember, setSelectedMember] = useState<number[]>([0])
+    const [subjectPermissionLevel, setSubjectPermissionLevel] = useState<number>(0)
 
     const theme = useContext(Context)
 
@@ -153,6 +154,22 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
         })
     }
 
+    async function grabRole() {
+        const meta: Array<[string, string | Blob]> = [
+            ['id', teams[selectedTeam].id as string],
+            ['user', members[selectedTeam][selectedMember[selectedTeam]].username]
+        ]
+
+        await fetchToApi('/v1/teams/role/', 'POST', meta).then(response => {
+            if (response.success) {
+                setSubjectPermissionLevel(response.level)
+                return
+            }
+
+            throwError(response.error)
+        })
+    }
+
     useEffect(() => {
         grabData()
     }, [])
@@ -160,6 +177,10 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
     useEffect(() => {
         grabData()
     }, [fetch])
+
+    useEffect(() => {
+        grabRole()
+    }, [teams, members, selectedTeam, selectedMember])
 
     return (
         <div className={styles.gridItemWrapper}>
@@ -206,9 +227,9 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
                     <div className={styles.roleTitleContainer} style={inlineStyles.memberTitleContainer}>
                         <h2 className={styles.roleTitle} style={inlineStyles.memberTitle}>Role Call</h2>
                         <div className={styles.roleSelectedWrapper}>
-                            <label className={styles.roleSelectedLabel} style={inlineStyles.roleSelectedLabel}>Currently Viewing</label>
+                            <label className={styles.roleSelectedLabel} style={inlineStyles.roleSelectedLabel}>Role</label>
                             <div className={styles.roleSelectedContainer} style={inlineStyles.roleSelectedContainer}>
-                                <p className={styles.roleSelectedMember} style={inlineStyles.roleSelectedMember}>{members.length !== 0 && members[selectedTeam].length !== 0 && members[selectedTeam][selectedMember[selectedTeam]] !== undefined ? members[selectedTeam][selectedMember[selectedTeam]].name : 'Select a Member'}</p>
+                                <p className={styles.roleSelectedMember} style={inlineStyles.roleSelectedMember}>{members.length !== 0 && members[selectedTeam].length !== 0 && members[selectedTeam][selectedMember[selectedTeam]] !== undefined ? PERMISSIONS[subjectPermissionLevel].alias : '--------'}</p>
                             </div>
                         </div>
                     </div>

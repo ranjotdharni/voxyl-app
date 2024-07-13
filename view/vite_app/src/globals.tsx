@@ -3,6 +3,34 @@ import { useNavigate } from "react-router-dom";
 export const bakedOrigin: string = window.location.origin
 export const SUCCESS_PATH: string = '/'
 
+// Each item's index is its numeric permission level
+export const PERMISSIONS: { tag: string, alias: string }[] = [
+    {
+        "tag": "UNASSIGNED",
+        "alias": "Unassigned"
+    },
+    {
+        "tag": "MECHANIC",
+        "alias": "Mechanic"
+    },
+    {
+        "tag": "ENGINEER",
+        "alias": "Engineer"
+    },
+    {
+        "tag": "DRIVER",
+        "alias": "Driver"
+    },
+    {
+        "tag": "CAR_CHIEF",
+        "alias": "Car Chief"
+    },
+    {
+        "tag": "CREW_CHIEF",
+        "alias": "Crew Chief"
+    }
+]
+
 export function clamp(min: number, ideal: number, max: number)
 {
     if (ideal < min)

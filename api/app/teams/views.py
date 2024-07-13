@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 from django.db.models import Q
-from teams.models import Team, Member
+from teams.models import Team, Member, PERMISSIONS
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
 from django.core import serializers
@@ -147,10 +147,11 @@ class TeamsCreate(APIView):
         team_desc = data['desc']
         team_owner = request.user.username
 
+        user = User.objects.get(username=team_owner)
         team = Team(name=team_name, description=team_desc, owner=team_owner)
         team.save()
-        team.members.add(request.user)
-        team.save()
+        team_member = Member(user=user, team=team, permissions=PERMISSIONS["CREW_CHIEF"]["level"])
+        team_member.save()
 
         return Response({"success": "true"}, status=status.HTTP_200_OK)
     
@@ -227,4 +228,32 @@ class TeamsAdd(APIView):
 
 
 
+@method_decorator(login_required(login_url='/entry/'), name='dispatch')
+@method_decorator(csrf_protect, name='dispatch')
+class RoleView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+
+        if not request.user.is_authenticated:
+            return Response({"error": "Unauthenticated"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        team_id = data['id']
+        username = data['user']
+        team = Team.objects.get(id=team_id)
+        user = User.objects.get(username=username)
+
+        try:
+            
+            requester = Member.objects.get(team=team, user=request.user)
+            if (requester.permissions < PERMISSIONS['CAR_CHIEF']['level']):
+                return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+        except Member.DoesNotExist:
+            return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+
+        member = Member.objects.get(team=team, user=user)
+
+        return Response({"success": "true", "level": member.permissions}, status=status.HTTP_200_OK)
 

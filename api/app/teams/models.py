@@ -38,7 +38,7 @@ class Team(models.Model):
 
 class Member(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     permissions = models.IntegerField(default=0)
 
     class Meta:
