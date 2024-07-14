@@ -1,0 +1,69 @@
+.wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.selector {
+    width: inherit;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    background-color: rgba(10, 10, 10, 0.2);
+    backdrop-filter: blur(5px);
+    box-shadow: 5px 5px 55px 5px rgba(0, 0, 0, 0.33);
+    border-radius: 0.25em;
+}
+
+.listbox {
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    margin-top: 2%;
+    border: solid 1px rgba(10, 10, 10, 0.15);
+    box-shadow: 5px 5px 55px 5px rgba(0, 0, 0, 0.33);
+    border-radius: 0.25em;
+    z-index: 3;
+}
+
+.listbox:hover {
+    display: flex;
+}
+
+.selector:focus ~ .listbox {
+    display: flex;
+}
+
+.selector:hover {
+    cursor: pointer;
+}
+
+.item {
+    text-align: center;
+}
+
+.item:hover {
+    cursor: pointer;
+}
+
+.icon {
+    position: absolute;
+    width: 5%;
+    top: 15%;
+    left: 90%;
+    text-align: center;
+    transition: transform 0.15s linear, color 0.05s ease-in;
+}
+
+.wrapper:hover .icon {
+    transform: rotateZ(180deg);
+}
+
+.selector:hover > .icon {
+    transform: none;
+}
+
+.wrapper:focus-within .icon {
+    transform: rotateZ(180deg);
+}

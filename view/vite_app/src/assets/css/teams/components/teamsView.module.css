@@ -1,0 +1,373 @@
+.gridItemWrapper {
+    grid-area: create;
+    padding: 1em;
+}
+
+.mainContainer {
+    width: 100%;
+    height: 100%;
+    border-radius: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.titleContainer {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.droplistWrapper {
+    width: 20em;
+    height: 30%;
+}
+
+.title {
+    font-size: 1.5em;
+}
+
+.deleteWrapper {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.delete {
+    padding-left: 1%;
+    padding-right: 1%;
+    font-family: 'JetBrains Mono';
+    border-radius: 0.25em;
+    border: none;
+    background-color: crimson;
+    color: #f0f8ff;
+}
+
+.delete:hover {
+    cursor: pointer;
+}
+
+.memberContainer {
+    width: 85%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+}
+
+.memberTitleContainer {
+    width: 100%;
+    height: 20%;
+    border-bottom: solid 1px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.memberTitle {
+    font-size: 1em;
+    margin-left: 1%;
+}
+
+.userDroplistWrapper {
+    width: 20em;
+    max-width: 50%;
+}
+
+.roleContainer {
+    width: 85%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2.5%;
+}
+
+.roleTitleContainer {
+    width: 100%;
+    height: 20%;
+    border-bottom: solid 1px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.roleTitle {
+    font-size: 1em;
+    margin-left: 1%;
+}
+
+.roleSelectedWrapper {
+    width: auto;
+    height: 50%;
+    margin-right: 3%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.roleSelectedLabel {
+    font-size: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.roleSelectedContainer {
+    position: relative;
+    border: solid 1px;
+    border-radius: 0.3rem;
+    width: auto;
+    height: 100%;
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.roleSelectedMember {
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.memberBody {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.picContainer {
+    width: 35%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.pic {
+    width: 50%;
+    aspect-ratio: 1 / 1;
+    margin-top: 20%;
+    border: solid 2px;
+    border-radius: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    width: 85%;
+    height: 85%;
+}
+
+.profileLink {
+    margin-top: 10%;
+    font-size: 0.6rem;
+}
+
+.profileLink:hover {
+    cursor: pointer;
+    color: #2a54c7;
+}
+
+.bioContainer {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: start;
+}
+
+.bioTitle {
+    font-size: 1.25rem;
+    margin: 0;
+    margin-top: 3%;
+}
+
+.bioItem {
+    font-size: 0.75rem;
+    margin: 0;
+    margin-top: 1%;
+}
+
+.statsButtonContainer {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.statsButton {
+    font-family: 'JetBrains Mono';
+    font-size: 0.75em;
+    width: 8rem;
+    height: 100%;
+    margin-right: 2%;
+    border: solid 1px;
+    border-radius: 0.25rem;
+    background: linear-gradient(90deg, hsla(197, 100%, 63%, 1) 0%, hsla(294, 100%, 55%, 1) 100%);
+}
+
+.statsButton:hover {
+    cursor: pointer;
+}
+
+.dropButton {
+    font-family: 'JetBrains Mono';
+    font-size: 0.75em;
+    width: 8rem;
+    height: 100%;
+    border: none;
+    border-radius: 0.25rem;
+    background-color: crimson;
+    color: #f0f8ff;
+}
+
+.dropButton:hover {
+    cursor: pointer;
+}
+
+.roleBody {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.roleWrapper {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.roleInputContainer {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
+}
+
+.roleInputList {
+    width: 100%;
+    height: 100%;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+}
+
+.roleInputWrapper {
+    height: 12.5% !important;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.roleInputWrapper input {
+    margin-left: 5%;
+}
+
+.roleInputWrapper label {
+    font-size: 1em;
+    margin-left: 5%;
+}
+
+.roleDescriptionContainer {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: end;
+}
+
+.roleDescriptionContainer div {
+    width: 100%;
+    border-top: solid 1px;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    font-size: clamp(0.6em, 1.25vmin, 1em);
+}
+
+.roleDescriptionContainer h4 {
+    font-weight: normal;
+    padding: 0;
+    margin: 0;
+    margin-top: 10%;
+}
+
+.roleButtonContainer {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: end;
+}
+
+.roleButtonContainer button {
+    width: 80px;
+    height: 70%;
+    margin-right: 10px;
+    font-family: 'JetBrains Mono';
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.errorWrapper {
+    position: absolute;
+    width: 49%;
+    height: 5%;
+    top: 93%;
+    left: 0.5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: start;
+}
+
+.error {
+    font-size: 0.75rem;
+    margin-left: 5%;
+}
+
+@media (max-width: 1386px) {
+    .titleContainer {
+        flex-direction: column-reverse;
+        justify-content: flex-start;
+        align-items: start;
+    }
+
+    .droplistWrapper {
+        width: 100%;
+    }
+
+    .deleteWrapper {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 1100px) or (max-height: 800px) {
+    .gridItemWrapper {
+        width: 90%;
+        min-height: 800px;
+    }
+}

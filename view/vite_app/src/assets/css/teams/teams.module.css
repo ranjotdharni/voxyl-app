@@ -1,0 +1,29 @@
+.mainWrapper {
+    position: relative;
+    top: 1%;
+    left: 1%;
+    z-index: 1;
+    width: 98%;
+    height: 98%;
+    min-height: 532px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-areas: 
+    "create edit"
+    "create search";
+}
+
+.mainWrapper::-webkit-scrollbar {
+    display: none;
+}
+
+@media (max-width: 1100px) or (max-height: 800px) {
+    .mainWrapper {
+        height: 1100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+}
