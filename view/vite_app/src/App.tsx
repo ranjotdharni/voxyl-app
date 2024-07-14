@@ -15,7 +15,7 @@ function App() {
         <Routes>
           <Route index element={<><FloatingBackground /><p style={{color: 'white', position: 'relative', zIndex: 1}}>This is the Landing Page and does not require login!</p></>} />
 
-          <Route path="teams" element={<Layout><Teams /></Layout>}></Route>
+          <Route path="crews" element={<Layout><Teams /></Layout>}></Route>
 
           <Route path="entry/:next?">
             <Route index element={<Create />} />

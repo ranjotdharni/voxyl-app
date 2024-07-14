@@ -22,14 +22,9 @@ class LoginApiView(APIView):
         username = data['user']
         passkey = data['pass']
 
-        print('here')
         if username and passkey:
-            try:
-                user = authenticate(request, username=username, password=passkey)
-            except Exception as e:
-                print(e)
+            user = authenticate(request, username=username, password=passkey)
 
-        print('then here')
         if user is not None:
             login(request, user)
             return Response({"success": "true"}, status=status.HTTP_200_OK)
@@ -45,43 +40,31 @@ class LoginApiView(APIView):
         email = data['email']
         passkey = data['pass']
 
-        print('first here')
         if (passkey != data['confirm']):
             return Response({"error": "Passwords must match."}, status=status.HTTP_400_BAD_REQUEST)
 
-        print('next here')
         try:
             user = User.objects.create_user(username=user, password=passkey, email=email)
-        except Exception as e:
-            print(e)
+        except IntegrityError:
             return Response({"error": "Username or Email already exists."}, status=status.HTTP_400_BAD_REQUEST)
         
         if user is not None:
-            try:
-                login(request, user)
-            except Exception as e:
-                print(e)
-                return
+            login(request, user)
         else: 
             return Response({"error": "Fatal Error. Please Try Again."}, status=status.HTTP_400_BAD_REQUEST)
 
-        print('after that here')
         user.first_name = first_name
         user.last_name = last_name
 
         user.save()
 
-        print('gets here')
         user = authenticate(request, username=user, password=passkey)
 
         default_team = Team(name='Your Team', description='This is your default team.', owner=user.username)
         default_team.save()
-        print('finally here')
 
         team_member = Member(user=user, team=default_team, permissions=PERMISSIONS["CREW_CHIEF"]["level"])
         team_member.save()
-
-        print('lastly here')
         
         return Response({"success": "true"}, status=status.HTTP_200_OK)
         
