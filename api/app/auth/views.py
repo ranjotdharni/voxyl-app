@@ -24,7 +24,10 @@ class LoginApiView(APIView):
 
         print('here')
         if username and passkey:
-            user = authenticate(request, username=username, password=passkey)
+            try:
+                user = authenticate(request, username=username, password=passkey)
+            except Exception as e:
+                print(e)
 
         print('then here')
         if user is not None:
@@ -49,11 +52,16 @@ class LoginApiView(APIView):
         print('next here')
         try:
             user = User.objects.create_user(username=user, password=passkey, email=email)
-        except IntegrityError:
+        except Exception as e:
+            print(e)
             return Response({"error": "Username or Email already exists."}, status=status.HTTP_400_BAD_REQUEST)
         
         if user is not None:
-            login(request, user)
+            try:
+                login(request, user)
+            except Exception as e:
+                print(e)
+                return
         else: 
             return Response({"error": "Fatal Error. Please Try Again."}, status=status.HTTP_400_BAD_REQUEST)
 
