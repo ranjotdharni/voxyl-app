@@ -1,0 +1,39 @@
+.container {
+    width: 100%;
+    height: 100%;
+}
+
+.itemContainer {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.bubble {
+    border-radius: 1000px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.bubble:hover {
+    cursor: pointer;
+}
+
+.bubble div {
+    width: 75%;
+    aspect-ratio: 1 / 1;
+    border-radius: 1000px;
+}
+
+.itemText {
+    margin-left: 2.5%;
+}
+
+.itemText:hover {
+    cursor: pointer;
+}

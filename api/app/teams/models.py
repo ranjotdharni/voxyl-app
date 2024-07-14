@@ -3,9 +3,9 @@ from django.db import models
 from django.contrib.auth.models import User
 
 PERMISSIONS = {
-    "UNASSIGNED": {
+    "MEMBER": {
         "level": 0,
-        "alias": "Unassigned"
+        "alias": "Member"
     },
     "MECHANIC": {
         "level": 1,

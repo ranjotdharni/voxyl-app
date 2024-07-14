@@ -4,32 +4,57 @@ export const bakedOrigin: string = window.location.origin
 export const SUCCESS_PATH: string = '/'
 
 // Each item's index is its numeric permission level
-export const PERMISSIONS: { tag: string, alias: string }[] = [
+export const PERMISSIONS: { tag: string, alias: string, details: string, glowBase: string, color: string }[] = [
     {
-        "tag": "UNASSIGNED",
-        "alias": "Unassigned"
+        "tag": "MEMBER",
+        "alias": "Member",
+        "details": "This is the default role and has the lowest permission level. It has no special permissions.",
+        "glowBase": '#878787',
+        "color": "#878787"
     },
     {
         "tag": "MECHANIC",
-        "alias": "Mechanic"
+        "alias": "Mechanic",
+        "details": "Mechanics can view the performance metrics of other crew members.",
+        "glowBase": '#bde2f2',
+        "color": "#0b5b7d"
     },
     {
         "tag": "ENGINEER",
-        "alias": "Engineer"
+        "alias": "Engineer",
+        "details": "Engineers can create new projects and manage members on their respective projects. This role has all permissions of lower roles.",
+        "glowBase": '#b1f2db',
+        "color": "#129466"
     },
     {
         "tag": "DRIVER",
-        "alias": "Driver"
+        "alias": "Driver",
+        "details": "Drivers can add, remove, and invite members to the crew. This role has all permissions of lower roles.",
+        "glowBase": '#ceb1f2',
+        "color": "#5611ab"
     },
     {
         "tag": "CAR_CHIEF",
-        "alias": "Car Chief"
+        "alias": "Car Chief",
+        "details": "Car chiefs have nearly every permission as the owner of the crew (including role assignment), save only disbanding the crew and transferring ownership (exclusive to Crew Chief). A Crew Chief's Crews dashboard will present the crew that they're Crew Chief of for them to freely edit. This role has all permissions of lower roles.",
+        "glowBase": '#f5cee6',
+        "color": "#ad1573"
     },
     {
         "tag": "CREW_CHIEF",
-        "alias": "Crew Chief"
+        "alias": "Crew Chief",
+        "details": "The owner of the crew; there may only be one Crew Chief. Crew Chief can disband the crew or transfer ownership of the crew by assigning another member as Crew Chief. This role holds the highest permission level. This role has all permissions of lower roles.",
+        "glowBase": '#f7d4c3',
+        "color": "#bf4c17"
     }
 ]
+
+export function generateGlow(base: string, color: string): string {
+    return `0px 0px 12px ${base},
+           0px 0px 2px ${color}, 0px 0px 3px ${color}, 0px 0px 4px ${color},
+           0px 0px 10px ${color}, 0px 0px 20px ${color}, 0px 0px 40px ${color},
+           0px 0px 50px ${color}, 0px 0px 70px ${color}, 0px 0px 100px ${color}`
+}
 
 export function clamp(min: number, ideal: number, max: number)
 {

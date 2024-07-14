@@ -84,6 +84,13 @@ class TeamsView(APIView):
         if not request.user.is_authenticated:
             return Response({"error": "Fatal Error."}, status=status.HTTP_400_BAD_REQUEST)
         
+        try:
+            requester = Member.objects.get(team=team, user=request.user)
+            if (requester.permissions < PERMISSIONS['DRIVER']['level']):
+                return Response({"error": "Access Level Denied"}, status=status.HTTP_403_FORBIDDEN) 
+        except Member.DoesNotExist:
+            return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+        
         message = 'Crew Members Added'
         rawAddData = data['addData']
         addData = json.loads(rawAddData)
@@ -105,8 +112,6 @@ class TeamsView(APIView):
             except Exception as e:
                 message = 'Some Users not found'
 
-            
-
         return Response({"success": "true", "message": message}, status=status.HTTP_200_OK)
     
     def delete(self, request):
@@ -119,11 +124,18 @@ class TeamsView(APIView):
         
         dropFrom = Team.objects.get(id=team)
         drop = User.objects.get(username=member)
+        dropping = Member.objects.get(user=drop, team=dropFrom)
+        
+        try:
+            requester = Member.objects.get(team=team, user=request.user)
+            if (requester.permissions <= dropping.permissions) or (requester.permissions < PERMISSIONS['DRIVER']['level']):
+                return Response({"error": "Access Level Denied"}, status=status.HTTP_403_FORBIDDEN) 
+        except Member.DoesNotExist:
+            return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
 
         if dropFrom.owner == drop.username:
             return Response({"error": "Crew Chief cannot be dropped, transfer ownership first or disband"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-        dropping = Member.objects.filter(user=drop, team=dropFrom)
         dropping.delete()
         return Response({"success": "true"}, status=status.HTTP_200_OK)
 
@@ -246,14 +258,45 @@ class RoleView(APIView):
         user = User.objects.get(username=username)
 
         try:
-            
             requester = Member.objects.get(team=team, user=request.user)
-            if (requester.permissions < PERMISSIONS['CAR_CHIEF']['level']):
-                return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+            if (requester.permissions < PERMISSIONS['CAR_CHIEF']['level']) and (request.user.username != username):
+                return Response({"error": "Access Level Denied"}, status=status.HTTP_403_FORBIDDEN)
         except Member.DoesNotExist:
             return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
 
         member = Member.objects.get(team=team, user=user)
 
         return Response({"success": "true", "level": member.permissions}, status=status.HTTP_200_OK)
+    
+    def put(self, request):
+        data = request.data
+
+        if not request.user.is_authenticated:
+            return Response({"error": "Unauthenticated"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        team_id = data['id']
+        username = data['user']
+        level = data['level']
+        team = Team.objects.get(id=team_id)
+        user = User.objects.get(username=username)
+        member = Member.objects.get(team=team, user=user)
+        
+        try:
+            requester = Member.objects.get(team=team, user=request.user)
+            if (requester.permissions < PERMISSIONS['CAR_CHIEF']['level']):
+                return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+            
+            if (level == PERMISSIONS['CREW_CHIEF']['level']) and (requester.permissions != PERMISSIONS['CREW_CHIEF']['level']):
+                return Response({"error": "Only Crew Chief may transfer ownership of the crew"}, status=status.HTTP_403_FORBIDDEN)
+        except Member.DoesNotExist:
+            return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+        
+        if (level == PERMISSIONS['CREW_CHIEF']['level']):
+            requester.permissions = level - 1
+            requester.save()
+        
+        member.permissions = level
+        member.save()
+
+        return Response({"success": "true"}, status=status.HTTP_200_OK)
 

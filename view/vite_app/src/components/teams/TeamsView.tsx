@@ -4,9 +4,10 @@ import { Context } from '../context/ThemeContext'
 import CSS from 'csstype'
 import CustomDroplist, { PayloadItem } from '../CustomDroplist'
 import { FiUser } from "react-icons/fi"
-import { fetchToApi, PERMISSIONS } from '../../globals'
+import { fetchToApi, generateGlow, PERMISSIONS } from '../../globals'
 import useError from '../../hooks/useError'
 import { Confirm } from '../misc/ConfirmModal'
+import RadioList from '../misc/RadioList'
 
 export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: boolean, triggerFetch: () => void, setModal: (slug: Confirm) => void}) {
     const [error, throwError] = useError('')
@@ -15,6 +16,7 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
     const [selectedTeam, setSelectedTeam] = useState<number>(0)
     const [selectedMember, setSelectedMember] = useState<number[]>([0])
     const [subjectPermissionLevel, setSubjectPermissionLevel] = useState<number>(0)
+    const [selectedPermissionLevel, setSelectedPermissionLevel] = useState<number>(0)
 
     const theme = useContext(Context)
 
@@ -39,7 +41,8 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
             borderColor: theme.primary.tertiary
         },
         "roleSelectedMember": {
-            color: theme.primary.highlight
+            color: PERMISSIONS[subjectPermissionLevel].glowBase,
+            textShadow: (subjectPermissionLevel !== 0 ? generateGlow(PERMISSIONS[subjectPermissionLevel].glowBase, PERMISSIONS[subjectPermissionLevel].color) : '')
         }, 
         "pic": {
             borderColor: theme.primary.header
@@ -56,6 +59,23 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
         "statsButton": {
             borderColor: theme.primary.highlight,
             color: theme.primary.subheader
+        },
+        "roleInputContainerTitle": {
+            color: theme.primary.header
+        },
+        "roleDescriptionContainerTitle": {
+            color: theme.primary.subtext
+        },
+        "roleDescriptionContainerDiv": {
+            borderColor: theme.primary.subtext
+        },
+        "cancelButton": {
+            color: theme.primary.subheader,
+            backgroundColor: theme.primary.tertiary,
+        },
+        "saveButton": {
+            backgroundColor: (selectedPermissionLevel !== subjectPermissionLevel ? theme.primary.header : theme.primary.quaternary),
+            color: (selectedPermissionLevel !== subjectPermissionLevel ? theme.primary.highlight : theme.primary.subheader)
         },
         "error": {
             color: theme.error
@@ -162,12 +182,57 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
 
         await fetchToApi('/v1/teams/role/', 'POST', meta).then(response => {
             if (response.success) {
+                setSelectedPermissionLevel(response.level)
                 setSubjectPermissionLevel(response.level)
                 return
             }
 
             throwError(response.error)
         })
+    }
+
+    async function setRole() {
+        const meta: Array<[string, string | Blob]> = [
+            ['id', teams[selectedTeam].id as string],
+            ['user', members[selectedTeam][selectedMember[selectedTeam]].username],
+            ['level', selectedPermissionLevel]
+        ]
+
+        await fetchToApi('/v1/teams/role/', 'PUT', meta).then(response => {
+            if (response.success) {
+                setSubjectPermissionLevel(selectedPermissionLevel)
+                return
+            }
+
+            throwError(response.error)
+        })
+    }
+
+    function restoreRole() {
+        setSelectedPermissionLevel(subjectPermissionLevel)
+    }
+
+    function updateRole() {
+        if (selectedPermissionLevel === subjectPermissionLevel)
+            return
+
+        if (subjectPermissionLevel === PERMISSIONS.length - 1) {
+            throwError('Crew Chief may not demote themself, transfer ownership by assigning new Crew Chief')
+            return
+        }
+
+        if (selectedPermissionLevel === PERMISSIONS.length - 1) {
+            setModal({
+                title: 'Are You Sure?',
+                message: `This will transfer ownership of the crew to ${members[selectedTeam][selectedMember[selectedTeam]].name}. THIS ACTION CANNOT BE UNDONE except by the existing Crew Chief!`,
+                question: 'Do you still want to continue?',
+                callback: setRole
+            })
+
+            return
+        }
+
+        setRole()
     }
 
     useEffect(() => {
@@ -234,7 +299,32 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
                         </div>
                     </div>
                     <div className={styles.roleBody}>
-                        
+                        <div className={styles.roleWrapper}>
+                            <div className={styles.roleInputContainer}>
+                                <h3 style={inlineStyles.roleInputContainerTitle}>Assign Roles</h3>
+                                <div className={styles.roleInputList}>
+                                    <RadioList 
+                                        selected={selectedPermissionLevel} 
+                                        items={PERMISSIONS.map(item => { return item.alias })}
+                                        colors={PERMISSIONS.map(item => { return item.color })}
+                                        itemHeight={10}
+                                        bubbleDiameter='10px'
+                                        bubbleColor={theme.primary.highlight}
+                                        backgroundColor={theme.primary.tertiary} 
+                                        callback={setSelectedPermissionLevel} />
+                                </div>
+                            </div>
+                            <div className={styles.roleDescriptionContainer}>
+                                <h4 style={inlineStyles.roleDescriptionContainerTitle}>Description</h4>
+                                <div style={inlineStyles.roleDescriptionContainerDiv}>
+                                    <p>{PERMISSIONS[selectedPermissionLevel].details}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={styles.roleButtonContainer}>
+                            <button style={inlineStyles.cancelButton} onClick={restoreRole}>Cancel</button>
+                            <button style={inlineStyles.saveButton} onClick={updateRole}>Save</button>
+                        </div>
                     </div>
                 </div>
                 <div className={styles.errorWrapper}>
