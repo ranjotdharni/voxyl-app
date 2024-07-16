@@ -1,5 +1,6 @@
-import { useState } from "react"
-import { fetchToApi, generateGlow, PERMISSIONS } from "./globals"
+import { generateGlow, PERMISSIONS } from "./globals"
+
+export const DEFAULT_THEME: number = 0
 
 // Keep items in alphabetical order
 export interface Theme {
@@ -31,26 +32,6 @@ export interface Theme {
         tertiary: string,
         quaternary: string
     }
-}
-
-export function useTheme() {
-    const [t, st] = useState<number>(0)
-
-    async function getTheme() {
-        await fetchToApi('/v1/teams/theme/', 'GET', []).then(response => {
-            if (response.error) {
-                console.log(response.error)
-            }
-            else if (response.theme) {
-                st(response.theme)
-            }
-            else {
-                setTimeout(getTheme, 30000)
-            }
-        })
-    }
-
-    return [t, getTheme] as [number, () => void]
 }
 
 const COMMON_BACKGROUND_GRADIENT: string = 'linear-gradient(45deg, hsla(0, 3%, 6%, 1) 0%, hsla(228, 31%, 6%, 1) 100%), linear-gradient(225deg, hsla(0, 3%, 6%, 1) 0%, hsla(228, 31%, 6%, 1) 100%)'
@@ -109,13 +90,13 @@ export const themes: Theme[] = [
         pageGradient: COMMON_BACKGROUND_GRADIENT,
         boxGradient: COMMON_BOX_GRADIENT,
         primary: {
-            header: '#0e544a',
-            subheader: '#ffffff',
-            text: '',
-            subtext: '#0c3629',
-            highlight: '#8fc7bf',
-            tertiary: '#e0e0e01a',
-            quaternary: '#b0b0b0'
+            header: '#dece23',
+            subheader: '#ccc683',
+            text: '#d1cfbe',
+            subtext: '#1f1c01',
+            highlight: '#faf889',
+            tertiary: '#545453',
+            quaternary: '#2b2b2b'
         }
     },
     {
@@ -139,13 +120,13 @@ export const themes: Theme[] = [
         pageGradient: COMMON_BACKGROUND_GRADIENT,
         boxGradient: COMMON_BOX_GRADIENT,
         primary: {
-            header: '#0e544a',
-            subheader: '#ffffff',
-            text: '',
-            subtext: '#0c3629',
-            highlight: '#8fc7bf',
-            tertiary: '#e0e0e01a',
-            quaternary: '#b0b0b0'
+            header: '#07628f',
+            subheader: '#cee5f5',
+            text: '#256a8a',
+            subtext: '#0f2b3d',
+            highlight: '#12b0db',
+            tertiary: '#545453',
+            quaternary: '#2b2b2b'
         }
     },
     {
@@ -174,8 +155,8 @@ export const themes: Theme[] = [
             text: '',
             subtext: '#0c3629',
             highlight: '#8fc7bf',
-            tertiary: '#e0e0e01a',
-            quaternary: '#b0b0b0'
+            tertiary: '#545453',
+            quaternary: '#2b2b2b'
         }
     },
     {
@@ -199,13 +180,13 @@ export const themes: Theme[] = [
         pageGradient: COMMON_BACKGROUND_GRADIENT,
         boxGradient: COMMON_BOX_GRADIENT,
         primary: {
-            header: '#0e544a',
-            subheader: '#ffffff',
-            text: '',
-            subtext: '#0c3629',
-            highlight: '#8fc7bf',
-            tertiary: '#e0e0e01a',
-            quaternary: '#b0b0b0'
+            header: '#41118f',
+            subheader: '#dac7f0',
+            text: '#6b11ad',
+            subtext: '#330454',
+            highlight: '#af39e6',
+            tertiary: '#545453',
+            quaternary: '#2b2b2b'
         }
     },
     {
@@ -229,13 +210,13 @@ export const themes: Theme[] = [
         pageGradient: COMMON_BACKGROUND_GRADIENT,
         boxGradient: COMMON_BOX_GRADIENT,
         primary: {
-            header: '#0e544a',
-            subheader: '#ffffff',
-            text: '',
-            subtext: '#0c3629',
-            highlight: '#8fc7bf',
-            tertiary: '#e0e0e01a',
-            quaternary: '#b0b0b0'
+            header: '#cc1464',
+            subheader: '#f0c2d6',
+            text: '#8f153a',
+            subtext: '#450320',
+            highlight: '#f08db9',
+            tertiary: '#545453',
+            quaternary: '#2b2b2b'
         }
     },
     {
@@ -259,13 +240,13 @@ export const themes: Theme[] = [
         pageGradient: COMMON_BACKGROUND_GRADIENT,
         boxGradient: COMMON_BOX_GRADIENT,
         primary: {
-            header: '#0e544a',
-            subheader: '#ffffff',
-            text: '',
-            subtext: '#0c3629',
-            highlight: '#8fc7bf',
-            tertiary: '#e0e0e01a',
-            quaternary: '#b0b0b0'
+            header: '#bf3613',
+            subheader: '#f5ccc1',
+            text: '#9c3628',
+            subtext: '#420b04',
+            highlight: '#f29363',
+            tertiary: '#545453',
+            quaternary: '#2b2b2b'
         }
     }
 ]

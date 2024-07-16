@@ -7,11 +7,11 @@ import CustomInput from '../CustomInput'
 import { useState, MouseEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { themes, useTheme } from '../../theme'
+import { DEFAULT_THEME, themes } from '../../theme'
 
 export default function CreateForm() {
     // @ts-ignore Ignore unused setTheme
-    const [selectedTheme, grabTheme] = useTheme()
+    const selectedTheme: number = DEFAULT_THEME
     const navigation = useNavigate()
     const { next } = useParams()
 

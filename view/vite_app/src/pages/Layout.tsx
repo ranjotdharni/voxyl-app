@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import FloatingBackground from '../components/FloatingBackground';
 import { bakedOrigin, fetchToApi } from '../globals';
 import { useNavigate } from 'react-router-dom';
-
-export const DEFAULT_THEME: number = 0
+import { DEFAULT_THEME } from '../theme';
 
 export const Context = React.createContext<[number, () => void | Promise<void>]>([
     DEFAULT_THEME,
