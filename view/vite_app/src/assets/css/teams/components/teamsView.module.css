@@ -27,8 +27,17 @@
     height: 30%;
 }
 
+.titleWrapper {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
 .title {
     font-size: 1.5em;
+    z-index: 1;
 }
 
 .deleteWrapper {

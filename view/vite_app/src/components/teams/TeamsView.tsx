@@ -1,13 +1,15 @@
-import { MouseEvent, useContext, useEffect, useState } from 'react'
+import { MouseEvent, useEffect, useState, useContext } from 'react'
+import { Context } from '../../pages/Layout'
 import styles from '../../assets/css/teams/components/teamsView.module.css'
-import { Context } from '../context/ThemeContext'
 import CSS from 'csstype'
 import CustomDroplist, { PayloadItem } from '../CustomDroplist'
 import { FiUser } from "react-icons/fi"
-import { fetchToApi, generateGlow, PERMISSIONS } from '../../globals'
+import { fetchToApi, generateArray, generateGlow, inclusiveRandomInteger, PERMISSIONS } from '../../globals'
 import useError from '../../hooks/useError'
 import { Confirm } from '../misc/ConfirmModal'
 import RadioList from '../misc/RadioList'
+import FloatingParticle from '../misc/FloatingParticle'
+import { themes } from '../../theme'
 
 export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: boolean, triggerFetch: () => void, setModal: (slug: Confirm) => void}) {
     const [error, throwError] = useError('')
@@ -17,68 +19,68 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
     const [selectedMember, setSelectedMember] = useState<number[]>([0])
     const [subjectPermissionLevel, setSubjectPermissionLevel] = useState<number>(0)
     const [selectedPermissionLevel, setSelectedPermissionLevel] = useState<number>(0)
-
-    const theme = useContext(Context)
+    // @ts-ignore Ignore unused setTheme
+    const [ selectedTheme, grabTheme ] = useContext(Context)
 
     const inlineStyles: {[key: string]: CSS.Properties} = {
         "mainContainer": {
-            backgroundColor: theme.background
+            backgroundColor: themes[selectedTheme].background
         },
         "title": {
-            color: theme.glowBase,
-            textShadow: theme.glowLight
+            color: themes[selectedTheme].glowBase,
+            textShadow: themes[selectedTheme].glowLight
         },
         "memberTitleContainer": {
-            borderBottomColor: theme.primary.tertiary
+            borderBottomColor: themes[selectedTheme].primary.tertiary
         },
         "memberTitle": {
-            color: theme.primary.highlight
+            color: themes[selectedTheme].primary.highlight
         },
         "roleSelectedLabel": {
-            color: theme.primary.quaternary
+            color: themes[selectedTheme].primary.quaternary
         },
         "roleSelectedContainer": {
-            borderColor: theme.primary.tertiary
+            borderColor: themes[selectedTheme].primary.tertiary
         },
         "roleSelectedMember": {
-            color: PERMISSIONS[subjectPermissionLevel].glowBase,
-            textShadow: (subjectPermissionLevel !== 0 ? generateGlow(PERMISSIONS[subjectPermissionLevel].glowBase, PERMISSIONS[subjectPermissionLevel].color) : '')
+            color: themes[selectedTheme].glowBase,
+            textShadow: (subjectPermissionLevel !== 0 ? generateGlow(themes[selectedTheme].glowBase, themes[selectedTheme].glowColor) : '')
         }, 
         "pic": {
-            borderColor: theme.primary.header
+            borderColor: themes[selectedTheme].primary.header
         },
         "icon": {
-            color: theme.primary.highlight
+            color: themes[selectedTheme].primary.highlight
         },
         "bioTitle": {
-            color: theme.primary.header
+            color: themes[selectedTheme].primary.header
         },
         "bioItem": {
-            color: theme.primary.highlight
+            color: themes[selectedTheme].primary.highlight
         },
         "statsButton": {
-            borderColor: theme.primary.highlight,
-            color: theme.primary.subheader
+            borderColor: themes[selectedTheme].primary.highlight,
+            color: themes[selectedTheme].primary.subheader
         },
         "roleInputContainerTitle": {
-            color: theme.primary.header
+            color: themes[selectedTheme].primary.header
         },
         "roleDescriptionContainerTitle": {
-            color: theme.primary.subtext
+            color: themes[selectedTheme].primary.subtext
         },
         "roleDescriptionContainerDiv": {
-            borderColor: theme.primary.subtext
+            borderColor: themes[selectedTheme].primary.subtext
         },
         "cancelButton": {
-            color: theme.primary.subheader,
-            backgroundColor: theme.primary.tertiary,
+            color: themes[selectedTheme].primary.subheader,
+            backgroundColor: themes[selectedTheme].primary.tertiary,
         },
         "saveButton": {
-            backgroundColor: (selectedPermissionLevel !== subjectPermissionLevel ? theme.primary.header : theme.primary.quaternary),
-            color: (selectedPermissionLevel !== subjectPermissionLevel ? theme.primary.highlight : theme.primary.subheader)
+            backgroundColor: (selectedPermissionLevel !== subjectPermissionLevel ? themes[selectedTheme].primary.header : themes[selectedTheme].primary.quaternary),
+            color: (selectedPermissionLevel !== subjectPermissionLevel ? themes[selectedTheme].primary.highlight : themes[selectedTheme].primary.subheader)
         },
         "error": {
-            color: theme.error
+            color: themes[selectedTheme].error
         }
     }
 
@@ -86,33 +88,6 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
         const newSelection = [...selectedMember]
         newSelection[selectedTeam] = selection
         setSelectedMember(newSelection)
-    }
-
-    async function grabData() {
-        await fetchToApi("/v1/teams/view/", "GET", []).then((response) => {
-            if (response.error !== undefined) {
-                throwError(response.error)
-                return
-            }
-    
-            const newMembers = response.members
-            for (var i = 0; i < newMembers.length; i++) {
-                for (var j = 0; j < newMembers[i].length; j++) {
-                    newMembers[i][j]['name'] = `${newMembers[i][j]['last']}, ${newMembers[i][j]['first']}`
-                }
-            }
-
-            setSelectedTeam(0)
-            updateSelectedMember(0)
-            setTeams(response.crew)
-            setMembers(newMembers)
-    
-            const selectographer = []
-            for (var i = 0; i < teams.length; i++) {
-                selectographer.push(0)
-            }
-            setSelectedMember(selectographer)
-        })
     }
 
     async function disbandCrew() {
@@ -235,6 +210,33 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
         setRole()
     }
 
+    async function grabData() {
+        await fetchToApi("/v1/teams/view/", "GET", []).then((response) => {
+            if (response.error !== undefined) {
+                throwError(response.error)
+                return
+            }
+    
+            const newMembers = response.members
+            for (var i = 0; i < newMembers.length; i++) {
+                for (var j = 0; j < newMembers[i].length; j++) {
+                    newMembers[i][j]['name'] = `${newMembers[i][j]['last']}, ${newMembers[i][j]['first']}`
+                }
+            }
+
+            setSelectedTeam(0)
+            updateSelectedMember(0)
+            setTeams(response.crew)
+            setMembers(newMembers)
+    
+            const selectographer = []
+            for (var i = 0; i < teams.length; i++) {
+                selectographer.push(0)
+            }
+            setSelectedMember(selectographer)
+        })
+    }
+
     useEffect(() => {
         grabData()
     }, [])
@@ -251,8 +253,10 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
         <div className={styles.gridItemWrapper}>
             <div className={styles.mainContainer} style={inlineStyles.mainContainer}>
                 <div className={styles.titleContainer}>
-                    <div className={styles.droplistWrapper}><CustomDroplist selected={selectedTeam} payload={teams} callback={setSelectedTeam} color={theme.primary.highlight} highlight={theme.primary.header} relativeContainerWidth={20} relativeContainerUnits='em'/></div>
-                    <p className={styles.title} style={inlineStyles.title}>View Your Crews</p>
+                    <div className={styles.droplistWrapper}><CustomDroplist selected={selectedTeam} payload={teams} callback={setSelectedTeam} color={themes[selectedTheme].primary.highlight} highlight={themes[selectedTheme].primary.header} relativeContainerWidth={20} relativeContainerUnits='em'/></div>
+                    <div className={styles.titleWrapper}>
+                        <p className={styles.title} style={inlineStyles.title}>View Your Crews</p>
+                    </div>
                 </div>
                 <div className={styles.deleteWrapper}><button className={styles.delete} onClick={handleDisband}>Disband</button></div>
                 <div className={styles.memberContainer}>
@@ -294,6 +298,13 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
                         <div className={styles.roleSelectedWrapper}>
                             <label className={styles.roleSelectedLabel} style={inlineStyles.roleSelectedLabel}>Role</label>
                             <div className={styles.roleSelectedContainer} style={inlineStyles.roleSelectedContainer}>
+                                {
+                                    generateArray(7).map(() => {
+                                        return (
+                                            <FloatingParticle particleWidth={inclusiveRandomInteger(1, 3)} width={inclusiveRandomInteger(25, 50)} duration={inclusiveRandomInteger(4, 12)} glowBase={themes[selectedTheme].glowBase} glowColor={themes[selectedTheme].glowColor} left={inclusiveRandomInteger(-15, 15)} />
+                                        )
+                                    })
+                                }
                                 <p className={styles.roleSelectedMember} style={inlineStyles.roleSelectedMember}>{members.length !== 0 && members[selectedTeam].length !== 0 && members[selectedTeam][selectedMember[selectedTeam]] !== undefined ? PERMISSIONS[subjectPermissionLevel].alias : '--------'}</p>
                             </div>
                         </div>
@@ -309,8 +320,8 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
                                         colors={PERMISSIONS.map(item => { return item.color })}
                                         itemHeight={10}
                                         bubbleDiameter='10px'
-                                        bubbleColor={theme.primary.highlight}
-                                        backgroundColor={theme.primary.tertiary} 
+                                        bubbleColor={themes[selectedTheme].primary.highlight}
+                                        backgroundColor={themes[selectedTheme].primary.tertiary} 
                                         callback={setSelectedPermissionLevel} />
                                 </div>
                             </div>

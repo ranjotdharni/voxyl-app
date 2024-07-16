@@ -9,8 +9,8 @@ export const PERMISSIONS: { tag: string, alias: string, details: string, glowBas
         "tag": "MEMBER",
         "alias": "Member",
         "details": "This is the default role and has the lowest permission level. It has no special permissions.",
-        "glowBase": '#878787',
-        "color": "#878787"
+        "glowBase": '#e2e8c1',
+        "color": "#a8c40e"
     },
     {
         "tag": "MECHANIC",
@@ -50,10 +50,7 @@ export const PERMISSIONS: { tag: string, alias: string, details: string, glowBas
 ]
 
 export function generateGlow(base: string, color: string): string {
-    return `0px 0px 12px ${base},
-           0px 0px 2px ${color}, 0px 0px 3px ${color}, 0px 0px 4px ${color},
-           0px 0px 10px ${color}, 0px 0px 20px ${color}, 0px 0px 40px ${color},
-           0px 0px 50px ${color}, 0px 0px 70px ${color}, 0px 0px 100px ${color}`
+    return `0px 0px 12px ${base}, 0px 0px 2px ${color}, 0px 0px 3px ${color}, 0px 0px 4px ${color}, 0px 0px 10px ${color}, 0px 0px 20px ${color}, 0px 0px 40px ${color}, 0px 0px 50px ${color}, 0px 0px 70px ${color}, 0px 0px 100px ${color}`
 }
 
 export function clamp(min: number, ideal: number, max: number)
@@ -162,25 +159,6 @@ export async function fetchToApi(localPath: string, method: 'GET' | 'POST' | 'PU
     return response
 }
 
-export function Authenticate() {
-    const redirect = useNavigate()
-    
-    async function grabAuth() {
-        let result = await fetch(bakedOrigin + '/v1/auth/access/')
-        
-        if (result.redirected && result.url.startsWith(bakedOrigin + '/entry'))
-        {
-            redirect('/entry/login/next=' + encodeURIComponent(window.location.pathname))
-        }
-    }
-    
-    grabAuth()
-
-    return (
-        <></>
-    )
-}
-
 export function validateResponse(arg1: Response) {
     const redirect = useNavigate()
 
@@ -188,4 +166,18 @@ export function validateResponse(arg1: Response) {
     {
         redirect('/entry/login/next=' + encodeURIComponent(window.location.pathname))
     }
+}
+
+export function generateArray(length: number): number[] {
+    const arr = []
+
+    for (let i = 0; i < length; i++) {
+        arr.push(0)
+    }
+
+    return arr
+}
+
+export function inclusiveRandomInteger(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }

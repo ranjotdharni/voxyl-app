@@ -1,30 +1,32 @@
 /** @jsxImportSource @emotion/react */
 
-import { useContext } from 'react';
 import styles from '../assets/css/create/customInput.module.css'
-import { Context } from './context/ThemeContext';
 import { css } from '@emotion/react'
+import { themes } from '../theme';
+import { useContext } from 'react';
+import { Context } from '../pages/Layout';
 
 // Set 'label' to empty string to disable placeholder animations/resizing and make the component more compact (less sizing issues)
 export default function CustomInput({ label, type, name, init, color, highlight, callback } : { label: string, type: string, name: string, init: string, color?: string, highlight?: string, callback?: (value: string) => void }) {
-    const theme = useContext(Context)
+    // @ts-ignore Ignore unused setTheme
+    const [ selectedTheme, grabTheme ] = useContext(Context)
 
     const SpanStyles = css`
-        color: ${color ? color : theme.primary.subtext} !important;
+        color: ${color ? color : themes[selectedTheme].primary.subtext} !important;
     `
     
     const TextStyles = css`
-        border-color: ${color ? color : theme.primary.subtext} !important;
+        border-color: ${color ? color : themes[selectedTheme].primary.subtext} !important;
 
         &:focus {
-            color: ${highlight ? highlight : theme.primary.highlight} !important;
-            border-color: ${highlight ? highlight : theme.primary.highlight} !important;
+            color: ${highlight ? highlight : themes[selectedTheme].primary.highlight} !important;
+            border-color: ${highlight ? highlight : themes[selectedTheme].primary.highlight} !important;
         }
     `
 
     const activeStyles = css`
         &:focus-within > span {
-            color: ${highlight ? highlight : theme.primary.highlight} !important;
+            color: ${highlight ? highlight : themes[selectedTheme].primary.highlight} !important;
         }
     `
     
@@ -32,7 +34,6 @@ export default function CustomInput({ label, type, name, init, color, highlight,
         if (callback !== undefined)
             callback(str)
     }
-
 
     return (
         <label css={activeStyles} className={styles.wrapper}>
@@ -43,7 +44,7 @@ export default function CustomInput({ label, type, name, init, color, highlight,
                 </span> :
                 <></>
             }
-            <input css={TextStyles} onChange={ (e) => { handleChange(e.target.value) } } value={init} placeholder=' ' type={type} name={name} className={styles.inInput} style={(init !== '' ? {color: theme.primary.highlight} : {})} />
+            <input css={TextStyles} onChange={ (e) => { handleChange(e.target.value) } } value={init} placeholder=' ' type={type} name={name} className={styles.inInput} style={(init !== '' ? {color: themes[selectedTheme].primary.highlight} : {})} />
         </label>
     )
 }

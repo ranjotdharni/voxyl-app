@@ -3,14 +3,15 @@
 import styles from '../../assets/css/login/loginForm.module.css'
 import CSRFToken from '../CSRFToken'
 import { SUCCESS_PATH, fetchToApi, stringAfterLastChar } from '../../globals'
-import { Context } from '../context/ThemeContext'
 import CustomInput from '../CustomInput'
-import { MouseEvent, useContext, useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { css } from '@emotion/react'
+import { themes, useTheme } from '../../theme'
 
 export default function LoginForm() {
-    const theme = useContext(Context)
+    // @ts-ignore Ignore unused setTheme
+    const [selectedTheme, grabTheme] = useTheme()
     const navigation = useNavigate()
     const { next } = useParams()
 
@@ -20,7 +21,7 @@ export default function LoginForm() {
 
     const beforeStyles = css`
         :before {
-            color: ${theme.primary.tertiary}
+            color: ${themes[selectedTheme].primary.tertiary}
         }
     `
 
@@ -70,19 +71,19 @@ export default function LoginForm() {
     }
 
     return (
-        <form className={styles.form} style={{backgroundColor: theme.background}} onSubmit={handleSubmit} action="/v1/auth/login" method="put">
+        <form className={styles.form} style={{backgroundColor: themes[selectedTheme].background}} onSubmit={handleSubmit} action="/v1/auth/login" method="put">
             <CSRFToken />
 
             <div className={styles.formHeaderWrapper}>
-                <p className={styles.formHeader} style={{color: theme.primary.header}}>Log in to PitCrew</p>
+                <p className={styles.formHeader} style={{color: themes[selectedTheme].primary.header}}>Log in to PitCrew</p>
             </div>
 
-            <label className={styles.headLabel} style={{color: theme.primary.subheader}}>Username</label>
+            <label className={styles.headLabel} style={{color: themes[selectedTheme].primary.subheader}}>Username</label>
             <div className={styles.wrapper}>
                 <CustomInput init={user} label='Enter a Username' type='text' name='user' callback={setUser} />
             </div>
 
-            <label className={styles.headLabel} style={{color: theme.primary.subheader}}>Password</label>
+            <label className={styles.headLabel} style={{color: themes[selectedTheme].primary.subheader}}>Password</label>
             <div className={styles.wrapper}>
                 <CustomInput init={pass} label='Enter Password' type='password' name='pass' callback={setPass} />
             </div>
@@ -90,8 +91,8 @@ export default function LoginForm() {
             <label className={styles.error}>{error}</label>
 
             <div css={beforeStyles} className={styles.buttonWrapper}>
-                <button onClick={handleSwitch} className={styles.switchButton} style={{color: theme.background, borderColor: theme.primary.header, backgroundColor: theme.primary.header}} type='button'>Sign Up</button>
-                <button className={styles.submitButton + (isFormFilled() ? ' ' + styles.submitReady : '')} style={(isFormFilled() ? {color: theme.background, borderColor: theme.primary.highlight, backgroundColor: theme.primary.highlight} : {color: theme.primary.subtext, borderColor: theme.primary.subtext, backgroundColor: theme.background})} type="submit">Log In</button>
+                <button onClick={handleSwitch} className={styles.switchButton} style={{color: themes[selectedTheme].background, borderColor: themes[selectedTheme].primary.header, backgroundColor: themes[selectedTheme].primary.header}} type='button'>Sign Up</button>
+                <button className={styles.submitButton + (isFormFilled() ? ' ' + styles.submitReady : '')} style={(isFormFilled() ? {color: themes[selectedTheme].background, borderColor: themes[selectedTheme].primary.highlight, backgroundColor: themes[selectedTheme].primary.highlight} : {color: themes[selectedTheme].primary.subtext, borderColor: themes[selectedTheme].primary.subtext, backgroundColor: themes[selectedTheme].background})} type="submit">Log In</button>
             </div>
         </form>
     )

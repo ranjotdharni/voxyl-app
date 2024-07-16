@@ -2,10 +2,11 @@
 
 import styles from '../assets/css/misc/customDroplist.module.css'
 import CSS from 'csstype'
-import { useContext } from 'react'
 import { IoChevronDownOutline } from 'react-icons/io5'
-import { Context } from './context/ThemeContext'
 import { css } from '@emotion/react'
+import { themes } from '../theme'
+import { useContext } from 'react'
+import { Context } from '../pages/Layout'
 
 interface PayLoadRequiredFields {
     id: string | number;
@@ -20,41 +21,42 @@ export interface PayloadItem extends PayLoadRequiredFields {
 // Example: You have a <CustomDroplist /> item in a wrapper that has width 40%, a good practice here is to pass in '40' for relative container width and '%' from units
 // Remember, this component always expects a wrapper that it will take the full width/height of, effectively this component is sized by the size of said wrapper
 export default function CustomDroplist( { selected, payload, relativeContainerWidth, relativeContainerUnits, color, highlight, callback } : { selected: number, payload: PayloadItem[], relativeContainerWidth: number, relativeContainerUnits: string, color?: string, highlight?: string, callback: (arg1: number) => void } ) {
-    const theme = useContext(Context)
+    // @ts-ignore Ignore unused setTheme
+    const [ selectedTheme, grabTheme ] = useContext(Context)
 
     const sub = [{id: 'vncjksadncl', name: '----'}]
     
     const inlineStyles: {[key: string]: CSS.Properties} = {
         "listbox": {
             width: `${relativeContainerWidth}${relativeContainerUnits}`,
-            backgroundColor: theme.background
+            backgroundColor: themes[selectedTheme].background
         },
         "selector": {
-            backgroundColor: theme.background,
-            color: (highlight ? highlight : theme.primary.highlight),
-            border: `solid 1px ${theme.primary.tertiary}`
+            backgroundColor: themes[selectedTheme].background,
+            color: (highlight ? highlight : themes[selectedTheme].primary.highlight),
+            border: `solid 1px ${themes[selectedTheme].primary.tertiary}`
         },
         "icon": {
-            color: (color ? color : theme.primary.header)
+            color: (color ? color : themes[selectedTheme].primary.header)
         }
     }
 
     const WrapperStyles = css`
         &:hover span {
-            color: ${(highlight ? highlight : theme.primary.highlight)} !important;
+            color: ${(highlight ? highlight : themes[selectedTheme].primary.highlight)} !important;
         }
         
         &:focus-within span {
-            color: ${(highlight ? highlight : theme.primary.highlight)} !important;
+            color: ${(highlight ? highlight : themes[selectedTheme].primary.highlight)} !important;
         }
     `
 
     const ItemStyles = css`
-        color: ${(color ? color : theme.primary.header)};
+        color: ${(color ? color : themes[selectedTheme].primary.header)};
 
         &:hover {
-            color: ${theme.background};
-            background-color: ${(highlight ? highlight : theme.primary.highlight)} !important;
+            color: ${themes[selectedTheme].background};
+            background-color: ${(highlight ? highlight : themes[selectedTheme].primary.highlight)} !important;
         }
     `
     

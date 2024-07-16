@@ -1,16 +1,22 @@
 import styles from '../../assets/css/teams/components/teamsCreate.module.css'
 import CustomInput from '../CustomInput'
-import { MouseEvent, useContext, useEffect, useState } from 'react'
+import { MouseEvent, useEffect, useState, useContext } from 'react'
 import CSS from 'csstype'
-import { Context, Theme } from '../context/ThemeContext'
 import { fetchToApi } from '../../globals'
 import useError from '../../hooks/useError'
+import { themes } from '../../theme'
+import { Context } from '../../pages/Layout'
 
 function NewName({ value, setValue } : { value: string, setValue: (arg1: string) => void }) {
-    const theme: Theme = useContext(Context)
+    // @ts-ignore Ignore unused setTheme
+    const [ selectedTheme, grabTheme ] = useContext(Context)
+
+    useEffect(() => {
+        grabTheme()
+    }, [])
 
     return (
-        <div className={styles.contentNameWrapper + ' ' + styles.contentTypeWrapper} style={{borderColor: theme.primary.tertiary}}>
+        <div className={styles.contentNameWrapper + ' ' + styles.contentTypeWrapper} style={{borderColor: themes[selectedTheme].primary.tertiary}}>
             <div className={styles.CreateNameLabelWrapper}><label className={styles.CreateNameLabel}>Enter Name:</label></div>
             <div className={styles.CreateNameInput}><CustomInput init={value} callback={setValue} label='' type='text' name='teamName' /></div>
         </div>
@@ -18,10 +24,15 @@ function NewName({ value, setValue } : { value: string, setValue: (arg1: string)
 }
 
 function NewDescription({ value, setValue } : { value: string, setValue: (arg1: string) => void }) {
-    const theme: Theme = useContext(Context)
+    // @ts-ignore Ignore unused setTheme
+    const [ selectedTheme, grabTheme ] = useContext(Context)
+
+    useEffect(() => {
+        grabTheme()
+    }, [])
 
     return (
-        <div className={styles.contentDescriptionWrapper + ' ' + styles.contentTypeWrapper} style={{borderColor: theme.primary.tertiary}}>
+        <div className={styles.contentDescriptionWrapper + ' ' + styles.contentTypeWrapper} style={{borderColor: themes[selectedTheme].primary.tertiary}}>
             <textarea value={value} onChange={(e) => {setValue(e.target.value)}} placeholder='Enter a Description' className={styles.CreateDescriptionInput}></textarea>
         </div>
     )
@@ -31,25 +42,25 @@ export default function TeamsCreate({ fetch, triggerFetch } : { fetch: boolean, 
     const [newName, setNewName] = useState<string>('')
     const [teamDesc, setTeamDesc] = useState<string>('')
     const [error, throwError] = useError('')
-
-    const theme: Theme = useContext(Context)
+    // @ts-ignore Ignore unused setTheme
+    const [ selectedTheme, grabTheme ] = useContext(Context)
     
     const inlineStyles: {[key: string]: CSS.Properties} = {
         "mainContainer": {
-            backgroundColor: theme.background
+            backgroundColor: themes[selectedTheme].background
         },
         "containerHeader": {
-            color: theme.glowBase, 
-            textShadow: theme.glowLight
+            color: themes[selectedTheme].glowBase, 
+            textShadow: themes[selectedTheme].glowLight
         },
         "submit": {
             backgroundColor: '#ffffff00',
-            borderColor: theme.primary.subtext,
-            color: theme.primary.subtext
+            borderColor: themes[selectedTheme].primary.subtext,
+            color: themes[selectedTheme].primary.subtext
         },
         "submitReady": {
-            backgroundColor: theme.primary.subtext,
-            color: theme.primary.highlight
+            backgroundColor: themes[selectedTheme].primary.subtext,
+            color: themes[selectedTheme].primary.highlight
         }
     }
 

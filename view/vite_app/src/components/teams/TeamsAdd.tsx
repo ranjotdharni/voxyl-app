@@ -1,11 +1,12 @@
-import { ChangeEvent, MouseEvent, useContext, useEffect, useState } from 'react'
-import { Context } from '../context/ThemeContext'
+import { ChangeEvent, MouseEvent, useEffect, useState, useContext } from 'react'
 import CSS from 'csstype'
 import styles from '../../assets/css/teams/components/teamsAdd.module.css'
 import CustomDroplist from '../CustomDroplist'
 import CustomInput from '../CustomInput'
 import { fetchToApi } from '../../globals'
 import useError from '../../hooks/useError'
+import { themes } from '../../theme'
+import { Context } from '../../pages/Layout'
 
 const STRING_TRIM_LIMIT: number = 18
 
@@ -21,7 +22,8 @@ interface Team {
 }
 
 export default function TeamsAdd({ fetch, triggerFetch } : { fetch: boolean, triggerFetch: () => void }) {
-    const theme = useContext(Context)
+    // @ts-ignore Ignore unused setTheme
+    const [ selectedTheme, grabTheme ] = useContext(Context)
 
     const [selected, setSelected] = useState<number>(0)
     const [search, setSearch] = useState<string>('')
@@ -32,53 +34,53 @@ export default function TeamsAdd({ fetch, triggerFetch } : { fetch: boolean, tri
 
     const inlineStyles: {[key: string]: CSS.Properties} = {
         "mainContainer": {
-            backgroundColor: theme.background
+            backgroundColor: themes[selectedTheme].background
         },
         "title": {
-            color: theme.glowBase, 
-            textShadow: theme.glowLight
+            color: themes[selectedTheme].glowBase, 
+            textShadow: themes[selectedTheme].glowLight
         },
         "submitButton": {
-            backgroundColor: theme.background,
-            color: theme.primary.subtext,
-            borderColor: theme.primary.subtext,
+            backgroundColor: themes[selectedTheme].background,
+            color: themes[selectedTheme].primary.subtext,
+            borderColor: themes[selectedTheme].primary.subtext,
         },
         "submitButtonReady": {
-            backgroundColor: theme.primary.subtext,
-            color: theme.primary.highlight,
+            backgroundColor: themes[selectedTheme].primary.subtext,
+            color: themes[selectedTheme].primary.highlight,
             borderColor: '#ffffff00',
         },
         "addButton": {
-            backgroundColor: theme.background,
-            color: theme.primary.subtext,
-            borderColor: theme.primary.subtext,
+            backgroundColor: themes[selectedTheme].background,
+            color: themes[selectedTheme].primary.subtext,
+            borderColor: themes[selectedTheme].primary.subtext,
         },
         "addButtonReady": {
-            backgroundColor: theme.primary.subtext,
-            color: theme.primary.highlight,
+            backgroundColor: themes[selectedTheme].primary.subtext,
+            color: themes[selectedTheme].primary.highlight,
             borderColor: '#ffffff00',
         },
         "searchResults": {
-            border: `solid 1px ${theme.primary.tertiary}`
+            border: `solid 1px ${themes[selectedTheme].primary.tertiary}`
         },
         "resultHeader": {
-            borderBottomColor: theme.primary.tertiary
+            borderBottomColor: themes[selectedTheme].primary.tertiary
         },
         "resultHeaderItem": {
-            borderLeftColor: theme.primary.tertiary,
-            borderRightColor: theme.primary.tertiary
+            borderLeftColor: themes[selectedTheme].primary.tertiary,
+            borderRightColor: themes[selectedTheme].primary.tertiary
         },
         "resultHeaderItemText": {
-            color: theme.primary.subtext
+            color: themes[selectedTheme].primary.subtext
         },
         "resultItem": {
-            borderBottomColor: theme.primary.subtext
+            borderBottomColor: themes[selectedTheme].primary.subtext
         },
         "checkbox": {
-            accentColor: theme.primary.highlight
+            accentColor: themes[selectedTheme].primary.highlight
         },
         "error": {
-            color: theme.error
+            color: themes[selectedTheme].error
         }
     }
 
@@ -193,7 +195,7 @@ export default function TeamsAdd({ fetch, triggerFetch } : { fetch: boolean, tri
                     <p className={styles.title} style={inlineStyles.title}>Add Crew Member</p>
                 </div>
                 <div className={styles.searchBar}>
-                    <div className={styles.inputWrapper}><CustomInput label='Search User by Id, Name, Email' type='text' name='search' init={search} color={theme.primary.highlight} callback={setSearch} /></div>
+                    <div className={styles.inputWrapper}><CustomInput label='Search User by Id, Name, Email' type='text' name='search' init={search} color={themes[selectedTheme].primary.highlight} callback={setSearch} /></div>
                     <button className={styles.submitButton} style={(search.trim() !== '' ? inlineStyles.submitButtonReady : inlineStyles.submitButton)} onClick={handleSearch}>Search</button>
                 </div>
                 <div className={styles.searchResults} style={inlineStyles.searchResults}>

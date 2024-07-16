@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 from django.db.models import Q
-from teams.models import Team, Member, PERMISSIONS
+from teams.models import Team, Member, Profile, PERMISSIONS
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
 from django.core import serializers
@@ -252,8 +252,15 @@ class RoleView(APIView):
         if not request.user.is_authenticated:
             return Response({"error": "Unauthenticated"}, status=status.HTTP_400_BAD_REQUEST)
         
+
+
         team_id = data['id']
-        username = data['user']
+
+        if 'user' not in data:
+            username = request.user.username
+        else:
+            username = data['user']
+
         team = Team.objects.get(id=team_id)
         user = User.objects.get(username=username)
 
@@ -300,3 +307,29 @@ class RoleView(APIView):
 
         return Response({"success": "true"}, status=status.HTTP_200_OK)
 
+@method_decorator(login_required(login_url='/entry/'), name='dispatch')
+@method_decorator(csrf_protect, name='dispatch')
+class ThemeApiView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        if not request.user.is_authenticated:
+            return Response({"error": "Unauthenticated"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        profile = Profile.objects.get(user=request.user)
+
+        return Response({"success": "true", "theme": profile.theme}, status=status.HTTP_200_OK)
+    
+    def put(self, request):
+        data = request.data
+
+        if not request.user.is_authenticated:
+            return Response({"error": "Unauthenticated"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        profile = Profile.objects.get(user=request.user)
+        profile.theme = data['theme']
+        profile.save()
+
+        return Response({"success": "true", "theme": profile.theme}, status=status.HTTP_200_OK)

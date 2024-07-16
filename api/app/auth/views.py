@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
-from teams.models import Team, Member, PERMISSIONS
+from teams.models import Team, Member, Profile, PERMISSIONS
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
 
@@ -60,6 +60,9 @@ class LoginApiView(APIView):
 
         user = authenticate(request, username=user, password=passkey)
 
+        profile = Profile(user=user)
+        profile.save()
+
         default_team = Team(name='Your Team', description='This is your default team.', owner=user.username)
         default_team.save()
 
@@ -67,11 +70,10 @@ class LoginApiView(APIView):
         team_member.save()
         
         return Response({"success": "true"}, status=status.HTTP_200_OK)
-        
 
 @method_decorator(login_required(login_url='/entry/'), name='dispatch')
 @method_decorator(csrf_protect, name='dispatch')
-class TestApiView(APIView):
+class AccessApiView(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
