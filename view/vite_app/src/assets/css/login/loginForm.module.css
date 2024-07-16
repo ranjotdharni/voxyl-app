@@ -15,7 +15,6 @@ input {
     z-index: 1;
     position: relative;
     margin: auto;
-    margin-top: 3%;
     min-width: 25em;
     width: 35%;
     aspect-ratio: 15 / 13;
@@ -27,6 +26,7 @@ input {
     border: solid 1px rgba(255, 255, 255, 0.1);
     box-shadow: -10px 15px 25px 10px rgba(0, 0, 0, 0.33);
     backdrop-filter: blur(5px);
+    transform: translateY(5%);
 }
 
 .formHeaderWrapper {

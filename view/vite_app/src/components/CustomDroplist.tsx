@@ -29,10 +29,10 @@ export default function CustomDroplist( { selected, payload, relativeContainerWi
     const inlineStyles: {[key: string]: CSS.Properties} = {
         "listbox": {
             width: `${relativeContainerWidth}${relativeContainerUnits}`,
-            backgroundColor: themes[selectedTheme].background
+            backgroundColor: themes[selectedTheme].backgroundOpaque
         },
         "selector": {
-            backgroundColor: themes[selectedTheme].background,
+            backgroundColor: themes[selectedTheme].backgroundOpaque,
             color: (highlight ? highlight : themes[selectedTheme].primary.highlight),
             border: `solid 1px ${themes[selectedTheme].primary.tertiary}`
         },
@@ -55,7 +55,7 @@ export default function CustomDroplist( { selected, payload, relativeContainerWi
         color: ${(color ? color : themes[selectedTheme].primary.header)};
 
         &:hover {
-            color: ${themes[selectedTheme].background};
+            color: ${themes[selectedTheme].backgroundOpaque};
             background-color: ${(highlight ? highlight : themes[selectedTheme].primary.highlight)} !important;
         }
     `
@@ -63,8 +63,8 @@ export default function CustomDroplist( { selected, payload, relativeContainerWi
     return (
         <div css={WrapperStyles} className={styles.wrapper}>
             <div tabIndex={0} className={styles.selector} style={inlineStyles.selector}>
-                {payload !== undefined && payload.length !== 0 && payload[selected] !== undefined && payload[selected].name !== undefined ? payload[selected].name : 'Select'}
-                <span style={inlineStyles.icon}><IoChevronDownOutline className={styles.icon}/></span>
+                <div className={styles.titleWrapper}>{payload !== undefined && payload.length !== 0 && payload[selected] !== undefined && payload[selected].name !== undefined ? payload[selected].name : 'Select'}</div>
+                <div style={inlineStyles.icon}><IoChevronDownOutline className={styles.icon}/></div>
             </div>
             <div className={styles.listbox} style={inlineStyles.listbox}>
                 {

@@ -3,13 +3,15 @@ import FloatingBackground from '../components/FloatingBackground';
 import { bakedOrigin, fetchToApi } from '../globals';
 import { useNavigate } from 'react-router-dom';
 
+export const DEFAULT_THEME: number = 0
+
 export const Context = React.createContext<[number, () => void | Promise<void>]>([
-    0,
+    DEFAULT_THEME,
     () => {}
 ])
 
 function Layout({ children } : { children: string | JSX.Element | JSX.Element[] }) {
-    const [theme, setTheme] = useState<number>(0)
+    const [theme, setTheme] = useState<number>(DEFAULT_THEME)
 
     const redirect = useNavigate()
     
@@ -47,7 +49,7 @@ function Layout({ children } : { children: string | JSX.Element | JSX.Element[] 
     return (
         <Context.Provider value={[theme, getTheme]}>
             <>
-                <FloatingBackground />
+                <FloatingBackground particles />
                 {children}
             </>
         </Context.Provider>

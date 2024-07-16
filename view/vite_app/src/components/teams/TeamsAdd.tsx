@@ -34,14 +34,14 @@ export default function TeamsAdd({ fetch, triggerFetch } : { fetch: boolean, tri
 
     const inlineStyles: {[key: string]: CSS.Properties} = {
         "mainContainer": {
-            backgroundColor: themes[selectedTheme].background
+            background: themes[selectedTheme].boxGradient
         },
         "title": {
             color: themes[selectedTheme].glowBase, 
             textShadow: themes[selectedTheme].glowLight
         },
         "submitButton": {
-            backgroundColor: themes[selectedTheme].background,
+            backgroundColor: themes[selectedTheme].backgroundOpaque,
             color: themes[selectedTheme].primary.subtext,
             borderColor: themes[selectedTheme].primary.subtext,
         },
@@ -51,7 +51,7 @@ export default function TeamsAdd({ fetch, triggerFetch } : { fetch: boolean, tri
             borderColor: '#ffffff00',
         },
         "addButton": {
-            backgroundColor: themes[selectedTheme].background,
+            backgroundColor: themes[selectedTheme].backgroundOpaque,
             color: themes[selectedTheme].primary.subtext,
             borderColor: themes[selectedTheme].primary.subtext,
         },

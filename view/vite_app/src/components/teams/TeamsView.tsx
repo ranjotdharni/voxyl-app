@@ -24,7 +24,7 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
 
     const inlineStyles: {[key: string]: CSS.Properties} = {
         "mainContainer": {
-            backgroundColor: themes[selectedTheme].background
+            background: themes[selectedTheme].boxGradient
         },
         "title": {
             color: themes[selectedTheme].glowBase,
@@ -40,7 +40,8 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
             color: themes[selectedTheme].primary.quaternary
         },
         "roleSelectedContainer": {
-            borderColor: themes[selectedTheme].primary.tertiary
+            borderColor: themes[selectedTheme].primary.tertiary,
+            backgroundColor: themes[selectedTheme].backgroundOpaque
         },
         "roleSelectedMember": {
             color: themes[selectedTheme].glowBase,
@@ -251,6 +252,7 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
 
     return (
         <div className={styles.gridItemWrapper}>
+            <div className={styles.blurContainer}></div>
             <div className={styles.mainContainer} style={inlineStyles.mainContainer}>
                 <div className={styles.titleContainer}>
                     <div className={styles.droplistWrapper}><CustomDroplist selected={selectedTeam} payload={teams} callback={setSelectedTeam} color={themes[selectedTheme].primary.highlight} highlight={themes[selectedTheme].primary.header} relativeContainerWidth={20} relativeContainerUnits='em'/></div>

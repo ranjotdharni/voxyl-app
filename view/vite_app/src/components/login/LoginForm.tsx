@@ -71,7 +71,7 @@ export default function LoginForm() {
     }
 
     return (
-        <form className={styles.form} style={{backgroundColor: themes[selectedTheme].background}} onSubmit={handleSubmit} action="/v1/auth/login" method="put">
+        <form className={styles.form} style={{backgroundColor: themes[selectedTheme].backgroundOpaque}} onSubmit={handleSubmit} action="/v1/auth/login" method="put">
             <CSRFToken />
 
             <div className={styles.formHeaderWrapper}>
@@ -91,8 +91,8 @@ export default function LoginForm() {
             <label className={styles.error}>{error}</label>
 
             <div css={beforeStyles} className={styles.buttonWrapper}>
-                <button onClick={handleSwitch} className={styles.switchButton} style={{color: themes[selectedTheme].background, borderColor: themes[selectedTheme].primary.header, backgroundColor: themes[selectedTheme].primary.header}} type='button'>Sign Up</button>
-                <button className={styles.submitButton + (isFormFilled() ? ' ' + styles.submitReady : '')} style={(isFormFilled() ? {color: themes[selectedTheme].background, borderColor: themes[selectedTheme].primary.highlight, backgroundColor: themes[selectedTheme].primary.highlight} : {color: themes[selectedTheme].primary.subtext, borderColor: themes[selectedTheme].primary.subtext, backgroundColor: themes[selectedTheme].background})} type="submit">Log In</button>
+                <button onClick={handleSwitch} className={styles.switchButton} style={{color: themes[selectedTheme].backgroundOpaque, borderColor: themes[selectedTheme].primary.header, backgroundColor: themes[selectedTheme].primary.header}} type='button'>Sign Up</button>
+                <button className={styles.submitButton + (isFormFilled() ? ' ' + styles.submitReady : '')} style={(isFormFilled() ? {color: themes[selectedTheme].backgroundOpaque, borderColor: themes[selectedTheme].primary.highlight, backgroundColor: themes[selectedTheme].primary.highlight} : {color: themes[selectedTheme].primary.subtext, borderColor: themes[selectedTheme].primary.subtext, backgroundColor: themes[selectedTheme].backgroundOpaque})} type="submit">Log In</button>
             </div>
         </form>
     )

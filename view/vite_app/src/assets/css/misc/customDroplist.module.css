@@ -7,11 +7,9 @@
     width: inherit;
     height: inherit;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    background-color: rgba(10, 10, 10, 0.2);
-    backdrop-filter: blur(5px);
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     box-shadow: 5px 5px 55px 5px rgba(0, 0, 0, 0.33);
     border-radius: 0.25em;
 }
@@ -39,6 +37,17 @@
     cursor: pointer;
 }
 
+.titleWrapper {
+    position: relative;
+    left: 35%;
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .item {
     text-align: center;
 }
@@ -48,10 +57,15 @@
 }
 
 .icon {
-    position: absolute;
-    width: 5%;
-    top: 15%;
-    left: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 90%;
+    aspect-ratio: 1 / 1;
+    top: 0%;
+    left: 0%;
     text-align: center;
     transition: transform 0.15s linear, color 0.05s ease-in;
 }

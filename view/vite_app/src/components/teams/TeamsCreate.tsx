@@ -47,7 +47,7 @@ export default function TeamsCreate({ fetch, triggerFetch } : { fetch: boolean, 
     
     const inlineStyles: {[key: string]: CSS.Properties} = {
         "mainContainer": {
-            backgroundColor: themes[selectedTheme].background
+            background: themes[selectedTheme].boxGradient
         },
         "containerHeader": {
             color: themes[selectedTheme].glowBase, 

@@ -8,7 +8,9 @@ export interface Theme {
         middle: string,
         stop: string
     },
-    background: string,
+    backgroundBlur: string,
+    backgroundOpaque: string,
+    backgroundTransparent: string,
     error: string,
     glowColor: string,
     glowLight: string,
@@ -18,6 +20,8 @@ export interface Theme {
         middle: string,
         stop: string
     },
+    pageGradient: string,
+    boxGradient: string,
     primary: {
         header: string,
         subheader: string,
@@ -49,6 +53,9 @@ export function useTheme() {
     return [t, getTheme] as [number, () => void]
 }
 
+const COMMON_BACKGROUND_GRADIENT: string = 'linear-gradient(45deg, hsla(0, 3%, 6%, 1) 0%, hsla(228, 31%, 6%, 1) 100%), linear-gradient(225deg, hsla(0, 3%, 6%, 1) 0%, hsla(228, 31%, 6%, 1) 100%)'
+const COMMON_BOX_GRADIENT: string = 'linear-gradient(45deg, hsla(0, 3%, 7%, 1) 0%, hsla(0, 3%, 6%, 1) 12%)'
+
 // Theme at index 0 is the default
 export const themes: Theme[] = [
     {
@@ -57,24 +64,28 @@ export const themes: Theme[] = [
             middle: '#878787',
             stop: '#878787'
         },
-        background: '#000000',
+        backgroundBlur: 'blur(10px)',
+        backgroundOpaque: '#d9ced3',
+        backgroundTransparent: '#0000001f',
         error: '#878787',
         glowColor: '#878787',
-        glowLight: generateGlow('#878787', '#878787'),
+        glowLight: '',
         glowBase: '#878787',
         highlightedBackground: {
             start: '#878787',
             middle: '#878787',
             stop: '#878787'
         },
+        pageGradient: '#998d90',
+        boxGradient: COMMON_BOX_GRADIENT,
         primary: {
-            header: '#878787',
-            subheader: '#ffffff',
-            text: '#878787',
+            header: '#7a404f',
+            subheader: '#403639',
+            text: '#241214',
             subtext: '#878787',
-            highlight: '#878787',
-            tertiary: '#e0e0e01a',
-            quaternary: '#b0b0b0'
+            highlight: '#b84f5d',
+            tertiary: '#783a4ca0',
+            quaternary: '#e0e0e0'
         }
     },
     {
@@ -83,7 +94,9 @@ export const themes: Theme[] = [
             middle: '#025A4A',
             stop: '#00120F'
         },
-        background: '#1f1f1f',
+        backgroundBlur: 'blur(10px)',
+        backgroundOpaque: '#0a0a0a',
+        backgroundTransparent: '#ffffff00',
         error: '#910f2f',
         glowColor: PERMISSIONS[0].color,
         glowLight: generateGlow(PERMISSIONS[0].glowBase, PERMISSIONS[0].color),
@@ -93,6 +106,8 @@ export const themes: Theme[] = [
             middle: '',
             stop: ''
         },
+        pageGradient: COMMON_BACKGROUND_GRADIENT,
+        boxGradient: COMMON_BOX_GRADIENT,
         primary: {
             header: '#0e544a',
             subheader: '#ffffff',
@@ -109,7 +124,9 @@ export const themes: Theme[] = [
             middle: '#025A4A',
             stop: '#00120F'
         },
-        background: '#1f1f1f',
+        backgroundBlur: 'blur(10px)',
+        backgroundOpaque: '#0a0a0a',
+        backgroundTransparent: '#ffffff00',
         error: '#910f2f',
         glowColor: PERMISSIONS[1].color,
         glowLight: generateGlow(PERMISSIONS[1].glowBase, PERMISSIONS[1].color),
@@ -119,6 +136,8 @@ export const themes: Theme[] = [
             middle: '',
             stop: ''
         },
+        pageGradient: COMMON_BACKGROUND_GRADIENT,
+        boxGradient: COMMON_BOX_GRADIENT,
         primary: {
             header: '#0e544a',
             subheader: '#ffffff',
@@ -135,7 +154,9 @@ export const themes: Theme[] = [
             middle: '#025A4A',
             stop: '#00120F'
         },
-        background: '#1f1f1f',
+        backgroundBlur: 'blur(10px)',
+        backgroundOpaque: '#0a0a0a',
+        backgroundTransparent: '#ffffff00',
         error: '#910f2f',
         glowColor: PERMISSIONS[2].color,
         glowLight: generateGlow(PERMISSIONS[2].glowBase, PERMISSIONS[2].color),
@@ -145,6 +166,8 @@ export const themes: Theme[] = [
             middle: '',
             stop: ''
         },
+        pageGradient: COMMON_BACKGROUND_GRADIENT,
+        boxGradient: COMMON_BOX_GRADIENT,
         primary: {
             header: '#0e544a',
             subheader: '#ffffff',
@@ -161,7 +184,9 @@ export const themes: Theme[] = [
             middle: '#025A4A',
             stop: '#00120F'
         },
-        background: '#1f1f1f',
+        backgroundBlur: 'blur(10px)',
+        backgroundOpaque: '#0a0a0a',
+        backgroundTransparent: '#ffffff00',
         error: '#910f2f',
         glowColor: PERMISSIONS[3].color,
         glowLight: generateGlow(PERMISSIONS[3].glowBase, PERMISSIONS[3].color),
@@ -171,6 +196,8 @@ export const themes: Theme[] = [
             middle: '',
             stop: ''
         },
+        pageGradient: COMMON_BACKGROUND_GRADIENT,
+        boxGradient: COMMON_BOX_GRADIENT,
         primary: {
             header: '#0e544a',
             subheader: '#ffffff',
@@ -187,7 +214,9 @@ export const themes: Theme[] = [
             middle: '#025A4A',
             stop: '#00120F'
         },
-        background: '#1f1f1f',
+        backgroundBlur: 'blur(10px)',
+        backgroundOpaque: '#0a0a0a',
+        backgroundTransparent: '#ffffff00',
         error: '#910f2f',
         glowColor: PERMISSIONS[4].color,
         glowLight: generateGlow(PERMISSIONS[4].glowBase, PERMISSIONS[4].color),
@@ -197,6 +226,8 @@ export const themes: Theme[] = [
             middle: '',
             stop: ''
         },
+        pageGradient: COMMON_BACKGROUND_GRADIENT,
+        boxGradient: COMMON_BOX_GRADIENT,
         primary: {
             header: '#0e544a',
             subheader: '#ffffff',
@@ -213,7 +244,9 @@ export const themes: Theme[] = [
             middle: '#025A4A',
             stop: '#00120F'
         },
-        background: '#1f1f1f',
+        backgroundBlur: 'blur(10px)',
+        backgroundOpaque: '#0a0a0a',
+        backgroundTransparent: '#ffffff00',
         error: '#910f2f',
         glowColor: PERMISSIONS[5].color,
         glowLight: generateGlow(PERMISSIONS[5].glowBase, PERMISSIONS[5].color),
@@ -223,6 +256,8 @@ export const themes: Theme[] = [
             middle: '',
             stop: ''
         },
+        pageGradient: COMMON_BACKGROUND_GRADIENT,
+        boxGradient: COMMON_BOX_GRADIENT,
         primary: {
             header: '#0e544a',
             subheader: '#ffffff',
