@@ -12,7 +12,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<><FloatingBackground /><p style={{color: 'white', position: 'relative', zIndex: 1}}>This is the Landing Page and does not require login!</p></>} />
+        <Route index element={<><FloatingBackground /><p>This is the Landing Page.</p></>} />
 
         <Route path="crews" element={<Layout><Teams /></Layout>}></Route>
         <Route path="settings" element={<Layout><Settings/></Layout>}></Route>

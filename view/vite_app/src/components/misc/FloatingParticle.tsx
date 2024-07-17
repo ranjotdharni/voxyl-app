@@ -11,11 +11,12 @@ interface props {
     duration: number
     glowBase: string
     glowColor: string
+    reverse?: boolean
     top?: number
     left?: number
 }
 
-export default function FloatingParticle({ width, duration, particleWidth, glowBase, glowColor, top, left } : props) {
+export default function FloatingParticle({ width, duration, particleWidth, glowBase, glowColor, reverse, top, left } : props) {
     const basicBubbleStyles: CSS.Properties = {
         width: `${particleWidth}px`,
         backgroundColor: glowBase,
@@ -26,7 +27,8 @@ export default function FloatingParticle({ width, duration, particleWidth, glowB
         width: ${width}%;
         left: ${((100 - width * 2) / 2) + (left ? left : 0)}%;
         margin-top: ${(top ? top : 0)}%;
-        animation-duration: ${duration}s;        
+        animation-duration: ${duration}s;
+        animation-direction: ${reverse ? 'reverse' : 'normal'};        
     `
 
     const Bubble2Styles = css`
@@ -34,6 +36,7 @@ export default function FloatingParticle({ width, duration, particleWidth, glowB
         left: ${((100 - width * 2) / 2 + width) + (left ? left : 0)}%;
         margin-top: ${(top ? top : 0)}%;
         animation-duration: ${duration}s;
+        animation-direction: ${reverse ? 'reverse' : 'normal'};
     `
 
     return (

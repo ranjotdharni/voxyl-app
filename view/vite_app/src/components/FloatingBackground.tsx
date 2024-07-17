@@ -7,12 +7,12 @@ import { generateArray, inclusiveRandomInteger } from '../globals';
 
 const PARTICLE_COUNT: number = 50
 
-export default function FloatingBackground({ particles } : { particles?: boolean }) {
+export default function FloatingBackground({ particles, muteBackground } : { particles?: boolean, muteBackground?: boolean }) {
     // @ts-ignore Ignore unused setTheme
     const [ selectedTheme, selectedMode, grabTheme ] = useContext(Context)
 
     return (
-        <div className={styles.content_loader} style={{background: themes[selectedMode][selectedTheme].pageGradient}}>
+        <div className={styles.content_loader} style={{background: (muteBackground ? '#ffffff00' : themes[selectedMode][selectedTheme].pageGradient)}}>
             {
                 (particles === undefined || particles) ?
                 generateArray(PARTICLE_COUNT).map(() => {
