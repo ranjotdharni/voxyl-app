@@ -20,68 +20,71 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
     const [subjectPermissionLevel, setSubjectPermissionLevel] = useState<number>(0)
     const [selectedPermissionLevel, setSelectedPermissionLevel] = useState<number>(0)
     // @ts-ignore Ignore unused setTheme
-    const [ selectedTheme, grabTheme ] = useContext(Context)
+    const [ selectedTheme, selectedMode, grabTheme ] = useContext(Context)
 
     const inlineStyles: {[key: string]: CSS.Properties} = {
         "mainContainer": {
-            background: themes[selectedTheme].boxGradient
+            background: themes[selectedMode][selectedTheme].boxGradient,
+            backdropFilter: themes[selectedMode][selectedTheme].backgroundBlur,
+            border: themes[selectedMode][selectedTheme].glassBorder
         },
         "title": {
-            color: themes[selectedTheme].glowBase,
-            textShadow: themes[selectedTheme].glowLight
+            color: themes[selectedMode][selectedTheme].glowBase,
+            textShadow: themes[selectedMode][selectedTheme].glowLight,
+            background: themes[selectedMode][selectedTheme].backgroundContrast
         },
         "memberTitleContainer": {
-            borderBottomColor: themes[selectedTheme].primary.tertiary
+            borderBottomColor: themes[selectedMode][selectedTheme].primary.tertiary
         },
         "memberTitle": {
-            color: themes[selectedTheme].primary.highlight
+            color: themes[selectedMode][selectedTheme].primary.highlight
         },
         "roleSelectedLabel": {
-            color: themes[selectedTheme].primary.quaternary
+            color: themes[selectedMode][selectedTheme].primary.quaternary
         },
         "roleSelectedContainer": {
-            borderColor: themes[selectedTheme].primary.tertiary,
-            backgroundColor: themes[selectedTheme].backgroundOpaque
+            borderColor: themes[selectedMode][selectedTheme].primary.tertiary,
+            backgroundColor: themes[selectedMode][selectedTheme].backgroundOpaque
         },
         "roleSelectedMember": {
-            color: themes[selectedTheme].glowBase,
-            textShadow: (subjectPermissionLevel !== 0 ? generateGlow(themes[selectedTheme].glowBase, themes[selectedTheme].glowColor) : '')
+            color: themes[selectedMode][selectedTheme].glowBase,
+            textShadow: (subjectPermissionLevel !== 0 ? generateGlow(themes[selectedMode][selectedTheme].glowBase, themes[selectedMode][selectedTheme].glowColor) : '')
         }, 
         "pic": {
-            borderColor: themes[selectedTheme].primary.header
+            borderColor: themes[selectedMode][selectedTheme].primary.header
         },
         "icon": {
-            color: themes[selectedTheme].primary.highlight
+            color: themes[selectedMode][selectedTheme].primary.highlight
         },
         "bioTitle": {
-            color: themes[selectedTheme].primary.header
+            color: themes[selectedMode][selectedTheme].primary.header
         },
         "bioItem": {
-            color: themes[selectedTheme].primary.highlight
+            color: themes[selectedMode][selectedTheme].primary.highlight
         },
         "statsButton": {
-            borderColor: themes[selectedTheme].primary.highlight,
-            color: themes[selectedTheme].primary.subheader
+            borderColor: themes[selectedMode][selectedTheme].primary.highlight,
+            color: themes[selectedMode][selectedTheme].primary.subheader
         },
         "roleInputContainerTitle": {
-            color: themes[selectedTheme].primary.header
+            color: themes[selectedMode][selectedTheme].primary.header
         },
         "roleDescriptionContainerTitle": {
-            color: themes[selectedTheme].primary.subtext
+            color: themes[selectedMode][selectedTheme].primary.subtext
         },
         "roleDescriptionContainerDiv": {
-            borderColor: themes[selectedTheme].primary.subtext
+            borderColor: themes[selectedMode][selectedTheme].primary.subtext
         },
         "cancelButton": {
-            color: themes[selectedTheme].primary.subheader,
-            backgroundColor: themes[selectedTheme].primary.tertiary,
+            color: themes[selectedMode][selectedTheme].primary.subheader,
+            backgroundColor: themes[selectedMode][selectedTheme].primary.tertiary,
         },
         "saveButton": {
-            backgroundColor: (selectedPermissionLevel !== subjectPermissionLevel ? themes[selectedTheme].primary.header : themes[selectedTheme].primary.quaternary),
-            color: (selectedPermissionLevel !== subjectPermissionLevel ? themes[selectedTheme].primary.highlight : themes[selectedTheme].primary.subheader)
+            backgroundColor: (selectedPermissionLevel !== subjectPermissionLevel ? themes[selectedMode][selectedTheme].primary.header : themes[selectedMode][selectedTheme].primary.quaternary),
+            color: (selectedPermissionLevel !== subjectPermissionLevel ? themes[selectedMode][selectedTheme].primary.highlight : themes[selectedMode][selectedTheme].primary.subheader)
         },
         "error": {
-            color: themes[selectedTheme].error
+            color: themes[selectedMode][selectedTheme].error
         }
     }
 
@@ -255,8 +258,8 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
             <div className={styles.blurContainer}></div>
             <div className={styles.mainContainer} style={inlineStyles.mainContainer}>
                 <div className={styles.titleContainer}>
-                    <div className={styles.droplistWrapper}><CustomDroplist selected={selectedTeam} payload={teams} callback={setSelectedTeam} color={themes[selectedTheme].primary.highlight} highlight={themes[selectedTheme].primary.header} relativeContainerWidth={20} relativeContainerUnits='em'/></div>
-                    <div className={styles.titleWrapper}>
+                    <div className={styles.droplistWrapper}><CustomDroplist selected={selectedTeam} payload={teams} callback={setSelectedTeam} color={themes[selectedMode][selectedTheme].primary.highlight} highlight={themes[selectedMode][selectedTheme].primary.header} relativeContainerWidth={20} relativeContainerUnits='em'/></div>
+                    <div className={styles.titleWrapper} style={inlineStyles.titleWrapper}>
                         <p className={styles.title} style={inlineStyles.title}>View Your Crews</p>
                     </div>
                 </div>
@@ -303,7 +306,7 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
                                 {
                                     generateArray(7).map(() => {
                                         return (
-                                            <FloatingParticle particleWidth={inclusiveRandomInteger(1, 3)} width={inclusiveRandomInteger(25, 50)} duration={inclusiveRandomInteger(4, 12)} glowBase={themes[selectedTheme].glowBase} glowColor={themes[selectedTheme].glowColor} left={inclusiveRandomInteger(-15, 15)} />
+                                            <FloatingParticle particleWidth={inclusiveRandomInteger(1, 3)} width={inclusiveRandomInteger(25, 50)} duration={inclusiveRandomInteger(4, 12)} glowBase={themes[selectedMode][selectedTheme].glowBase} glowColor={themes[selectedMode][selectedTheme].glowColor} left={inclusiveRandomInteger(-15, 15)} />
                                         )
                                     })
                                 }
@@ -322,8 +325,8 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
                                         colors={PERMISSIONS.map(item => { return item.color })}
                                         itemHeight={10}
                                         bubbleDiameter='10px'
-                                        bubbleColor={themes[selectedTheme].primary.highlight}
-                                        backgroundColor={themes[selectedTheme].primary.tertiary} 
+                                        bubbleColor={themes[selectedMode][selectedTheme].primary.highlight}
+                                        backgroundColor={themes[selectedMode][selectedTheme].primary.tertiary} 
                                         callback={setSelectedPermissionLevel} />
                                 </div>
                             </div>

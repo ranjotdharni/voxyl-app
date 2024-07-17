@@ -9,14 +9,14 @@ import { Context } from '../../pages/Layout'
 
 function NewName({ value, setValue } : { value: string, setValue: (arg1: string) => void }) {
     // @ts-ignore Ignore unused setTheme
-    const [ selectedTheme, grabTheme ] = useContext(Context)
+    const [ selectedTheme, selectedMode, grabTheme ] = useContext(Context)
 
     useEffect(() => {
         grabTheme()
     }, [])
 
     return (
-        <div className={styles.contentNameWrapper + ' ' + styles.contentTypeWrapper} style={{borderColor: themes[selectedTheme].primary.tertiary}}>
+        <div className={styles.contentNameWrapper + ' ' + styles.contentTypeWrapper} style={{borderColor: themes[selectedMode][selectedTheme].primary.tertiary}}>
             <div className={styles.CreateNameLabelWrapper}><label className={styles.CreateNameLabel}>Enter Name:</label></div>
             <div className={styles.CreateNameInput}><CustomInput init={value} callback={setValue} label='' type='text' name='teamName' /></div>
         </div>
@@ -25,14 +25,14 @@ function NewName({ value, setValue } : { value: string, setValue: (arg1: string)
 
 function NewDescription({ value, setValue } : { value: string, setValue: (arg1: string) => void }) {
     // @ts-ignore Ignore unused setTheme
-    const [ selectedTheme, grabTheme ] = useContext(Context)
+    const [ selectedTheme, selectedMode, grabTheme ] = useContext(Context)
 
     useEffect(() => {
         grabTheme()
     }, [])
 
     return (
-        <div className={styles.contentDescriptionWrapper + ' ' + styles.contentTypeWrapper} style={{borderColor: themes[selectedTheme].primary.tertiary}}>
+        <div className={styles.contentDescriptionWrapper + ' ' + styles.contentTypeWrapper} style={{borderColor: themes[selectedMode][selectedTheme].primary.tertiary}}>
             <textarea value={value} onChange={(e) => {setValue(e.target.value)}} placeholder='Enter a Description' className={styles.CreateDescriptionInput}></textarea>
         </div>
     )
@@ -43,24 +43,26 @@ export default function TeamsCreate({ fetch, triggerFetch } : { fetch: boolean, 
     const [teamDesc, setTeamDesc] = useState<string>('')
     const [error, throwError] = useError('')
     // @ts-ignore Ignore unused setTheme
-    const [ selectedTheme, grabTheme ] = useContext(Context)
+    const [ selectedTheme, selectedMode, grabTheme ] = useContext(Context)
     
     const inlineStyles: {[key: string]: CSS.Properties} = {
         "mainContainer": {
-            background: themes[selectedTheme].boxGradient
+            background: themes[selectedMode][selectedTheme].boxGradient,
+            backdropFilter: themes[selectedMode][selectedTheme].backgroundBlur,
+            border: themes[selectedMode][selectedTheme].glassBorder
         },
         "containerHeader": {
-            color: themes[selectedTheme].glowBase, 
-            textShadow: themes[selectedTheme].glowLight
+            color: themes[selectedMode][selectedTheme].glowBase, 
+            textShadow: themes[selectedMode][selectedTheme].glowLight
         },
         "submit": {
             backgroundColor: '#ffffff00',
-            borderColor: themes[selectedTheme].primary.subtext,
-            color: themes[selectedTheme].primary.subtext
+            borderColor: themes[selectedMode][selectedTheme].primary.subtext,
+            color: themes[selectedMode][selectedTheme].primary.subtext
         },
         "submitReady": {
-            backgroundColor: themes[selectedTheme].primary.subtext,
-            color: themes[selectedTheme].primary.highlight
+            backgroundColor: themes[selectedMode][selectedTheme].primary.subtext,
+            color: themes[selectedMode][selectedTheme].primary.highlight
         }
     }
 

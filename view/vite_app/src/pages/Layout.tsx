@@ -2,15 +2,17 @@ import React, { useEffect, useState } from 'react';
 import FloatingBackground from '../components/FloatingBackground';
 import { bakedOrigin, fetchToApi } from '../globals';
 import { useNavigate } from 'react-router-dom';
-import { DEFAULT_THEME } from '../theme';
+import { DEFAULT_MODE, DEFAULT_THEME } from '../theme';
 
-export const Context = React.createContext<[number, () => void | Promise<void>]>([
+export const Context = React.createContext<[number, number, () => void | Promise<void>]>([
     DEFAULT_THEME,
+    DEFAULT_MODE,
     () => {}
 ])
 
 function Layout({ children } : { children: string | JSX.Element | JSX.Element[] }) {
     const [theme, setTheme] = useState<number>(DEFAULT_THEME)
+    const [mode, setMode] = useState<number>(DEFAULT_MODE)
 
     const redirect = useNavigate()
     
@@ -46,7 +48,7 @@ function Layout({ children } : { children: string | JSX.Element | JSX.Element[] 
     }, [])
 
     return (
-        <Context.Provider value={[theme, getTheme]}>
+        <Context.Provider value={[theme, mode, getTheme]}>
             <>
                 <FloatingBackground particles />
                 {children}

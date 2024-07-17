@@ -7,11 +7,12 @@ import CustomInput from '../CustomInput'
 import { useState, MouseEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { DEFAULT_THEME, themes } from '../../theme'
+import { DEFAULT_MODE, DEFAULT_THEME, themes } from '../../theme'
 
 export default function CreateForm() {
     // @ts-ignore Ignore unused setTheme
     const selectedTheme: number = DEFAULT_THEME
+    const selectedMode: number = DEFAULT_MODE
     const navigation = useNavigate()
     const { next } = useParams()
 
@@ -25,7 +26,7 @@ export default function CreateForm() {
 
     const beforeStyles = css`
         :before {
-            color: ${themes[selectedTheme].primary.tertiary}
+            color: ${themes[selectedMode][selectedTheme].primary.tertiary}
         }
     `
 
@@ -89,14 +90,14 @@ export default function CreateForm() {
     }
 
     return (
-        <form className={styles.form} style={{ backgroundColor: themes[selectedTheme].backgroundOpaque }} onSubmit={handleSubmit} action="/v1/auth/login" method="POST">
+        <form className={styles.form} style={{ backgroundColor: themes[selectedMode][selectedTheme].backgroundOpaque }} onSubmit={handleSubmit} action="/v1/auth/login" method="POST">
             <CSRFToken />
 
             <div className={styles.formHeaderWrapper}>
-                <p className={styles.formHeader} style={{ color: themes[selectedTheme].primary.header }}>Create an Account</p>
+                <p className={styles.formHeader} style={{ color: themes[selectedMode][selectedTheme].primary.header }}>Create an Account</p>
             </div>
             
-            <label className={styles.headLabel} style={{color: themes[selectedTheme].primary.subheader}}>Enter Your Name</label>
+            <label className={styles.headLabel} style={{color: themes[selectedMode][selectedTheme].primary.subheader}}>Enter Your Name</label>
             <div className={styles.wrapper + ' ' + styles.nameWrapper}>
                 <div className={styles.firstNameWrapper}>
                     <CustomInput init={first} label='First' type='text' name='first' callback={setFirst} />
@@ -107,22 +108,22 @@ export default function CreateForm() {
                 </div>
             </div>
 
-            <label className={styles.headLabel} style={{color: themes[selectedTheme].primary.subheader}}>Enter Your Email</label>
+            <label className={styles.headLabel} style={{color: themes[selectedMode][selectedTheme].primary.subheader}}>Enter Your Email</label>
             <div className={styles.wrapper}>
                 <CustomInput init={email} label='Email' type='email' name='email' callback={setEmail} />
             </div>
 
-            <label className={styles.headLabel} style={{color: themes[selectedTheme].primary.subheader}}>Make a Username</label>
+            <label className={styles.headLabel} style={{color: themes[selectedMode][selectedTheme].primary.subheader}}>Make a Username</label>
             <div className={styles.wrapper}>
                 <CustomInput init={user} label='Username' type='text' name='user' callback={setUser} />
             </div>
 
-            <label className={styles.headLabel} style={{color: themes[selectedTheme].primary.subheader}}>Make a Password</label>
+            <label className={styles.headLabel} style={{color: themes[selectedMode][selectedTheme].primary.subheader}}>Make a Password</label>
             <div className={styles.wrapper}>
                 <CustomInput init={pass} label='Password' type='password' name='pass' callback={setPass} />
             </div>
 
-            <label className={styles.headLabel} style={{color: themes[selectedTheme].primary.subheader}}>Confirm Your Password</label>
+            <label className={styles.headLabel} style={{color: themes[selectedMode][selectedTheme].primary.subheader}}>Confirm Your Password</label>
             <div className={styles.wrapper}>
                 <CustomInput init={confirm} label='Confirm Password' type='password' name='confirm' callback={setConfirm} />
             </div>
@@ -130,8 +131,8 @@ export default function CreateForm() {
             <label className={styles.error}>{error}</label>
 
             <div css={beforeStyles} className={styles.buttonWrapper}>
-                <button onClick={handleSwitch} className={styles.switchButton} style={{color: themes[selectedTheme].backgroundOpaque, borderColor: themes[selectedTheme].primary.header, backgroundColor: themes[selectedTheme].primary.header}} type='button'>Log In</button>
-                <button className={styles.submitButton + (isFormFilled() && isPassGood() ? ' ' + styles.submitReady : '')} style={(isFormFilled() && isPassGood() ? {color: themes[selectedTheme].backgroundOpaque, borderColor: themes[selectedTheme].primary.highlight, backgroundColor: themes[selectedTheme].primary.highlight} : {color: themes[selectedTheme].primary.subtext, borderColor: themes[selectedTheme].primary.subtext, backgroundColor: themes[selectedTheme].backgroundOpaque})} type="submit">Submit</button>
+                <button onClick={handleSwitch} className={styles.switchButton} style={{color: themes[selectedMode][selectedTheme].backgroundOpaque, borderColor: themes[selectedMode][selectedTheme].primary.header, backgroundColor: themes[selectedMode][selectedTheme].primary.header}} type='button'>Log In</button>
+                <button className={styles.submitButton + (isFormFilled() && isPassGood() ? ' ' + styles.submitReady : '')} style={(isFormFilled() && isPassGood() ? {color: themes[selectedMode][selectedTheme].backgroundOpaque, borderColor: themes[selectedMode][selectedTheme].primary.highlight, backgroundColor: themes[selectedMode][selectedTheme].primary.highlight} : {color: themes[selectedMode][selectedTheme].primary.subtext, borderColor: themes[selectedMode][selectedTheme].primary.subtext, backgroundColor: themes[selectedMode][selectedTheme].backgroundOpaque})} type="submit">Submit</button>
             </div>
         </form>
     )

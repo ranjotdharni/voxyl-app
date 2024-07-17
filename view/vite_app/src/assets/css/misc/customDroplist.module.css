@@ -10,7 +10,6 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 5px 5px 55px 5px rgba(0, 0, 0, 0.33);
     border-radius: 0.25em;
 }
 
@@ -20,7 +19,6 @@
     flex-direction: column;
     margin-top: 2%;
     border: solid 1px rgba(10, 10, 10, 0.15);
-    box-shadow: 5px 5px 55px 5px rgba(0, 0, 0, 0.33);
     border-radius: 0.25em;
     z-index: 3;
 }

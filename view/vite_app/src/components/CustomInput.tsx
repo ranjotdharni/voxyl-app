@@ -9,24 +9,24 @@ import { Context } from '../pages/Layout';
 // Set 'label' to empty string to disable placeholder animations/resizing and make the component more compact (less sizing issues)
 export default function CustomInput({ label, type, name, init, color, highlight, callback } : { label: string, type: string, name: string, init: string, color?: string, highlight?: string, callback?: (value: string) => void }) {
     // @ts-ignore Ignore unused setTheme
-    const [ selectedTheme, grabTheme ] = useContext(Context)
+    const [ selectedTheme, selectedMode, grabTheme ] = useContext(Context)
 
     const SpanStyles = css`
-        color: ${color ? color : themes[selectedTheme].primary.subtext} !important;
+        color: ${color ? color : themes[selectedMode][selectedTheme].primary.subtext} !important;
     `
     
     const TextStyles = css`
-        border-color: ${color ? color : themes[selectedTheme].primary.subtext} !important;
+        border-color: ${color ? color : themes[selectedMode][selectedTheme].primary.subtext} !important;
 
         &:focus {
-            color: ${highlight ? highlight : themes[selectedTheme].primary.highlight} !important;
-            border-color: ${highlight ? highlight : themes[selectedTheme].primary.highlight} !important;
+            color: ${highlight ? highlight : themes[selectedMode][selectedTheme].primary.highlight} !important;
+            border-color: ${highlight ? highlight : themes[selectedMode][selectedTheme].primary.highlight} !important;
         }
     `
 
     const activeStyles = css`
         &:focus-within > span {
-            color: ${highlight ? highlight : themes[selectedTheme].primary.highlight} !important;
+            color: ${highlight ? highlight : themes[selectedMode][selectedTheme].primary.highlight} !important;
         }
     `
     
@@ -44,7 +44,7 @@ export default function CustomInput({ label, type, name, init, color, highlight,
                 </span> :
                 <></>
             }
-            <input css={TextStyles} onChange={ (e) => { handleChange(e.target.value) } } value={init} placeholder=' ' type={type} name={name} className={styles.inInput} style={(init !== '' ? {color: themes[selectedTheme].primary.highlight} : {})} />
+            <input css={TextStyles} onChange={ (e) => { handleChange(e.target.value) } } value={init} placeholder=' ' type={type} name={name} className={styles.inInput} style={(init !== '' ? {color: themes[selectedMode][selectedTheme].primary.highlight} : {})} />
         </label>
     )
 }

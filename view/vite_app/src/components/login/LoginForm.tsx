@@ -7,11 +7,12 @@ import CustomInput from '../CustomInput'
 import { MouseEvent, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { DEFAULT_THEME, themes } from '../../theme'
+import { DEFAULT_MODE, DEFAULT_THEME, themes } from '../../theme'
 
 export default function LoginForm() {
     // @ts-ignore Ignore unused setTheme
     const selectedTheme: number = DEFAULT_THEME
+    const selectedMode: number = DEFAULT_MODE
     const navigation = useNavigate()
     const { next } = useParams()
 
@@ -21,7 +22,7 @@ export default function LoginForm() {
 
     const beforeStyles = css`
         :before {
-            color: ${themes[selectedTheme].primary.tertiary}
+            color: ${themes[selectedMode][selectedTheme].primary.tertiary}
         }
     `
 
@@ -71,19 +72,19 @@ export default function LoginForm() {
     }
 
     return (
-        <form className={styles.form} style={{backgroundColor: themes[selectedTheme].backgroundOpaque}} onSubmit={handleSubmit} action="/v1/auth/login" method="put">
+        <form className={styles.form} style={{backgroundColor: themes[selectedMode][selectedTheme].backgroundOpaque}} onSubmit={handleSubmit} action="/v1/auth/login" method="put">
             <CSRFToken />
 
             <div className={styles.formHeaderWrapper}>
-                <p className={styles.formHeader} style={{color: themes[selectedTheme].primary.header}}>Log in to PitCrew</p>
+                <p className={styles.formHeader} style={{color: themes[selectedMode][selectedTheme].primary.header}}>Log in to PitCrew</p>
             </div>
 
-            <label className={styles.headLabel} style={{color: themes[selectedTheme].primary.subheader}}>Username</label>
+            <label className={styles.headLabel} style={{color: themes[selectedMode][selectedTheme].primary.subheader}}>Username</label>
             <div className={styles.wrapper}>
                 <CustomInput init={user} label='Enter a Username' type='text' name='user' callback={setUser} />
             </div>
 
-            <label className={styles.headLabel} style={{color: themes[selectedTheme].primary.subheader}}>Password</label>
+            <label className={styles.headLabel} style={{color: themes[selectedMode][selectedTheme].primary.subheader}}>Password</label>
             <div className={styles.wrapper}>
                 <CustomInput init={pass} label='Enter Password' type='password' name='pass' callback={setPass} />
             </div>
@@ -91,8 +92,8 @@ export default function LoginForm() {
             <label className={styles.error}>{error}</label>
 
             <div css={beforeStyles} className={styles.buttonWrapper}>
-                <button onClick={handleSwitch} className={styles.switchButton} style={{color: themes[selectedTheme].backgroundOpaque, borderColor: themes[selectedTheme].primary.header, backgroundColor: themes[selectedTheme].primary.header}} type='button'>Sign Up</button>
-                <button className={styles.submitButton + (isFormFilled() ? ' ' + styles.submitReady : '')} style={(isFormFilled() ? {color: themes[selectedTheme].backgroundOpaque, borderColor: themes[selectedTheme].primary.highlight, backgroundColor: themes[selectedTheme].primary.highlight} : {color: themes[selectedTheme].primary.subtext, borderColor: themes[selectedTheme].primary.subtext, backgroundColor: themes[selectedTheme].backgroundOpaque})} type="submit">Log In</button>
+                <button onClick={handleSwitch} className={styles.switchButton} style={{color: themes[selectedMode][selectedTheme].backgroundOpaque, borderColor: themes[selectedMode][selectedTheme].primary.header, backgroundColor: themes[selectedMode][selectedTheme].primary.header}} type='button'>Sign Up</button>
+                <button className={styles.submitButton + (isFormFilled() ? ' ' + styles.submitReady : '')} style={(isFormFilled() ? {color: themes[selectedMode][selectedTheme].backgroundOpaque, borderColor: themes[selectedMode][selectedTheme].primary.highlight, backgroundColor: themes[selectedMode][selectedTheme].primary.highlight} : {color: themes[selectedMode][selectedTheme].primary.subtext, borderColor: themes[selectedMode][selectedTheme].primary.subtext, backgroundColor: themes[selectedMode][selectedTheme].backgroundOpaque})} type="submit">Log In</button>
             </div>
         </form>
     )

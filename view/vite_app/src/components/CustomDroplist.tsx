@@ -22,41 +22,44 @@ export interface PayloadItem extends PayLoadRequiredFields {
 // Remember, this component always expects a wrapper that it will take the full width/height of, effectively this component is sized by the size of said wrapper
 export default function CustomDroplist( { selected, payload, relativeContainerWidth, relativeContainerUnits, color, highlight, callback } : { selected: number, payload: PayloadItem[], relativeContainerWidth: number, relativeContainerUnits: string, color?: string, highlight?: string, callback: (arg1: number) => void } ) {
     // @ts-ignore Ignore unused setTheme
-    const [ selectedTheme, grabTheme ] = useContext(Context)
+    const [ selectedTheme, selectedMode, grabTheme ] = useContext(Context)
 
     const sub = [{id: 'vncjksadncl', name: '----'}]
     
     const inlineStyles: {[key: string]: CSS.Properties} = {
         "listbox": {
             width: `${relativeContainerWidth}${relativeContainerUnits}`,
-            backgroundColor: themes[selectedTheme].backgroundOpaque
+            background: themes[selectedMode][selectedTheme].glassBackground
         },
         "selector": {
-            backgroundColor: themes[selectedTheme].backgroundOpaque,
-            color: (highlight ? highlight : themes[selectedTheme].primary.highlight),
-            border: `solid 1px ${themes[selectedTheme].primary.tertiary}`
+            background: themes[selectedMode][selectedTheme].glassBackground,
+            boxShadow: themes[selectedMode][selectedTheme].glassShadow,
+            color: (highlight ? highlight : themes[selectedMode][selectedTheme].primary.highlight),
+            border: themes[selectedMode][selectedTheme].glassBorder
         },
         "icon": {
-            color: (color ? color : themes[selectedTheme].primary.header)
+            color: (color ? color : themes[selectedMode][selectedTheme].primary.header)
         }
     }
 
     const WrapperStyles = css`
+        box-shadow: ${themes[selectedMode][selectedTheme].glassShadow};
+
         &:hover span {
-            color: ${(highlight ? highlight : themes[selectedTheme].primary.highlight)} !important;
+            color: ${(highlight ? highlight : themes[selectedMode][selectedTheme].primary.highlight)} !important;
         }
         
         &:focus-within span {
-            color: ${(highlight ? highlight : themes[selectedTheme].primary.highlight)} !important;
+            color: ${(highlight ? highlight : themes[selectedMode][selectedTheme].primary.highlight)} !important;
         }
     `
 
     const ItemStyles = css`
-        color: ${(color ? color : themes[selectedTheme].primary.header)};
+        color: ${(color ? color : themes[selectedMode][selectedTheme].primary.header)};
 
         &:hover {
-            color: ${themes[selectedTheme].backgroundOpaque};
-            background-color: ${(highlight ? highlight : themes[selectedTheme].primary.highlight)} !important;
+            color: ${themes[selectedMode][selectedTheme].backgroundOpaque};
+            background-color: ${(highlight ? highlight : themes[selectedMode][selectedTheme].primary.highlight)} !important;
         }
     `
     

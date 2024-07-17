@@ -23,7 +23,7 @@ interface Team {
 
 export default function TeamsAdd({ fetch, triggerFetch } : { fetch: boolean, triggerFetch: () => void }) {
     // @ts-ignore Ignore unused setTheme
-    const [ selectedTheme, grabTheme ] = useContext(Context)
+    const [ selectedTheme, selectedMode, grabTheme ] = useContext(Context)
 
     const [selected, setSelected] = useState<number>(0)
     const [search, setSearch] = useState<string>('')
@@ -34,53 +34,55 @@ export default function TeamsAdd({ fetch, triggerFetch } : { fetch: boolean, tri
 
     const inlineStyles: {[key: string]: CSS.Properties} = {
         "mainContainer": {
-            background: themes[selectedTheme].boxGradient
+            background: themes[selectedMode][selectedTheme].boxGradient,
+            backdropFilter: themes[selectedMode][selectedTheme].backgroundBlur,
+            border: themes[selectedMode][selectedTheme].glassBorder
         },
         "title": {
-            color: themes[selectedTheme].glowBase, 
-            textShadow: themes[selectedTheme].glowLight
+            color: themes[selectedMode][selectedTheme].glowBase, 
+            textShadow: themes[selectedMode][selectedTheme].glowLight
         },
         "submitButton": {
-            backgroundColor: themes[selectedTheme].backgroundOpaque,
-            color: themes[selectedTheme].primary.subtext,
-            borderColor: themes[selectedTheme].primary.subtext,
+            background: themes[selectedMode][selectedTheme].backgroundTransparent,
+            color: themes[selectedMode][selectedTheme].primary.subtext,
+            borderColor: themes[selectedMode][selectedTheme].primary.subtext,
         },
         "submitButtonReady": {
-            backgroundColor: themes[selectedTheme].primary.subtext,
-            color: themes[selectedTheme].primary.highlight,
+            background: themes[selectedMode][selectedTheme].primary.subtext,
+            color: themes[selectedMode][selectedTheme].primary.highlight,
             borderColor: '#ffffff00',
         },
         "addButton": {
-            backgroundColor: themes[selectedTheme].backgroundOpaque,
-            color: themes[selectedTheme].primary.subtext,
-            borderColor: themes[selectedTheme].primary.subtext,
+            background: themes[selectedMode][selectedTheme].backgroundTransparent,
+            color: themes[selectedMode][selectedTheme].primary.subtext,
+            borderColor: themes[selectedMode][selectedTheme].primary.subtext,
         },
         "addButtonReady": {
-            backgroundColor: themes[selectedTheme].primary.subtext,
-            color: themes[selectedTheme].primary.highlight,
+            background: themes[selectedMode][selectedTheme].primary.subtext,
+            color: themes[selectedMode][selectedTheme].primary.highlight,
             borderColor: '#ffffff00',
         },
         "searchResults": {
-            border: `solid 1px ${themes[selectedTheme].primary.tertiary}`
+            border: `solid 1px ${themes[selectedMode][selectedTheme].primary.tertiary}`
         },
         "resultHeader": {
-            borderBottomColor: themes[selectedTheme].primary.tertiary
+            borderBottomColor: themes[selectedMode][selectedTheme].primary.tertiary
         },
         "resultHeaderItem": {
-            borderLeftColor: themes[selectedTheme].primary.tertiary,
-            borderRightColor: themes[selectedTheme].primary.tertiary
+            borderLeftColor: themes[selectedMode][selectedTheme].primary.tertiary,
+            borderRightColor: themes[selectedMode][selectedTheme].primary.tertiary
         },
         "resultHeaderItemText": {
-            color: themes[selectedTheme].primary.subtext
+            color: themes[selectedMode][selectedTheme].primary.subtext
         },
         "resultItem": {
-            borderBottomColor: themes[selectedTheme].primary.subtext
+            borderBottomColor: themes[selectedMode][selectedTheme].primary.subtext
         },
         "checkbox": {
-            accentColor: themes[selectedTheme].primary.highlight
+            accentColor: themes[selectedMode][selectedTheme].primary.highlight
         },
         "error": {
-            color: themes[selectedTheme].error
+            color: themes[selectedMode][selectedTheme].error
         }
     }
 
@@ -195,7 +197,7 @@ export default function TeamsAdd({ fetch, triggerFetch } : { fetch: boolean, tri
                     <p className={styles.title} style={inlineStyles.title}>Add Crew Member</p>
                 </div>
                 <div className={styles.searchBar}>
-                    <div className={styles.inputWrapper}><CustomInput label='Search User by Id, Name, Email' type='text' name='search' init={search} color={themes[selectedTheme].primary.highlight} callback={setSearch} /></div>
+                    <div className={styles.inputWrapper}><CustomInput label='Search User by Id, Name, Email' type='text' name='search' init={search} color={themes[selectedMode][selectedTheme].primary.highlight} callback={setSearch} /></div>
                     <button className={styles.submitButton} style={(search.trim() !== '' ? inlineStyles.submitButtonReady : inlineStyles.submitButton)} onClick={handleSearch}>Search</button>
                 </div>
                 <div className={styles.searchResults} style={inlineStyles.searchResults}>
