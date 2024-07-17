@@ -1,7 +1,7 @@
 import { generateGlow, PERMISSIONS } from "./globals"
 
 export const DEFAULT_MODE: number = 0
-export const DEFAULT_THEME: number = 5
+export const DEFAULT_THEME: number = 0
 
 // Keep items in alphabetical order
 export interface Theme {
@@ -26,6 +26,7 @@ export interface Theme {
         middle: string,
         stop: string
     },
+    name: string,
     pageGradient: string,
     boxGradient: string,
     primary: {
@@ -66,6 +67,7 @@ export const themes: Theme[][] = [
                 middle: '#878787',
                 stop: '#878787'
             },
+            name: 'Mulberry',
             pageGradient: '#998d90',
             boxGradient: COMMON_BOX_GRADIENT,
             primary: {
@@ -100,6 +102,7 @@ export const themes: Theme[][] = [
                 middle: '',
                 stop: ''
             },
+            name: 'Ra',
             pageGradient: 'linear-gradient(45deg, hsla(0, 3%, 6%, 1) 0%, hsla(228, 31%, 6%, 1) 100%), linear-gradient(225deg, hsla(0, 3%, 6%, 1) 0%, hsla(228, 31%, 6%, 1) 100%)',
             boxGradient: 'linear-gradient(45deg, hsla(0, 3%, 7%, 1) 0%, hsla(0, 3%, 6%, 1) 12%)',
             primary: {
@@ -134,6 +137,7 @@ export const themes: Theme[][] = [
                 middle: '',
                 stop: ''
             },
+            name: 'Tron',
             pageGradient: 'linear-gradient(45deg, hsla(0, 3%, 6%, 1) 0%, hsla(228, 31%, 6%, 1) 100%), linear-gradient(225deg, hsla(0, 3%, 6%, 1) 0%, hsla(228, 31%, 6%, 1) 100%)',
             boxGradient: 'linear-gradient(45deg, hsla(0, 3%, 7%, 1) 0%, hsla(0, 3%, 6%, 1) 12%)',
             primary: {
@@ -168,6 +172,7 @@ export const themes: Theme[][] = [
                 middle: '',
                 stop: ''
             },
+            name: 'Witchcraft',
             pageGradient: 'linear-gradient(45deg, hsla(0, 3%, 6%, 1) 0%, hsla(228, 31%, 6%, 1) 100%), linear-gradient(225deg, hsla(0, 3%, 6%, 1) 0%, hsla(228, 31%, 6%, 1) 100%)',
             boxGradient: 'linear-gradient(45deg, hsla(0, 3%, 7%, 1) 0%, hsla(0, 3%, 6%, 1) 12%)',
             primary: {
@@ -202,6 +207,7 @@ export const themes: Theme[][] = [
                 middle: '',
                 stop: ''
             },
+            name: 'Energon',
             pageGradient: 'linear-gradient(45deg, hsla(0, 3%, 6%, 1) 0%, hsla(228, 31%, 6%, 1) 100%), linear-gradient(225deg, hsla(0, 3%, 6%, 1) 0%, hsla(228, 31%, 6%, 1) 100%)',
             boxGradient: 'linear-gradient(45deg, hsla(0, 3%, 7%, 1) 0%, hsla(0, 3%, 6%, 1) 12%)',
             primary: {
@@ -236,6 +242,7 @@ export const themes: Theme[][] = [
                 middle: '',
                 stop: ''
             },
+            name: 'Phonk',
             pageGradient: 'linear-gradient(45deg, hsla(0, 3%, 6%, 1) 0%, hsla(228, 31%, 6%, 1) 100%), linear-gradient(225deg, hsla(0, 3%, 6%, 1) 0%, hsla(228, 31%, 6%, 1) 100%)',
             boxGradient: 'linear-gradient(45deg, hsla(0, 3%, 7%, 1) 0%, hsla(0, 3%, 6%, 1) 12%)',
             primary: {
@@ -270,6 +277,7 @@ export const themes: Theme[][] = [
                 middle: '',
                 stop: ''
             },
+            name: 'Volcanic',
             pageGradient: 'linear-gradient(45deg, hsla(0, 3%, 6%, 1) 0%, hsla(228, 31%, 6%, 1) 100%), linear-gradient(225deg, hsla(0, 3%, 6%, 1) 0%, hsla(228, 31%, 6%, 1) 100%)',
             boxGradient: 'linear-gradient(45deg, hsla(0, 3%, 7%, 1) 0%, hsla(0, 3%, 6%, 1) 12%)',
             primary: {
@@ -306,6 +314,7 @@ export const themes: Theme[][] = [
                 middle: '#878787',
                 stop: '#878787'
             },
+            name: 'Mulberry',
             pageGradient: '#998d90',
             boxGradient: COMMON_BOX_GRADIENT,
             primary: {
@@ -340,14 +349,15 @@ export const themes: Theme[][] = [
                 middle: '',
                 stop: ''
             },
+            name: 'Beach Day',
             pageGradient: 'linear-gradient(to right, #ffb75e, #ed8f03)',
             boxGradient: COMMON_BOX_GRADIENT,
             primary: {
-                header: '#dece23',
-                subheader: '#ccc683',
-                text: '#d1cfbe',
-                subtext: '#1f1c01',
-                highlight: '#faf889',
+                header: '#9c8202',
+                subheader: '#d9db0f',
+                text: '#1a1919',
+                subtext: '#2e2001',
+                highlight: '#ccfa14',
                 tertiary: '#545453',
                 quaternary: '#2b2b2b'
             }
@@ -374,6 +384,7 @@ export const themes: Theme[][] = [
                 middle: '',
                 stop: ''
             },
+            name: 'Blue Sky',
             pageGradient: 'linear-gradient(to right, #1488cc, #2b32b2)',
             boxGradient: COMMON_BOX_GRADIENT,
             primary: {
@@ -381,7 +392,7 @@ export const themes: Theme[][] = [
                 subheader: '#cee5f5',
                 text: '#256a8a',
                 subtext: '#0f2b3d',
-                highlight: '#12b0db',
+                highlight: '#14faad',
                 tertiary: '#545453',
                 quaternary: '#2b2b2b'
             }
@@ -408,6 +419,7 @@ export const themes: Theme[][] = [
                 middle: '',
                 stop: ''
             },
+            name: 'Mint Berry',
             pageGradient: 'linear-gradient(to right, #02aab0, #00cdac)',
             boxGradient: COMMON_BOX_GRADIENT,
             primary: {
@@ -415,7 +427,7 @@ export const themes: Theme[][] = [
                 subheader: '#ffffff',
                 text: '',
                 subtext: '#0c3629',
-                highlight: '#8fc7bf',
+                highlight: '#82f593',
                 tertiary: '#545453',
                 quaternary: '#2b2b2b'
             }
@@ -442,6 +454,7 @@ export const themes: Theme[][] = [
                 middle: '',
                 stop: ''
             },
+            name: 'Lavender',
             pageGradient: 'linear-gradient(to right, #da22ff, #9733ee)',
             boxGradient: COMMON_BOX_GRADIENT,
             primary: {
@@ -449,7 +462,7 @@ export const themes: Theme[][] = [
                 subheader: '#dac7f0',
                 text: '#6b11ad',
                 subtext: '#330454',
-                highlight: '#af39e6',
+                highlight: '#faacce',
                 tertiary: '#545453',
                 quaternary: '#2b2b2b'
             }
@@ -476,6 +489,7 @@ export const themes: Theme[][] = [
                 middle: '',
                 stop: ''
             },
+            name: 'Lychee',
             pageGradient: 'linear-gradient(to right, #f953c6, #b91d73)',
             boxGradient: COMMON_BOX_GRADIENT,
             primary: {
@@ -483,7 +497,7 @@ export const themes: Theme[][] = [
                 subheader: '#f0c2d6',
                 text: '#8f153a',
                 subtext: '#450320',
-                highlight: '#f08db9',
+                highlight: '#acf9fa',
                 tertiary: '#545453',
                 quaternary: '#2b2b2b'
             }
@@ -510,6 +524,7 @@ export const themes: Theme[][] = [
                 middle: '',
                 stop: ''
             },
+            name: 'Mango',
             pageGradient: 'linear-gradient(to right, #f12711, #f5af19)',
             boxGradient: COMMON_BOX_GRADIENT,
             primary: {
@@ -517,7 +532,7 @@ export const themes: Theme[][] = [
                 subheader: '#f5ccc1',
                 text: '#9c3628',
                 subtext: '#420b04',
-                highlight: '#f29363',
+                highlight: '#bafaac',
                 tertiary: '#545453',
                 quaternary: '#2b2b2b'
             }

@@ -31,7 +31,8 @@
 }
 
 .itemText {
-    margin-left: 2.5%;
+    position: relative;
+    left: 7px;
 }
 
 .itemText:hover {

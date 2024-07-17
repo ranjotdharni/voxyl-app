@@ -320,7 +320,7 @@ class ThemeApiView(APIView):
         
         profile = Profile.objects.get(user=request.user)
 
-        return Response({"success": "true", "theme": profile.theme}, status=status.HTTP_200_OK)
+        return Response({"success": "true", "theme": profile.theme, "mode": profile.mode}, status=status.HTTP_200_OK)
     
     def put(self, request):
         data = request.data
@@ -330,6 +330,7 @@ class ThemeApiView(APIView):
         
         profile = Profile.objects.get(user=request.user)
         profile.theme = data['theme']
+        profile.mode = data['mode']
         profile.save()
 
-        return Response({"success": "true", "theme": profile.theme}, status=status.HTTP_200_OK)
+        return Response({"success": "true", "theme": profile.theme, "mode": profile.mode}, status=status.HTTP_200_OK)

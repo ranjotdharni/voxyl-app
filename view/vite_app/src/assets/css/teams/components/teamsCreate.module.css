@@ -25,6 +25,8 @@
 .containerHeader {
     margin: 0;
     font-size: 1.5rem;
+    padding: 8px;
+    border-radius: 0.5rem;
 }
 
 .contentWrapper {

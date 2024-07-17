@@ -32,6 +32,8 @@
 
 .title {
     font-size: 1.5em;
+    padding: 8px;
+    border-radius: 0.5rem;
 }
 
 .searchBar {

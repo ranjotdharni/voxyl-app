@@ -5,6 +5,7 @@ import Login from "./pages/Login"
 import './index.css'
 import Teams from "./pages/teams/Teams"
 import FloatingBackground from "./components/FloatingBackground"
+import Settings from "./pages/settings/Settings"
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
         <Route index element={<><FloatingBackground /><p style={{color: 'white', position: 'relative', zIndex: 1}}>This is the Landing Page and does not require login!</p></>} />
 
         <Route path="crews" element={<Layout><Teams /></Layout>}></Route>
+        <Route path="settings" element={<Layout><Settings/></Layout>}></Route>
 
         <Route path="entry/:next?">
           <Route index element={<Create />} />

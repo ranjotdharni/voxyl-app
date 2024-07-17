@@ -30,9 +30,11 @@ function Layout({ children } : { children: string | JSX.Element | JSX.Element[] 
             if (response.error) {
                 console.log(response.error)
                 setTheme(0)
+                setMode(0)
             }
-            else if (response.theme) {
+            else if (response.success) {
                 setTheme(response.theme)
+                setMode(response.mode)
             }
         })
     }
@@ -50,7 +52,7 @@ function Layout({ children } : { children: string | JSX.Element | JSX.Element[] 
     return (
         <Context.Provider value={[theme, mode, getTheme]}>
             <>
-                <FloatingBackground particles />
+                <FloatingBackground particles={mode === 0} />
                 {children}
             </>
         </Context.Provider>

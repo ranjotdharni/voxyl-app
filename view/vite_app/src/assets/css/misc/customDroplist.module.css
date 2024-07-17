@@ -37,8 +37,8 @@
 
 .titleWrapper {
     position: relative;
-    left: 35%;
-    width: 30%;
+    left: 10%;
+    width: 80%;
     height: 100%;
     display: flex;
     flex-direction: column;

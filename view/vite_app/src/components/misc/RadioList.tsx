@@ -4,6 +4,7 @@ interface RadioListProps {
     selected: number,
     items: string[],
     colors?: string[],
+    fontSize?: string,
     itemHeight: number,
     bubbleDiameter: string,
     bubbleColor?: string,
@@ -12,7 +13,7 @@ interface RadioListProps {
 }
 
 // itemHeight is a number (out of 100) which represents the percentage of the entire RadioList's height that each item should take up
-export default function RadioList({ selected, items, colors, itemHeight, bubbleDiameter, bubbleColor, backgroundColor, callback } : RadioListProps) {
+export default function RadioList({ selected, items, colors, fontSize, itemHeight, bubbleDiameter, bubbleColor, backgroundColor, callback } : RadioListProps) {
 
     return (
         <div className={styles.container}>
@@ -27,7 +28,7 @@ export default function RadioList({ selected, items, colors, itemHeight, bubbleD
                                     <></>
                                 }
                             </div>
-                            <p className={styles.itemText} style={(colors ? { color: colors[index] } : {})}>{item}</p>
+                            <p className={styles.itemText} style={{fontSize: (fontSize ? fontSize : ''), color: (colors ? colors[index] : '')}}>{item}</p>
                         </div>
                     )
                 })

@@ -53,7 +53,8 @@ export default function TeamsCreate({ fetch, triggerFetch } : { fetch: boolean, 
         },
         "containerHeader": {
             color: themes[selectedMode][selectedTheme].glowBase, 
-            textShadow: themes[selectedMode][selectedTheme].glowLight
+            textShadow: themes[selectedMode][selectedTheme].glowLight,
+            background: themes[selectedMode][selectedTheme].backgroundContrast
         },
         "submit": {
             backgroundColor: '#ffffff00',

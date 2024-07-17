@@ -1,0 +1,135 @@
+.mainWrapper {
+    position: relative;
+    margin: auto;
+    width: 40em;
+    aspect-ratio: 15 / 13;
+    border-radius: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    transform: translateY(5%);
+}
+
+.title {
+    width: 90%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.title p {
+    font-size: 1.75rem;
+    padding: 8px;
+    border-radius: 0.5rem;
+}
+
+.modeTitle {
+    width: 90%;
+    height: 5%;
+    font-size: 1.5em;
+    border-bottom: solid 1px;
+}
+
+.modeBox {
+    width: 90%;
+    height: 7.5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.modeBox div {
+    font-size: 1.25rem;
+    border-radius: 0.25rem;
+    padding: 1px 10px 1px 10px;
+    border: solid 1px;
+}
+
+.modeBox div:hover {
+    cursor: pointer;
+}
+
+.themeTitle {
+    width: 90%;
+    height: 5%;
+    font-size: 1.5em;
+    border-bottom: solid 1px;
+}
+
+.themeBox {
+    width: 90%;
+    height: 52.5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.themeSelector {
+    position: relative;
+    width: 40%;
+    height: 90%;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: end;
+}
+
+.themeSelector div {
+    width: 90%;
+}
+
+.buttonContainer {
+    width: 90%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.buttonWrapper {
+    width: 30%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.buttonWrapper button {
+    width: 48%;
+    height: 90%;
+    border: none;
+    border-radius: 0.25rem;
+    font-family: 'JetBrains Mono';
+    cursor: pointer;
+}
+
+@media (max-width: 800px) {
+    .mainWrapper {
+        width: 25em;
+        min-height: 800px;
+    }
+
+    .themeBox {
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    .themeSelector {
+        position: relative;
+        width: 90%;
+        height: 45%;
+        border-radius: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: end;
+    }
+}

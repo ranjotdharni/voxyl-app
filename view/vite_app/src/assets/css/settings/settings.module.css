@@ -1,0 +1,9 @@
+.mainContainer {
+    position: relative;
+    top: 1%;
+    left: 1%;
+    z-index: 1;
+    width: 98%;
+    height: 98%;
+    min-height: 532px;
+}

@@ -40,7 +40,8 @@ export default function TeamsAdd({ fetch, triggerFetch } : { fetch: boolean, tri
         },
         "title": {
             color: themes[selectedMode][selectedTheme].glowBase, 
-            textShadow: themes[selectedMode][selectedTheme].glowLight
+            textShadow: themes[selectedMode][selectedTheme].glowLight,
+            background: themes[selectedMode][selectedTheme].backgroundContrast
         },
         "submitButton": {
             background: themes[selectedMode][selectedTheme].backgroundTransparent,

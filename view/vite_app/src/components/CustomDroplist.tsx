@@ -29,7 +29,7 @@ export default function CustomDroplist( { selected, payload, relativeContainerWi
     const inlineStyles: {[key: string]: CSS.Properties} = {
         "listbox": {
             width: `${relativeContainerWidth}${relativeContainerUnits}`,
-            background: themes[selectedMode][selectedTheme].glassBackground
+            background: themes[selectedMode][selectedTheme].boxGradient
         },
         "selector": {
             background: themes[selectedMode][selectedTheme].glassBackground,
