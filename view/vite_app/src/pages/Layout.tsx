@@ -4,6 +4,7 @@ import { bakedOrigin, fetchToApi } from '../globals';
 import { useNavigate } from 'react-router-dom';
 import { DEFAULT_MODE, DEFAULT_THEME } from '../theme';
 import Loader from '../components/misc/Loader';
+import Navbar from '../components/misc/NavBar';
 
 export const Context = React.createContext<[number, number, () => void | Promise<void>]>([
     DEFAULT_THEME,
@@ -57,6 +58,7 @@ function Layout({ children } : { children: string | JSX.Element | JSX.Element[] 
         <Context.Provider value={[theme, mode, getTheme]}>
             <>
                 <FloatingBackground muteBackground={loader} particles={mode === 0} />
+                <Navbar />
                 {loader ? <Loader /> : children}
             </>
         </Context.Provider>
