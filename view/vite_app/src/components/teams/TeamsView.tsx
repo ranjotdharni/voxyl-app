@@ -118,7 +118,7 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
 
         await fetchToApi("/v1/teams/view/", "DELETE", meta).then(response => {
             if (response.success) {
-                throwError(`${members[selectedTeam][selectedMember[selectedTeam]].name} was dropped from this crew`)
+                throwError(`${members[selectedTeam][selectedMember[selectedTeam]].name} was dropped from this team`)
                 const deleteIdx: number = selectedMember[selectedTeam]
                 updateSelectedMember(Math.max(deleteIdx - 1, 0))
                 const newMembers = [...members]
@@ -136,7 +136,7 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
 
         setModal({
             title: 'Are You Sure?',
-            message: 'This will permanently delete this crew. THIS ACTION CANNOT BE UNDONE!',
+            message: 'This will permanently delete this team. THIS ACTION CANNOT BE UNDONE!',
             question: 'Do you still want to continue?',
             callback: disbandCrew
         })
@@ -147,7 +147,7 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
 
         setModal({
             title: 'Are You Sure?',
-            message: 'This will remove this member from this crew unless they are manually re-added.',
+            message: 'This will remove this member from this team unless they are manually re-added.',
             question: 'Do you still want to continue?',
             callback: dropMember
         })
@@ -196,7 +196,7 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
             return
 
         if (subjectPermissionLevel === PERMISSIONS.length - 1) {
-            throwError('Crew Chief may not demote themself, transfer ownership by assigning new Crew Chief')
+            throwError('Owner may not demote themself, transfer ownership by assigning new Owner')
             return
         }
 
@@ -260,13 +260,13 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
                 <div className={styles.titleContainer}>
                     <div className={styles.droplistWrapper}><CustomDroplist selected={selectedTeam} payload={teams} callback={setSelectedTeam} color={themes[selectedMode][selectedTheme].primary.highlight} highlight={themes[selectedMode][selectedTheme].primary.header} relativeContainerWidth={20} relativeContainerUnits='em'/></div>
                     <div className={styles.titleWrapper} style={inlineStyles.titleWrapper}>
-                        <p className={styles.title} style={inlineStyles.title}>View Your Crews</p>
+                        <p className={styles.title} style={inlineStyles.title}>View Your Teams</p>
                     </div>
                 </div>
                 <div className={styles.deleteWrapper}><button className={styles.delete} onClick={handleDisband}>Disband</button></div>
                 <div className={styles.memberContainer}>
                     <div className={styles.memberTitleContainer} style={inlineStyles.memberTitleContainer}>
-                        <h2 className={styles.memberTitle} style={inlineStyles.memberTitle}>Crew Members</h2>
+                        <h2 className={styles.memberTitle} style={inlineStyles.memberTitle}>Team Members</h2>
                         <div className={styles.userDroplistWrapper}><CustomDroplist selected={selectedMember[selectedTeam]} payload={members[selectedTeam]} callback={updateSelectedMember} relativeContainerWidth={20} relativeContainerUnits='em'/></div>
                     </div>
                     <div className={styles.memberBody}>

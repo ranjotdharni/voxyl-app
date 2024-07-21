@@ -90,7 +90,7 @@ export default function CreateForm() {
     }
 
     return (
-        <form className={styles.form} style={{ backgroundColor: themes[selectedMode][selectedTheme].backgroundOpaque }} onSubmit={handleSubmit} action="/v1/auth/login" method="POST">
+        <form className={styles.form} style={{background: themes[selectedMode][selectedTheme].boxGradient, border: themes[selectedMode][selectedTheme].glassBorder}} onSubmit={handleSubmit} action="/v1/auth/login" method="POST">
             <CSRFToken />
 
             <div className={styles.formHeaderWrapper}>

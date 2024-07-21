@@ -175,7 +175,7 @@ export default function TeamsAdd({ fetch, triggerFetch } : { fetch: boolean, tri
         }
 
         if (response.success)
-            throwError(response.message || 'Crew Member Added')
+            throwError(response.message || 'Team Member Added')
         triggerFetch()
     }
 
@@ -195,7 +195,7 @@ export default function TeamsAdd({ fetch, triggerFetch } : { fetch: boolean, tri
             <div className={styles.mainContainer} style={inlineStyles.mainContainer}>
                 <div className={styles.headerWrapper}>
                     <div className={styles.droplistWrapper}><CustomDroplist selected={selected} payload={teams} callback={setSelected} relativeContainerWidth={40} relativeContainerUnits='%'/></div>
-                    <p className={styles.title} style={inlineStyles.title}>Add Crew Member</p>
+                    <p className={styles.title} style={inlineStyles.title}>Add Team Member</p>
                 </div>
                 <div className={styles.searchBar}>
                     <div className={styles.inputWrapper}><CustomInput label='Search User by Id, Name, Email' type='text' name='search' init={search} color={themes[selectedMode][selectedTheme].primary.highlight} callback={setSearch} /></div>

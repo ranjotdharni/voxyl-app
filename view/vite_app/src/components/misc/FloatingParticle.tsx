@@ -4,6 +4,7 @@ import styles from '../../assets/css/misc/floatingParticle.module.css'
 import CSS from 'csstype'
 import { css } from '@emotion/react'
 import { generateGlow } from '../../globals'
+import { useEffect, useState } from 'react'
 
 interface props {
     particleWidth: number
@@ -11,16 +12,20 @@ interface props {
     duration: number
     glowBase: string
     glowColor: string
+    fadeIn?: number
     reverse?: boolean
     top?: number
     left?: number
 }
 
-export default function FloatingParticle({ width, duration, particleWidth, glowBase, glowColor, reverse, top, left } : props) {
+export default function FloatingParticle({ width, duration, particleWidth, glowBase, glowColor, fadeIn, reverse, top, left } : props) {
+    const [opacity, setOpacity] = useState<number>(fadeIn ? 0 : 1)
+    
     const basicBubbleStyles: CSS.Properties = {
         width: `${particleWidth}px`,
         backgroundColor: glowBase,
         boxShadow: generateGlow(glowBase, glowColor),
+        opacity: opacity
     }
 
     const Bubble1Styles = css`
@@ -38,6 +43,14 @@ export default function FloatingParticle({ width, duration, particleWidth, glowB
         animation-duration: ${duration}s;
         animation-direction: ${reverse ? 'reverse' : 'normal'};
     `
+    
+    useEffect(() => {
+        if (fadeIn) {
+            setTimeout(() => {
+                setOpacity(1)
+            }, fadeIn * 1000)
+        }
+    }, [])
 
     return (
         <>

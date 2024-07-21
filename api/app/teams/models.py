@@ -7,25 +7,25 @@ PERMISSIONS = {
         "level": 0,
         "alias": "Member"
     },
-    "MECHANIC": {
+    "SENIOR": {
         "level": 1,
-        "alias": "Mechanic"
+        "alias": "Senior Member"
     },
-    "ENGINEER": {
+    "LEAD": {
         "level": 2,
-        "alias": "Engineer"
+        "alias": "Lead"
     },
-    "DRIVER": {
+    "MOD": {
         "level": 3,
-        "alias": "Driver"
+        "alias": "Moderator"
     },
-    "CAR_CHIEF": {
+    "CAPTAIN": {
         "level": 4,
-        "alias": "Car Chief"
+        "alias": "Captain"
     },
-    "CREW_CHIEF": {
+    "OWNER": {
         "level": 5,
-        "alias": "Crew Chief"
+        "alias": "Team Owner"
     },
 }
 

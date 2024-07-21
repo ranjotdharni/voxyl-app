@@ -72,11 +72,11 @@ export default function LoginForm() {
     }
 
     return (
-        <form className={styles.form} style={{backgroundColor: themes[selectedMode][selectedTheme].backgroundOpaque}} onSubmit={handleSubmit} action="/v1/auth/login" method="put">
+        <form className={styles.form} style={{background: themes[selectedMode][selectedTheme].boxGradient, border: themes[selectedMode][selectedTheme].glassBorder}} onSubmit={handleSubmit} action="/v1/auth/login" method="put">
             <CSRFToken />
 
             <div className={styles.formHeaderWrapper}>
-                <p className={styles.formHeader} style={{color: themes[selectedMode][selectedTheme].primary.header}}>Log in to PitCrew</p>
+                <p className={styles.formHeader} style={{color: themes[selectedMode][selectedTheme].primary.header}}>Log in to Air Teams</p>
             </div>
 
             <label className={styles.headLabel} style={{color: themes[selectedMode][selectedTheme].primary.subheader}}>Username</label>

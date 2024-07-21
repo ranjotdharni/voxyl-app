@@ -88,7 +88,7 @@ export default function TeamsCreate({ fetch, triggerFetch } : { fetch: boolean, 
         let response = await fetchToApi("/v1/teams/create/", "POST", meta)
 
         if (response.success) {
-            throwError('Crew Created')
+            throwError('Team Created')
             triggerFetch()
             return
         }
@@ -109,7 +109,7 @@ export default function TeamsCreate({ fetch, triggerFetch } : { fetch: boolean, 
         <div className={styles.gridItemWrapper}>
             <div className={styles.mainContainer} style={inlineStyles.mainContainer}>
                 <div className={styles.containerHeaderWrapper}>
-                    <p className={styles.containerHeader} style={inlineStyles.containerHeader}>Create New Crew</p>
+                    <p className={styles.containerHeader} style={inlineStyles.containerHeader}>Create New Team</p>
                 </div>
                 <div className={styles.contentWrapper}>
                     <NewName value={newName} setValue={setNewName}/>

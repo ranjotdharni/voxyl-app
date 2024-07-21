@@ -4,17 +4,17 @@ import Create from "./pages/Create"
 import Login from "./pages/Login"
 import './index.css'
 import Teams from "./pages/teams/Teams"
-import FloatingBackground from "./components/FloatingBackground"
 import Settings from "./pages/settings/Settings"
+import Landing from "./pages/landing/Landing"
 
 function App() {
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<><FloatingBackground /><p>This is the Landing Page.</p></>} />
+        <Route index element={<Landing />} />
 
-        <Route path="crews" element={<Layout><Teams /></Layout>}></Route>
+        <Route path="teams" element={<Layout><Teams /></Layout>}></Route>
         <Route path="settings" element={<Layout><Settings/></Layout>}></Route>
 
         <Route path="entry/:next?">

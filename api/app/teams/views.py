@@ -80,18 +80,10 @@ class TeamsView(APIView):
     
     def post(self, request):
         data = request.data
-
         if not request.user.is_authenticated:
             return Response({"error": "Fatal Error."}, status=status.HTTP_400_BAD_REQUEST)
         
-        try:
-            requester = Member.objects.get(team=team, user=request.user)
-            if (requester.permissions < PERMISSIONS['DRIVER']['level']):
-                return Response({"error": "Access Level Denied"}, status=status.HTTP_403_FORBIDDEN) 
-        except Member.DoesNotExist:
-            return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
-        
-        message = 'Crew Members Added'
+        message = 'Team Members Added'
         rawAddData = data['addData']
         addData = json.loads(rawAddData)
         team_id = addData['team']
@@ -103,6 +95,13 @@ class TeamsView(APIView):
             team = Team.objects.get(id=team_id)
         except Team.DoesNotExist:
             return Response({"error": "Team Not Found"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            requester = Member.objects.get(team=team, user=request.user)
+            if (requester.permissions < PERMISSIONS['MOD']['level']):
+                return Response({"error": "Access Level Denied"}, status=status.HTTP_403_FORBIDDEN) 
+        except Member.DoesNotExist:
+            return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
 
         for item in add_list:
             try:
@@ -128,13 +127,13 @@ class TeamsView(APIView):
         
         try:
             requester = Member.objects.get(team=team, user=request.user)
-            if (requester.permissions <= dropping.permissions) or (requester.permissions < PERMISSIONS['DRIVER']['level']):
+            if (requester.permissions <= dropping.permissions) or (requester.permissions < PERMISSIONS['MOD']['level']):
                 return Response({"error": "Access Level Denied"}, status=status.HTTP_403_FORBIDDEN) 
         except Member.DoesNotExist:
             return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
 
         if dropFrom.owner == drop.username:
-            return Response({"error": "Crew Chief cannot be dropped, transfer ownership first or disband"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            return Response({"error": "Team Owner cannot be dropped, transfer ownership first or disband"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
         dropping.delete()
         return Response({"success": "true"}, status=status.HTTP_200_OK)
@@ -162,7 +161,7 @@ class TeamsCreate(APIView):
         user = User.objects.get(username=team_owner)
         team = Team(name=team_name, description=team_desc, owner=team_owner)
         team.save()
-        team_member = Member(user=user, team=team, permissions=PERMISSIONS["CREW_CHIEF"]["level"])
+        team_member = Member(user=user, team=team, permissions=PERMISSIONS['OWNER']["level"])
         team_member.save()
 
         return Response({"success": "true"}, status=status.HTTP_200_OK)
@@ -176,11 +175,11 @@ class TeamsCreate(APIView):
         
         teams = Team.objects.all().filter(owner=request.user.username)
         if (len(teams) < 2):
-            return Response({"error": "You must have 1 crew at a minimum"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            return Response({"error": "You must have 1 team at a minimum"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
         
         team = Team.objects.get(id=disband)
         if (team.owner != request.user.username):
-            return Response({"error": "Only Crew Chief can disband a crew"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            return Response({"error": "Only Team Owner can disband a team"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
         team.delete()
         return Response({"success": "true"}, status=status.HTTP_200_OK)
@@ -266,7 +265,7 @@ class RoleView(APIView):
 
         try:
             requester = Member.objects.get(team=team, user=request.user)
-            if (requester.permissions < PERMISSIONS['CAR_CHIEF']['level']) and (request.user.username != username):
+            if (requester.permissions < PERMISSIONS['CAPTAIN']['level']) and (request.user.username != username):
                 return Response({"error": "Access Level Denied"}, status=status.HTTP_403_FORBIDDEN)
         except Member.DoesNotExist:
             return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
@@ -290,15 +289,15 @@ class RoleView(APIView):
         
         try:
             requester = Member.objects.get(team=team, user=request.user)
-            if (requester.permissions < PERMISSIONS['CAR_CHIEF']['level']):
+            if (requester.permissions < PERMISSIONS['CAPTAIN']['level']):
                 return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
             
-            if (level == PERMISSIONS['CREW_CHIEF']['level']) and (requester.permissions != PERMISSIONS['CREW_CHIEF']['level']):
-                return Response({"error": "Only Crew Chief may transfer ownership of the crew"}, status=status.HTTP_403_FORBIDDEN)
+            if (level == PERMISSIONS['OWNER']['level']) and (requester.permissions != PERMISSIONS['OWNER']['level']):
+                return Response({"error": "Only Team Owner may transfer ownership of the team"}, status=status.HTTP_403_FORBIDDEN)
         except Member.DoesNotExist:
             return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
         
-        if (level == PERMISSIONS['CREW_CHIEF']['level']):
+        if (level == PERMISSIONS['OWNER']['level']):
             requester.permissions = level - 1
             requester.save()
         

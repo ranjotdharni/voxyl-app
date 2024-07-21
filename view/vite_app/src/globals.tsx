@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 export const bakedOrigin: string = window.location.origin
-export const SUCCESS_PATH: string = '/'
+export const SUCCESS_PATH: string = '/teams'
 
 // Each item's index is its numeric permission level
 export const PERMISSIONS: { tag: string, alias: string, details: string, glowBase: string, color: string }[] = [
@@ -13,37 +13,37 @@ export const PERMISSIONS: { tag: string, alias: string, details: string, glowBas
         "color": "#a8c40e"
     },
     {
-        "tag": "MECHANIC",
-        "alias": "Mechanic",
-        "details": "Mechanics can view the performance metrics of other crew members.",
+        "tag": "SENIOR",
+        "alias": "Senior Member",
+        "details": "Senior Members can view the performance metrics of other team members.",
         "glowBase": '#bde2f2',
         "color": "#0b5b7d"
     },
     {
-        "tag": "ENGINEER",
-        "alias": "Engineer",
-        "details": "Engineers can create new projects and manage members on their respective projects. This role has all permissions of lower roles.",
+        "tag": "LEAD",
+        "alias": "Lead",
+        "details": "Leads can create new projects and manage members on their respective projects. This role has all permissions of lower roles.",
         "glowBase": '#b1f2db',
         "color": "#129466"
     },
     {
-        "tag": "DRIVER",
-        "alias": "Driver",
-        "details": "Drivers can add, remove, and invite members to the crew. This role has all permissions of lower roles.",
+        "tag": "MOD",
+        "alias": "Moderator",
+        "details": "Moderators can add, remove, and invite members to the team. This role has all permissions of lower roles.",
         "glowBase": '#ceb1f2',
         "color": "#5611ab"
     },
     {
-        "tag": "CAR_CHIEF",
-        "alias": "Car Chief",
-        "details": "Car chiefs have nearly every permission as the owner of the crew (including role assignment), save only disbanding the crew and transferring ownership (exclusive to Crew Chief). A Crew Chief's Crews dashboard will present the crew that they're Crew Chief of for them to freely edit. This role has all permissions of lower roles.",
+        "tag": "CAPTAIN",
+        "alias": "Captain",
+        "details": "Captains have nearly every permission as the owner of the team (including role assignment), save only disbanding the team and transferring ownership (exclusive to Team Owner). A Captain's Teams dashboard will present the teams that they're Captain of for them to freely edit. This role has all permissions of lower roles.",
         "glowBase": '#f5cee6',
         "color": "#ad1573"
     },
     {
-        "tag": "CREW_CHIEF",
-        "alias": "Crew Chief",
-        "details": "The owner of the crew; there may only be one Crew Chief. Crew Chief can disband the crew or transfer ownership of the crew by assigning another member as Crew Chief. This role holds the highest permission level. This role has all permissions of lower roles.",
+        "tag": "OWNER",
+        "alias": "Team Owner",
+        "details": "The owner of the team; there may only be one Team Owner. Team Owner can disband the team or transfer ownership of the team by assigning another member as Team Owner. This role holds the highest permission level. This role has all permissions of lower roles.",
         "glowBase": '#f7d4c3',
         "color": "#bf4c17"
     }

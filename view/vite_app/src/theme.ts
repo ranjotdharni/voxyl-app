@@ -1,7 +1,7 @@
 import { generateGlow, PERMISSIONS } from "./globals"
 
-export const DEFAULT_MODE: number = 0
-export const DEFAULT_THEME: number = 0
+export const DEFAULT_MODE: number = 1
+export const DEFAULT_THEME: number = 4
 
 // Keep items in alphabetical order
 export interface Theme {

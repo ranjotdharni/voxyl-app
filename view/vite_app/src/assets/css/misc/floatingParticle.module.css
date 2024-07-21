@@ -12,6 +12,7 @@
     top: 50%;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
+    transition: opacity linear 1s;
 }
 
 .bubble:nth-child(odd) {
