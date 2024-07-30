@@ -21,7 +21,6 @@ export default function Navbar() {
     }
 
     function NavIcon({ src, link } : { src: string, link: string }) {
-
         return (
             <div className={styles.iconContainer}>
                 <img onClick={() => { redirect(link) }} src={src} />
@@ -32,7 +31,7 @@ export default function Navbar() {
     return (
         <div className={styles.mainContainer} style={inlineStyles.mainContainer}>
             <div className={styles.linkContainer}>
-                <NavIcon src={flagIcon} link='/crews' />
+                <NavIcon src={flagIcon} link='/teams' />
                 <NavIcon src={toolsIcon} link='/settings' />
             </div>
         </div>

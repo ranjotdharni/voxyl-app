@@ -45,7 +45,7 @@ export default function Landing() {
                 </div>
                 <div className={styles.welcomeContent}>
                     <div className={styles.welcomeWrapper}>
-                        <p className={styles.welcomeHeader}>Air Teams</p>
+                        <p className={styles.welcomeHeader}>Voxyl</p>
                         {
                             // @ts-ignore Ignore unused generateArray item
                             generateArray(0).map((item, index) => {
@@ -60,7 +60,7 @@ export default function Landing() {
                     <div className={styles.welcomeContentTextWrapper}>
                         <p>
                             Have a team? Have an idea? Now all you need is a platform to bring the two together.
-                            Air Teams is your one stop shop for organizing teams, creating projects, assigning roles, 
+                            Voxyl is your one stop shop for organizing teams, creating projects, assigning roles, 
                             and monitoring performance. Sign up to create your first Team, recruit Members, and assign 
                             Role permissions to give your Teams' Members more control over your Projects. 
                         </p>

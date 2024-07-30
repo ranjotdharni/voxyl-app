@@ -1,0 +1,160 @@
+.mainContainer {
+    width: 95%;
+    min-height: 50px;
+    margin-bottom: 1%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.basicContainer {
+    min-height: 50px;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.titleContainer {
+    min-width: 330px;
+    width: 25%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.titleWrapper {
+    width: 60%;
+}
+
+.dateWrapper {
+    position: relative;
+    width: 20%;
+    height: 100%;
+    margin-left: 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.dateWrapper input {
+    color: whitesmoke;
+}
+
+.dateWrapper input:hover {
+    cursor: pointer;
+}
+
+.dateWrapper::before {
+    content: 'Deadline';
+    font-size: 0.55rem;
+    color: whitesmoke;
+}
+
+.titleButtonsContainer {
+    min-width: 200px;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.titleButtonsContainer::before {
+    content: 'Points';
+    font-size: 0.6rem;
+    margin-right: 5px;
+    color: whitesmoke;
+}
+
+.counterWrapper {
+    width: 30%;
+    height: 90%;
+}
+
+.deleteWrapper {
+    background: none;
+    border: none;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.deleteWrapper:hover {
+    cursor: pointer;
+    color: rgb(199, 11, 11);
+}
+
+.expandWrapper {
+    background: none;
+    border: none;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.expandWrapper:hover {
+    cursor: pointer;
+}
+
+.expandedContainer {
+    min-height: 300px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.expandedContainer textarea {
+    min-width: 95%;
+    max-width: 95%;
+    min-height: 285px;
+    max-height: 400px;
+    outline: none;
+    border: none;
+    border-radius: 0.5rem;
+    padding-inline: 5px;
+    color: whitesmoke;
+}
+
+@media screen and (max-width: 660px) {
+    .basicContainer {
+        min-height: 50px;
+        width: 95%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: start;
+    }
+
+    .titleContainer {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .titleWrapper {
+        width: 40%;
+    }
+
+    .dateWrapper {
+        margin-right: 15px;
+    }
+
+    .titleButtonsContainer {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .counterWrapper {
+        width: 15%;
+    }
+}

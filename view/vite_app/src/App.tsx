@@ -6,6 +6,7 @@ import './index.css'
 import Teams from "./pages/teams/Teams"
 import Settings from "./pages/settings/Settings"
 import Landing from "./pages/landing/Landing"
+import Project from "./pages/projects/Project"
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
         <Route index element={<Landing />} />
 
         <Route path="teams" element={<Layout><Teams /></Layout>}></Route>
+        <Route path="project/:id?" element={<Layout><Project /></Layout>}></Route>
         <Route path="settings" element={<Layout><Settings/></Layout>}></Route>
 
         <Route path="entry/:next?">

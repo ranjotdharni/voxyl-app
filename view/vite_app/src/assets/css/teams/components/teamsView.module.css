@@ -362,11 +362,17 @@
     margin-left: 5%;
 }
 
-@media (max-width: 1386px) {
+@media (max-width: 1386px) or (max-height: 800px) {
+    .gridItemWrapper {
+        width: 90%;
+        min-height: 800px;
+    }
+
     .titleContainer {
         flex-direction: column-reverse;
         justify-content: flex-start;
         align-items: start;
+        margin-top: 26px;
     }
 
     .droplistWrapper {
@@ -378,13 +384,13 @@
     }
 }
 
-@media (max-width: 1100px) or (max-height: 800px) {
+/*@media (max-width: 1100px) or (max-height: 800px) {
     .gridItemWrapper {
         width: 90%;
         min-height: 800px;
     }
 
     .titleContainer {
-        margin-top: 10px;
+        margin-top: 18px;
     }
-}
+}*/

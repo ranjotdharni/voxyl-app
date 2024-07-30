@@ -76,7 +76,7 @@ export default function LoginForm() {
             <CSRFToken />
 
             <div className={styles.formHeaderWrapper}>
-                <p className={styles.formHeader} style={{color: themes[selectedMode][selectedTheme].primary.header}}>Log in to Air Teams</p>
+                <p className={styles.formHeader} style={{color: themes[selectedMode][selectedTheme].primary.header}}>Log in to Voxyl</p>
             </div>
 
             <label className={styles.headLabel} style={{color: themes[selectedMode][selectedTheme].primary.subheader}}>Username</label>

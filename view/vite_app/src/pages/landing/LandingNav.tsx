@@ -1,5 +1,5 @@
 import styles from '../../assets/css/landing/landingNav.module.css'
-import Icon from '../../assets/img/png/target.png'
+import Icon from '../../assets/img/png/voxyl.png'
 
 export default function LandingNav() {
 

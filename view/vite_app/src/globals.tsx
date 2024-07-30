@@ -91,19 +91,6 @@ export function getCookieValue(cookie: string) {
     return decodeURIComponent(cookie)
 }
 
-/*function isCookieExpired(cookie: string) {
-    const cookiePairs = cookie.split(';');
-    for (let i = 0; i < cookiePairs.length; i++) {
-      const pair = cookiePairs[i].trim().split('=');
-      if (pair[0].toLowerCase() === 'expires') {
-        const expirationDate = new Date(pair[1]);
-        return expirationDate > new Date();
-      }
-    }
-  
-    return false;
-  }*/
-
 export async function fetchToApi(localPath: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE', metaData: Array<[string, string | Blob]>) {
     /*const data = new FormData()
 
@@ -180,4 +167,33 @@ export function generateArray(length: number): number[] {
 
 export function inclusiveRandomInteger(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+export function dateToFormat(format: string, date: Date): string
+{
+    let str = format.toLowerCase().slice()
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+    let mm = (str.includes('mmm') ? 'mmm' : 'mm')
+    let dd = (str.includes('ddd') ? 'ddd' : 'dd')
+    let yy = (str.includes('yyyy') ? 'yyyy' : 'yy')
+
+    str = str.replace(mm, (mm === 'mm' ? (date.getMonth() + 1).toString().padStart(2, '0') : monthNames[date.getMonth()]))
+    str = str.replace(dd, (dd === 'dd' ? (date.getDate()).toString().padStart(2, '0') : dayNames[date.getDay()]))
+    str = str.replace(yy, (yy === 'yyyy' ? (date.getFullYear()).toString() : date.getFullYear().toString().slice(-2)))
+
+    return str
+}
+
+export function parseDateString(dateString: string) {
+    const dateOnlyRegex = /^([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2])(-(0[1-9]|[1-2][0-9]|3[0-1])))$/  
+
+    if (dateOnlyRegex.test(dateString)) {
+        const utcDate = new Date(dateString)
+        const localDate = new Date(utcDate.getTime() + utcDate.getTimezoneOffset() * 60000)
+        return localDate  
+    }
+
+    return new Date(dateString)
 }
