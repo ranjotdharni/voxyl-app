@@ -1,4 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import { Project } from "./pages/projects/Project";
+import { StepProps } from "./components/projects/Step";
+import { StrideProps } from "./components/projects/Stride";
 
 export const bakedOrigin: string = window.location.origin
 export const SUCCESS_PATH: string = '/teams'
@@ -92,14 +95,6 @@ export function getCookieValue(cookie: string) {
 }
 
 export async function fetchToApi(localPath: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE', metaData: Array<[string, string | Blob]>) {
-    /*const data = new FormData()
-
-    metaData.forEach((obj) => {
-        data.append(obj[0], obj[1])
-    })
-
-    data.append('csrfmiddlewaretoken', getCookieValue(getCookie('csrftoken')))*/
-
     let data: {[key: string]: string | Blob} = {}
 
     metaData.forEach((v) => {
@@ -139,8 +134,9 @@ export async function fetchToApi(localPath: string, method: 'GET' | 'POST' | 'PU
     }
 
     if (response.redirect !== undefined) {
-        const redirect = useNavigate()
-        redirect(response.redirect)
+        window.location.replace(window.location.origin + response.redirect)
+        /*const redirect = useNavigate()
+        redirect(response.redirect)*/
     }
 
     return response
@@ -196,4 +192,162 @@ export function parseDateString(dateString: string) {
     }
 
     return new Date(dateString)
+}
+
+// The below function DOES NOT WORK FOR OBJECTS WITH FUNCTIONS IN THEM,
+// it is strictly for use with data-only objects, so do not add functions
+// to the Project interface
+export function shallowCompareProjects(p1: Project, p2: Project): boolean {
+    return JSON.stringify(p1) === JSON.stringify(p2)
+}
+
+// The below function DOES NOT WORK FOR OBJECTS WITH FUNCTIONS IN THEM,
+// it is strictly for use with data-only objects, so do not add functions
+// to the Project interface
+export function hardCopyProject(p1: Project): Project {
+    let projectCopy: Project = {    // Order of members should match original object!!!
+        id: p1.id + '',
+        title: p1.title + '',
+        strides: []
+    }
+
+    for (let i = 0; i < p1.strides.length; i++) {
+        let strideOriginal: StrideProps = p1.strides[i]
+
+        let strideCopy: StrideProps = {     // Order of members should match original object!!!
+            id: strideOriginal.id + '',
+            title: strideOriginal.title + '',
+            steps: []
+        }
+
+        for (let j = 0; j < strideOriginal.steps.length; j++) { 
+            let stepOriginal: StepProps = strideOriginal.steps[j]
+
+            let stepCopy: StepProps = {     // Order of members should match original object!!!
+                id: stepOriginal.id + '',
+                title: stepOriginal.title + '',
+                points: stepOriginal.points + 0,
+                deadline: new Date(stepOriginal.deadline.getTime()),
+                description: stepOriginal.description + '',
+                status: stepOriginal.status + ''
+            }
+
+            strideCopy.steps.push(stepCopy)
+        }
+
+        projectCopy.strides.push(strideCopy)
+    }
+
+    return projectCopy
+}
+
+export function projectDifferentiator(original: Project, buffer: Project): string {
+    interface StepUpdate {
+        id?: string
+        title?: string
+        points?: number
+        deadline?: number
+        description?: string
+        status?: string
+    }
+
+    let projectTitle: string = ''
+
+    let strideDifference: { added: StrideProps[], updated: {id: string, title: string, added: StepProps[], updated: StepUpdate[], dropped: string[]}[], dropped: string[] } = {added: [], updated: [], dropped: []}
+
+    if (original.title !== buffer.title) {
+        projectTitle = buffer.title
+    }
+
+    let originalStridesIds: string[] = original.strides.map(s => s.id)
+    let bufferStridesIds: string[] = buffer.strides.map(s => s.id)
+    let add: string[] = []
+    let drop: string[] = []
+
+    for (let i = 0; i < bufferStridesIds.length; i++) {
+        let adding: boolean = originalStridesIds.indexOf(bufferStridesIds[i]) === -1
+
+        if (adding) {
+            strideDifference.added.push(buffer.strides[i])
+            add.push(buffer.strides[i].id)
+        }
+
+    }
+
+    for (let i = 0; i < originalStridesIds.length; i++) {
+        let dropping: boolean = bufferStridesIds.indexOf(originalStridesIds[i]) === -1
+
+        if (dropping) {
+            strideDifference.dropped.push(originalStridesIds[i])
+            drop.push(original.strides[i].id)
+        }
+    }
+
+    for (let i = 0; i < buffer.strides.length; i++) {
+        if (add.indexOf(buffer.strides[i].id) === -1 && drop.indexOf(buffer.strides[i].id) === -1) {
+            let origin: StrideProps = original.strides[i]
+            let buff: StrideProps = buffer.strides[i]
+
+            let update: {id: string, title: string, added: StepProps[], updated: StepUpdate[], dropped: string[]} = {
+                id: buff.id,
+                title: (buff.title !== origin.title ? buff.title : ''),
+                added: [],
+                updated: [],
+                dropped: []
+            }
+
+            let originalStepsIds: string[] = origin.steps.map(s => s.id)
+            let bufferStepsIds: string[] = buff.steps.map(s => s.id)
+            let addStep: string[] = []
+            let dropStep: string[] = []
+
+            for (let j = 0; j < bufferStepsIds.length; j++) {
+                let addingStep: boolean = originalStepsIds.indexOf(bufferStepsIds[j]) === -1
+        
+                if (addingStep) {
+                    update.added.push(buff.steps[j])
+                    addStep.push(buffer.strides[j].id)
+                }
+        
+            }
+
+            for (let j = 0; j < originalStepsIds.length; j++) {
+                let droppingStep: boolean = bufferStepsIds.indexOf(originalStepsIds[j]) === -1
+        
+                if (droppingStep) {
+                    update.dropped.push(origin.steps[j].id)
+                    dropStep.push(origin.steps[j].id)
+                }
+            }
+
+            for (let j = 0; j < buff.steps.length; j++) {
+                if ((addStep.indexOf(buff.steps[j].id) === -1 && dropStep.indexOf(buff.steps[j].id) === -1)) {
+                    let stepO: StepProps = origin.steps[origin.steps.map(s => s.id).indexOf(buff.steps[j].id)]
+                    let stepB: StepProps = buff.steps[j]
+                    let u: StepUpdate = {
+                        title: (stepO.title !== stepB.title ? stepB.title : undefined),
+                        points: (stepO.points !== stepB.points ? stepB.points : undefined),
+                        deadline: (stepO.deadline.getTime() !== stepB.deadline.getTime() ? stepB.deadline.getTime() : undefined),
+                        description: (stepO.description !== stepB.description ? stepB.description : undefined),
+                        status: (stepO.status !== stepB.status ? stepB.status : undefined),
+                    }
+
+                    if (Object.keys(u).length !== 0) {
+                        u.id = stepB.id
+                        update.updated.push(u)
+                    }
+                }
+            }
+
+            if (update.title !== '' || update.added.length !== 0 || update.dropped.length !== 0 || update.updated.length !== 0) {
+                strideDifference.updated.push(update)
+            }
+        }
+    }
+
+    return JSON.stringify({
+        projectId: buffer.id,
+        projectTitle: (projectTitle !== '' ? projectTitle : ''),
+        difference: strideDifference
+    })
 }

@@ -12,6 +12,7 @@ interface Props {
 }
 
 export default function CustomCounter({ min, max, value, setValue } : Props) {
+    // @ts-ignore
     const [theme, mode, fetchTheme] = useContext(Context)
 
     function decrement() {

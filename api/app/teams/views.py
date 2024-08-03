@@ -1,10 +1,7 @@
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import redirect
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from rest_framework.views import APIView
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
@@ -12,8 +9,6 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 from django.db.models import Q
 from teams.models import Team, Member, Profile, PERMISSIONS
-from django.contrib.auth import authenticate, login
-from django.db import IntegrityError
 from django.core import serializers
 import json
 
@@ -146,7 +141,12 @@ class TeamsCreate(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        return Response({"error": "405 Method Not Allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        if not request.user.is_authenticated:
+            return Response({"error": "Fatal Error."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        teams = serializers.serialize('json', Team.objects.filter(member__user=request.user))
+
+        return Response({"success": "true", "teams": teams}, status=status.HTTP_200_OK)
 
     def post(self, request):
         data = request.data
@@ -204,10 +204,14 @@ class TeamsAdd(APIView):
         team_id = data['team']
         search_query = data['search']
 
+        current_team = Team.objects.get(id=team_id)
+        
         try:
-            current_team = Team.objects.get(id=team_id)
-        except Team.DoesNotExist:
-            return Response({"error": "Team Not Found"}, status=status.HTTP_404_NOT_FOUND)
+            requester = Member.objects.get(team=current_team, user=request.user)
+            if (requester.permissions < PERMISSIONS['MOD']['level']):
+                return Response({"error": "Access Level Denied"}, status=status.HTTP_403_FORBIDDEN)
+        except Member.DoesNotExist:
+            return Response({"error": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
         
         existingMembers = Member.objects.filter(team=current_team)
         discriminate = []

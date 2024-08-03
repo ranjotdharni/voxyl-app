@@ -19,6 +19,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import path, include, re_path
 from auth import urls as auth_urls
 from teams import urls as teams_urls
+from projects import urls as projects_urls
 from django.views.generic import TemplateView
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
@@ -43,6 +44,7 @@ urlpatterns = [
     path('v1/', include('rest_framework.urls')),
     path('v1/auth/', include(auth_urls)),
     path('v1/teams/', include(teams_urls)),
+    path('v1/projects/', include(projects_urls)),
     re_path(r'.*', BaseView.as_view(template_name='index.html'), name='index'),
 ]
 #TemplateView.as_view(template_name='dist/index.html')

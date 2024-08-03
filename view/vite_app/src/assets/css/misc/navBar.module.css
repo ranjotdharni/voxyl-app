@@ -35,6 +35,28 @@
     aspect-ratio: 1 / 1;
 }
 
+.iconContainer:hover::after {
+    position: absolute;
+    margin-left: 10px;
+    font-size: 0.75rem;
+    background-color: darkslategrey;
+    color: whitesmoke;
+    border: solid 1px whitesmoke;
+    padding: 2px;
+}
+
+.iconContainer:nth-child(1):hover::after {  /* Keep in sync with component*/
+    content: 'Teams';
+}
+
+.iconContainer:nth-child(2):hover::after {
+    content: 'Launch Project';
+}
+
+.iconContainer:nth-child(3):hover::after {
+    content: 'Settings';
+}
+
 .iconContainer img {
     position: relative;
     width: 100%;

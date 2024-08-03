@@ -20,7 +20,7 @@ export interface PayloadItem extends PayLoadRequiredFields {
 // Relative container width is used to size absolutely positioned items in this component, its value should be the same as or close to the width of the component wrapper you make
 // Example: You have a <CustomDroplist /> item in a wrapper that has width 40%, a good practice here is to pass in '40' for relative container width and '%' from units
 // Remember, this component always expects a wrapper that it will take the full width/height of, effectively this component is sized by the size of said wrapper
-export default function CustomDroplist( { selected, payload, relativeContainerWidth, relativeContainerUnits, color, highlight, callback } : { selected: number, payload: PayloadItem[], relativeContainerWidth: number, relativeContainerUnits: string, color?: string, highlight?: string, callback: (arg1: number) => void } ) {
+export default function CustomDroplist( { selected, payload, color, highlight, callback } : { selected: number, payload: PayloadItem[], color?: string, highlight?: string, callback: (arg1: number) => void } ) {
     // @ts-ignore Ignore unused setTheme
     const [ selectedTheme, selectedMode, grabTheme ] = useContext(Context)
 
@@ -28,7 +28,7 @@ export default function CustomDroplist( { selected, payload, relativeContainerWi
     
     const inlineStyles: {[key: string]: CSS.Properties} = {
         "listbox": {
-            width: `${relativeContainerWidth}${relativeContainerUnits}`,
+            width: '100%',//`${relativeContainerWidth}${relativeContainerUnits}`,
             background: themes[selectedMode][selectedTheme].boxGradient
         },
         "selector": {
@@ -69,16 +69,18 @@ export default function CustomDroplist( { selected, payload, relativeContainerWi
                 <div className={styles.titleWrapper}>{payload !== undefined && payload.length !== 0 && payload[selected] !== undefined && payload[selected].name !== undefined ? payload[selected].name : 'Select'}</div>
                 <div style={inlineStyles.icon}><IoChevronDownOutline className={styles.icon}/></div>
             </div>
-            <div className={styles.listbox} style={inlineStyles.listbox}>
-                {
-                    (payload ? payload : sub).map((v: PayloadItem, i: number) => {
-                        return (
-                            <div id={v.id as string} onClick={() => {callback(i)}} css={ItemStyles} className={styles.item}>
-                                {v.name}
-                            </div>
-                        )
-                    })
-                }
+            <div className={styles.listboxWrapper} style={{position: 'relative', width: '100%', height: '100%'}}>
+                <div className={styles.listbox} style={inlineStyles.listbox}>
+                    {
+                        (payload ? payload : sub).map((v: PayloadItem, i: number) => {
+                            return (
+                                <div id={v.id as string} onClick={() => {callback(i)}} css={ItemStyles} className={styles.item}>
+                                    {v.name}
+                                </div>
+                            )
+                        })
+                    }
+                </div>
             </div>
         </div>
     )

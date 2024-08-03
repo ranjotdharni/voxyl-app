@@ -8,7 +8,7 @@
     align-items: center;
 }
 
-.titleContainer {
+.titleItemsContainer {
     width: 97.5%;
     height: 60px;
     display: flex;
@@ -16,6 +16,51 @@
     justify-content: flex-end;
     align-items: center;
     border-bottom: solid 1px;
+}
+
+.titleButtonsContainer {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.deleteButton {
+    border: none;
+    background: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: darkred;
+}
+
+.deleteButton:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.addStepButton {
+    min-width: 80px;
+    width: 15%;
+    border: none;
+    border-radius: 0.25rem;
+    font-family: 'JetBrains Mono';
+}
+
+.addStepButton:hover {
+    cursor: pointer;
+}
+
+.titleContainer {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .titleWrapper {
@@ -30,7 +75,7 @@
 }
 
 .titleWrapper p {
-    font-size: 1.5vw;
+    font-size: 1rem;
 }
 
 .titleEditButton {
@@ -56,4 +101,27 @@
     justify-content: flex-start;
     align-items: center;
     margin-top: 1%;
+}
+
+@media screen and (max-width: 660px) {
+    .titleItemsContainer {
+        height: 90px;
+        flex-direction: column-reverse;
+        align-items: start;
+    }
+    
+    .titleButtonsContainer {
+        width: 100%;
+        height: 35%;
+    }
+    
+    .titleContainer {
+        width: 100%;
+        height: 65%;
+        flex-direction: row;
+    }
+
+    .titleWrapper {
+        width: 100%;
+    }
 }

@@ -258,7 +258,7 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
             <div className={styles.blurContainer}></div>
             <div className={styles.mainContainer} style={inlineStyles.mainContainer}>
                 <div className={styles.titleContainer}>
-                    <div className={styles.droplistWrapper}><CustomDroplist selected={selectedTeam} payload={teams} callback={setSelectedTeam} color={themes[selectedMode][selectedTheme].primary.highlight} highlight={themes[selectedMode][selectedTheme].primary.header} relativeContainerWidth={20} relativeContainerUnits='em'/></div>
+                    <div className={styles.droplistWrapper}><CustomDroplist selected={selectedTeam} payload={teams} callback={setSelectedTeam} color={themes[selectedMode][selectedTheme].primary.highlight} highlight={themes[selectedMode][selectedTheme].primary.header} /></div>
                     <div className={styles.titleWrapper} style={inlineStyles.titleWrapper}>
                         <p className={styles.title} style={inlineStyles.title}>View Your Teams</p>
                     </div>
@@ -267,7 +267,7 @@ export default function TeamsView({ fetch, triggerFetch, setModal } : { fetch: b
                 <div className={styles.memberContainer}>
                     <div className={styles.memberTitleContainer} style={inlineStyles.memberTitleContainer}>
                         <h2 className={styles.memberTitle} style={inlineStyles.memberTitle}>Team Members</h2>
-                        <div className={styles.userDroplistWrapper}><CustomDroplist selected={selectedMember[selectedTeam]} payload={members[selectedTeam]} callback={updateSelectedMember} relativeContainerWidth={20} relativeContainerUnits='em'/></div>
+                        <div className={styles.userDroplistWrapper}><CustomDroplist selected={selectedMember[selectedTeam]} payload={members[selectedTeam]} callback={updateSelectedMember} /></div>
                     </div>
                     <div className={styles.memberBody}>
                         <div className={styles.picContainer}>

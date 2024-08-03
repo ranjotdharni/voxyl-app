@@ -31,7 +31,6 @@ function Layout({ children } : { children: string | JSX.Element | JSX.Element[] 
     async function getTheme() {
         await fetchToApi('/v1/teams/theme/', 'GET', []).then(response => {
             if (response.error) {
-                console.log(response.error)
                 setTheme(0)
                 setMode(0)
             }

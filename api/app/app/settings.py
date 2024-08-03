@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'teams',
+    'projects',
 ]
 
 MIDDLEWARE = [
@@ -124,9 +125,9 @@ REST_FRAMEWORK = {
 
     'DEFAULT_THROTTLE_RATES': {
 
-        'anon': '10/min',
+        'anon': '15/min',
 
-        'user': '20/min'
+        'user': '30/min'
 
     }
 }
