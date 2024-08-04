@@ -6,7 +6,7 @@ import { Context } from '../Layout'
 import Stride, { StrideProps } from '../../components/projects/Stride'
 import CustomInput from '../../components/CustomInput'
 import { FiEdit, FiTrash2 } from "react-icons/fi";
-import { fetchToApi, hardCopyProject, inclusiveRandomInteger, shallowCompareProjects } from '../../globals'
+import { fetchToApi, hardCopyProject, inclusiveRandomInteger, parseProjectData, projectDifferentiator, shallowCompareProjects } from '../../globals'
 import ConfirmModal, { Confirm } from '../../components/misc/ConfirmModal'
 import Members from '../../components/projects/Members'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -85,8 +85,8 @@ export default function Project() {
                 return
             }
 
-            setProjectData(JSON.parse(response.data)[0] as Project)
-            setProjectBuffer(JSON.parse(response.data)[0] as Project)
+            setProjectData(parseProjectData(JSON.parse(response.data)[0]))
+            setProjectBuffer(parseProjectData(JSON.parse(response.data)[0]))
         })
     }
 
@@ -123,8 +123,18 @@ export default function Project() {
     function deleteProject(e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault()
 
-        const callback = () => {
+        const callback = async () => {
             // delete logic
+            const meta: Array<[string, string | Blob]> = [
+                ['project', projectData.id],
+            ]
+    
+            await fetchToApi("/v1/projects/project/", "DELETE", meta).then(response => {
+                if (response.error !== undefined) {
+                    throwError(response.error)
+                    return
+                }
+            })
         }
 
         setModal({
@@ -135,18 +145,29 @@ export default function Project() {
         })
     }
 
-    function saveProject(e: MouseEvent<HTMLButtonElement>) {
+    async function saveProject(e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault()
 
         if (!isSaveReady)
             return
 
         // save logic
+        const meta: Array<[string, string | Blob]> = [
+            ['update', projectDifferentiator(projectData, projectBuffer)],
+        ]
+
+        await fetchToApi("/v1/projects/project/", "PUT", meta).then(response => {
+            if (response.error !== undefined) {
+                throwError(response.error)
+                return
+            }
+
+            setProjectData(hardCopyProject(projectBuffer))
+        })
     }
 
     function toggleMembers(e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault()
-
         setMembersModal(!membersModal)
     }
 
@@ -166,7 +187,7 @@ export default function Project() {
     return (
         <>
             <ConfirmModal slug={modalSlug} />
-            <Members active={membersModal} setActive={setMembersModal} />
+            <Members project={id} active={membersModal} setActive={setMembersModal} />
             <div className={styles.mainContainer}>
                 <div className={styles.pageHeaderContainer} style={inlineStyles.pageHeaderContainer}>
                     <div className={styles.titleEditContainer}>

@@ -94,7 +94,7 @@ export function getCookieValue(cookie: string) {
     return decodeURIComponent(cookie)
 }
 
-export async function fetchToApi(localPath: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE', metaData: Array<[string, string | Blob]>) {
+export async function fetchToApi(localPath: string, method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE', metaData: Array<[string, string | Blob]>) {
     let data: {[key: string]: string | Blob} = {}
 
     metaData.forEach((v) => {
@@ -242,21 +242,36 @@ export function hardCopyProject(p1: Project): Project {
 }
 
 export function projectDifferentiator(original: Project, buffer: Project): string {
+    interface StepAdd {
+        id: string
+        title: string
+        points: number
+        deadline: string
+        description: string
+        status: string
+    }
+
+    interface StrideAdd {
+        id: string,
+        title: string,
+        steps: StepAdd[]
+    }
+
     interface StepUpdate {
         id?: string
         title?: string
         points?: number
-        deadline?: number
+        deadline?: string
         description?: string
         status?: string
     }
 
     let projectTitle: string = ''
 
-    let strideDifference: { added: StrideProps[], updated: {id: string, title: string, added: StepProps[], updated: StepUpdate[], dropped: string[]}[], dropped: string[] } = {added: [], updated: [], dropped: []}
+    let strideDifference: { added: StrideAdd[], updated: {id: string, title: string | undefined, added: StepAdd[], updated: StepUpdate[], dropped: string[]}[], dropped: string[] } = {added: [], updated: [], dropped: []}
 
     if (original.title !== buffer.title) {
-        projectTitle = buffer.title
+        projectTitle = buffer.title.trim()
     }
 
     let originalStridesIds: string[] = original.strides.map(s => s.id)
@@ -268,7 +283,24 @@ export function projectDifferentiator(original: Project, buffer: Project): strin
         let adding: boolean = originalStridesIds.indexOf(bufferStridesIds[i]) === -1
 
         if (adding) {
-            strideDifference.added.push(buffer.strides[i])
+            let s: StrideProps = {...buffer.strides[i]}
+            let sa: StrideAdd = {
+                id: s.id,
+                title: s.title,
+                steps: []
+            }
+
+            s.steps.forEach(item => {
+                sa.steps.push({
+                    id: item.id,
+                    title: item.title,
+                    points: item.points,
+                    deadline: item.deadline.toUTCString(),
+                    description: item.description,
+                    status: item.status
+                })
+            })
+            strideDifference.added.push(sa)
             add.push(buffer.strides[i].id)
         }
 
@@ -288,9 +320,9 @@ export function projectDifferentiator(original: Project, buffer: Project): strin
             let origin: StrideProps = original.strides[i]
             let buff: StrideProps = buffer.strides[i]
 
-            let update: {id: string, title: string, added: StepProps[], updated: StepUpdate[], dropped: string[]} = {
+            let update: {id: string, title: string | undefined, added: StepAdd[], updated: StepUpdate[], dropped: string[]} = {
                 id: buff.id,
-                title: (buff.title !== origin.title ? buff.title : ''),
+                title: (buff.title !== origin.title ? buff.title : undefined),
                 added: [],
                 updated: [],
                 dropped: []
@@ -305,18 +337,25 @@ export function projectDifferentiator(original: Project, buffer: Project): strin
                 let addingStep: boolean = originalStepsIds.indexOf(bufferStepsIds[j]) === -1
         
                 if (addingStep) {
-                    update.added.push(buff.steps[j])
-                    addStep.push(buffer.strides[j].id)
+                    let s: StepProps = {...buff.steps[buff.steps.map(b => b.id).indexOf(bufferStepsIds[j])]}
+                    update.added.push({
+                        id: s.id,
+                        title: s.title,
+                        points: s.points,
+                        deadline: s.deadline.toUTCString(),
+                        description: s.description,
+                        status: s.status
+                    })
+                    addStep.push(s.id)
                 }
-        
             }
 
             for (let j = 0; j < originalStepsIds.length; j++) {
                 let droppingStep: boolean = bufferStepsIds.indexOf(originalStepsIds[j]) === -1
         
                 if (droppingStep) {
-                    update.dropped.push(origin.steps[j].id)
-                    dropStep.push(origin.steps[j].id)
+                    update.dropped.push(origin.steps[origin.steps.map(o => o.id).indexOf(originalStepsIds[j])].id)
+                    dropStep.push(origin.steps[origin.steps.map(o => o.id).indexOf(originalStepsIds[j])].id)
                 }
             }
 
@@ -324,10 +363,11 @@ export function projectDifferentiator(original: Project, buffer: Project): strin
                 if ((addStep.indexOf(buff.steps[j].id) === -1 && dropStep.indexOf(buff.steps[j].id) === -1)) {
                     let stepO: StepProps = origin.steps[origin.steps.map(s => s.id).indexOf(buff.steps[j].id)]
                     let stepB: StepProps = buff.steps[j]
+
                     let u: StepUpdate = {
                         title: (stepO.title !== stepB.title ? stepB.title : undefined),
                         points: (stepO.points !== stepB.points ? stepB.points : undefined),
-                        deadline: (stepO.deadline.getTime() !== stepB.deadline.getTime() ? stepB.deadline.getTime() : undefined),
+                        deadline: (stepO.deadline.getTime() !== stepB.deadline.getTime() ? stepB.deadline.toUTCString() : undefined),
                         description: (stepO.description !== stepB.description ? stepB.description : undefined),
                         status: (stepO.status !== stepB.status ? stepB.status : undefined),
                     }
@@ -347,7 +387,17 @@ export function projectDifferentiator(original: Project, buffer: Project): strin
 
     return JSON.stringify({
         projectId: buffer.id,
-        projectTitle: (projectTitle !== '' ? projectTitle : ''),
+        projectTitle: (projectTitle !== '' ? projectTitle : undefined),
         difference: strideDifference
     })
+}
+
+export function parseProjectData(p: any): Project {
+    p.strides.forEach((stride: any) => {
+        stride.steps.forEach((step: any) => {
+            step.deadline = new Date(step.deadline)
+        })
+    })
+
+    return p as Project
 }
