@@ -5,12 +5,24 @@ import { useNavigate } from 'react-router-dom';
 import { DEFAULT_MODE, DEFAULT_THEME } from '../theme';
 import Loader from '../components/misc/Loader';
 import Navbar from '../components/misc/NavBar';
+import styles from '../assets/css/misc/layout.module.css'
 
 export const Context = React.createContext<[number, number, () => void | Promise<void>]>([
     DEFAULT_THEME,
     DEFAULT_MODE,
     () => {}
 ])
+
+function BackgroundLoader() {
+    return (
+        <div className={styles.loaderPositioner}>
+            <div className={styles.loaderWrapper}>
+                <Loader color='#e0e0e0' />
+            </div>
+            <p>Loading...</p>
+        </div>
+    )
+}
 
 function Layout({ children } : { children: string | JSX.Element | JSX.Element[] }) {
     const [theme, setTheme] = useState<number>(DEFAULT_THEME)
@@ -58,7 +70,7 @@ function Layout({ children } : { children: string | JSX.Element | JSX.Element[] 
             <>
                 <FloatingBackground muteBackground={loader} particles={mode === 0} />
                 <Navbar />
-                {loader ? <Loader /> : children}
+                {loader ? <BackgroundLoader /> : children}
             </>
         </Context.Provider>
     )

@@ -11,6 +11,7 @@ import ConfirmModal, { Confirm } from '../../components/misc/ConfirmModal'
 import Members from '../../components/projects/Members'
 import { useNavigate, useParams } from 'react-router-dom'
 import useError from '../../hooks/useError'
+import Loader from '../../components/misc/Loader'
 
 const TEMP_ID_PREFIX = 'TEMP_STRIDE_ID_'
 
@@ -26,6 +27,7 @@ export default function Project() {
     // @ts-ignore
     const [theme, mode, fetchTheme] = useContext(Context)
     const [error, throwError] = useError()
+    const [saving, setSaving] = useState<boolean>(false)
     const [modalSlug, setModal] = useState<Confirm>({title: '', message: '', question: '', callback: () => {}})
     const [membersModal, setMembersModal] = useState<boolean>(false)
 
@@ -91,7 +93,7 @@ export default function Project() {
     }
 
     function saveReady(): boolean {
-        return !shallowCompareProjects(projectData, projectBuffer)
+        return !shallowCompareProjects(projectData, projectBuffer) && !saving
     }
 
     function editProjectTitle(newTitle: string) {
@@ -152,18 +154,28 @@ export default function Project() {
             return
 
         // save logic
+        setSaving(true)
+
         const meta: Array<[string, string | Blob]> = [
             ['update', projectDifferentiator(projectData, projectBuffer)],
         ]
 
-        await fetchToApi("/v1/projects/project/", "PUT", meta).then(response => {
-            if (response.error !== undefined) {
-                throwError(response.error)
-                return
-            }
+        try {
+            await fetchToApi("/v1/projects/project/", "PUT", meta).then(response => {
+                if (response.error !== undefined) {
+                    throwError(response.error)
+                    return
+                }
 
-            setProjectData(hardCopyProject(projectBuffer))
-        })
+                setProjectData(hardCopyProject(projectBuffer))
+            })
+        }
+        catch (e) {
+            console.log(e)
+        }
+        finally {
+            setSaving(false)
+        }
     }
 
     function toggleMembers(e: MouseEvent<HTMLButtonElement>) {
@@ -207,7 +219,9 @@ export default function Project() {
                     <div className={styles.buttonsContainer}>
                         <div className={styles.buttonsWrapper}>
                             <button onClick={onCancel} style={isSaveReady ? inlineStyles.cancelButtonReady : inlineStyles.cancelButton}>Cancel</button>
-                            <button onClick={saveProject} style={isSaveReady ? inlineStyles.saveButtonReady : inlineStyles.saveButton}>Save</button>
+                            <button onClick={saveProject} style={isSaveReady ? inlineStyles.saveButtonReady : inlineStyles.saveButton}>
+                                {saving ? <div className={styles.saveLoader}><Loader color={themes[mode][theme].primary.highlight} /></div> : 'Save'}
+                            </button>
                             <button onClick={toggleMembers} style={inlineStyles.addMemberButton}>Add Team Member</button>
                             <button onClick={addStride} style={inlineStyles.addMemberButton}>New Stride</button>
                         </div>

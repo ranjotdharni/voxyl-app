@@ -131,6 +131,13 @@
     border-radius: 0.5rem;
 }
 
+.saveLoader {
+    position: relative;
+    width: 20%;
+    height: 50%;
+    left: 40%;
+}
+
 @media screen and (max-width: 660px) {
     .pageHeaderContainer {
         min-height: 100px;
