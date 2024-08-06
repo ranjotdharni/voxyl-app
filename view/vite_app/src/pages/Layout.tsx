@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import FloatingBackground from '../components/FloatingBackground';
-import { bakedOrigin, fetchToApi } from '../globals';
-import { useNavigate } from 'react-router-dom';
-import { DEFAULT_MODE, DEFAULT_THEME } from '../theme';
-import Loader from '../components/misc/Loader';
-import Navbar from '../components/misc/NavBar';
-import styles from '../assets/css/misc/layout.module.css'
+import React, { useEffect, useState } from 'react'
+import FloatingBackground from '../components/FloatingBackground'
+import { bakedOrigin } from '../globals'
+import { useNavigate } from 'react-router-dom'
+import { DEFAULT_MODE, DEFAULT_THEME } from '../theme'
+import Navbar from '../components/misc/NavBar'
 
 export const Context = React.createContext<[number, number, () => void | Promise<void>]>([
     DEFAULT_THEME,
@@ -13,21 +11,9 @@ export const Context = React.createContext<[number, number, () => void | Promise
     () => {}
 ])
 
-function BackgroundLoader() {
-    return (
-        <div className={styles.loaderPositioner}>
-            <div className={styles.loaderWrapper}>
-                <Loader color='#e0e0e0' />
-            </div>
-            <p>Loading...</p>
-        </div>
-    )
-}
-
 function Layout({ children } : { children: string | JSX.Element | JSX.Element[] }) {
-    const [theme, setTheme] = useState<number>(DEFAULT_THEME)
-    const [mode, setMode] = useState<number>(DEFAULT_MODE)
-    const [loader, setLoader] = useState<boolean>(true)
+    const [theme, setTheme] = useState<number>((localStorage.getItem('theme') !== null ? +localStorage.getItem('theme')! : DEFAULT_THEME))
+    const [mode, setMode] = useState<number>((localStorage.getItem('mode') !== null ? +localStorage.getItem('mode')! : DEFAULT_MODE))
 
     const redirect = useNavigate()
     
@@ -40,37 +26,26 @@ function Layout({ children } : { children: string | JSX.Element | JSX.Element[] 
         })
     }
 
-    async function getTheme() {
-        await fetchToApi('/v1/teams/theme/', 'GET', []).then(response => {
-            if (response.error) {
-                setTheme(0)
-                setMode(0)
-            }
-            else if (response.success) {
-                setTheme(response.theme)
-                setMode(response.mode)
-            }
+    function getTheme() {
+        let m = localStorage.getItem('mode')
+        let t = localStorage.getItem('theme')
+        let mode: number = (m !== null ? +m : DEFAULT_MODE)
+        let theme: number = (t !== null ? +t : DEFAULT_THEME)
 
-            setLoader(false)
-        })
-    }
-
-    async function init() {
-        await Authenticate().then(() => {
-            getTheme()
-        })
+        setMode(mode)
+        setTheme(theme)
     }
 
     useEffect(() => {
-        init()
+        Authenticate()
     }, [])
 
     return (
         <Context.Provider value={[theme, mode, getTheme]}>
             <>
-                <FloatingBackground muteBackground={loader} particles={mode === 0} />
+                <FloatingBackground muteBackground={false} particles={mode === 0} />
                 <Navbar />
-                {loader ? <BackgroundLoader /> : children}
+                {children}
             </>
         </Context.Provider>
     )

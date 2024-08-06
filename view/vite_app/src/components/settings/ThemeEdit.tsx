@@ -1,13 +1,11 @@
 import styles from '../../assets/css/settings/components/themeEdit.module.css'
 import CSS from 'csstype'
-import { MouseEvent, useContext, useEffect, useState } from 'react'
+import { MouseEvent, useContext, useState } from 'react'
 import { Context } from '../../pages/Layout'
 import { themes } from '../../theme'
 import RadioList from '../misc/RadioList'
-import { fetchToApi } from '../../globals'
 
 export default function ThemeEdit() {
-    // @ts-ignore Ignore unused setTheme
     const [ selectedTheme, selectedMode, grabTheme ] = useContext(Context)
     const [subjectMode, setSubjectMode] = useState<number>(selectedMode)
     const [subjectTheme, setSubjectTheme] = useState<number>(selectedTheme)
@@ -64,42 +62,18 @@ export default function ThemeEdit() {
         if (selectedMode === subjectMode && selectedTheme === subjectTheme)
             return
 
-        const meta: Array<[string, string | Blob]> = [
-            ['mode', `${subjectMode}`],
-            ['theme', `${subjectTheme}`]
-        ]
-
-        await fetchToApi('/v1/teams/theme/', 'PUT', meta).then(response => {
-            if (response.success) {
-                grabTheme()
-                return
-            }
-
-        })
+        localStorage.setItem('mode', `${subjectMode}`)
+        localStorage.setItem('theme', `${subjectTheme}`)
+        grabTheme()
     }
-
-    async function grabThemeData() {
-        await fetchToApi('/v1/teams/theme/', 'GET', []).then(response => {
-            if (response.success) {
-                setSubjectMode(response.mode)
-                setSubjectTheme(response.theme)
-                return
-            }
-
-        })
-    }
-
-    useEffect(() => {
-        grabThemeData()
-    }, [])
 
     return (
         <div className={styles.mainWrapper} style={inlineStyles.mainWrapper}>
             <div className={styles.title}><p style={inlineStyles.title}>Change Theme</p></div>
             <div className={styles.modeTitle} style={inlineStyles.modeTitle}>Edit Mode</div>
             <div className={styles.modeBox}>
-                <div onClick={() => {setSubjectMode(0)}} style={inlineStyles.darkMode}>Dark</div>
-                <div onClick={() => {setSubjectMode(1)}} style={inlineStyles.lightMode}>Light</div>
+                <div onClick={() => { setSubjectMode(0) }} style={inlineStyles.darkMode}>Dark</div>
+                <div onClick={() => { setSubjectMode(1) }} style={inlineStyles.lightMode}>Light</div>
             </div>
             <div className={styles.themeTitle} style={inlineStyles.themeTitle}>Pick A Theme</div>
             <div className={styles.themeBox}>

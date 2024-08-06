@@ -1,16 +1,14 @@
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import redirect
+from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from rest_framework.views import APIView
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
-from teams.models import Team, Member, Profile, PERMISSIONS
+from teams.models import Team, Member, PERMISSIONS
 from django.contrib.auth import authenticate, login
 from django.db import IntegrityError
 
@@ -29,7 +27,7 @@ class LoginApiView(APIView):
             login(request, user)
             return Response({"success": "true"}, status=status.HTTP_200_OK)
         
-        return Response({"error": "Username Not Found/Credentials Incorrect."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "Not found or credentials incorrect"}, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
         data = request.data
@@ -60,9 +58,6 @@ class LoginApiView(APIView):
 
         user = authenticate(request, username=user, password=passkey)
 
-        profile = Profile(user=user)
-        profile.save()
-
         default_team = Team(name='Your Team', description='This is your default team.', owner=user.username)
         default_team.save()
 
@@ -71,6 +66,8 @@ class LoginApiView(APIView):
         
         return Response({"success": "true"}, status=status.HTTP_200_OK)
 
+# !!!DO NOT REMOVE!!!
+# This endpoint is important, client will necessarily hit this!!!
 @method_decorator(login_required(login_url='/entry/'), name='dispatch')
 @method_decorator(csrf_protect, name='dispatch')
 class AccessApiView(APIView):

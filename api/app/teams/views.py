@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 from django.db.models import Q
-from teams.models import Team, Member, Profile, PERMISSIONS
+from teams.models import Team, Member, PERMISSIONS
 from django.core import serializers
 import json
 
@@ -309,31 +309,3 @@ class RoleView(APIView):
         member.save()
 
         return Response({"success": "true"}, status=status.HTTP_200_OK)
-
-@method_decorator(login_required(login_url='/entry/'), name='dispatch')
-@method_decorator(csrf_protect, name='dispatch')
-class ThemeApiView(APIView):
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-
-        if not request.user.is_authenticated:
-            return Response({"error": "Unauthenticated"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        profile = Profile.objects.get(user=request.user)
-
-        return Response({"success": "true", "theme": profile.theme, "mode": profile.mode}, status=status.HTTP_200_OK)
-    
-    def put(self, request):
-        data = request.data
-
-        if not request.user.is_authenticated:
-            return Response({"error": "Unauthenticated"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        profile = Profile.objects.get(user=request.user)
-        profile.theme = data['theme']
-        profile.mode = data['mode']
-        profile.save()
-
-        return Response({"success": "true", "theme": profile.theme, "mode": profile.mode}, status=status.HTTP_200_OK)
