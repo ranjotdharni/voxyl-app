@@ -4,11 +4,11 @@ import { generateArray, inclusiveRandomInteger } from '../../globals'
 import FlagVisual from '../../assets/img/png/flag.png'
 import RocketVisual from '../../assets/img/png/rocket.png'
 import PieVisual from '../../assets/img/png/pie.png'
-import LandingNav from './LandingNav'
+import LandingNav from '../../components/landing/LandingNav'
 import { useNavigate } from 'react-router-dom'
 import { MouseEvent } from 'react'
 
-export default function Landing() {
+export default function LandingPage() {
     const redirect = useNavigate()
 
     function toSignUp(e: MouseEvent<HTMLButtonElement>) {

@@ -1,15 +1,15 @@
 import { MouseEvent, useContext, useEffect, useState } from 'react'
-import styles from '../../assets/css/projects/launch.module.css'
+import styles from '../../../assets/css/projects/launch.module.css'
 import CSS from 'csstype'
-import { Context } from '../Layout'
-import { themes } from '../../theme'
-import CustomDroplist from '../../components/CustomDroplist'
-import { PayloadItem } from '../../components/CustomDroplist'
-import CustomInput from '../../components/CustomInput'
-import useError from '../../hooks/useError'
-import { fetchToApi } from '../../globals'
+import { Context } from '../../../pages/Layout'
+import { themes } from '../../../theme'
+import CustomDroplist from '../../CustomDroplist'
+import { PayloadItem } from '../../CustomDroplist'
+import CustomInput from '../../CustomInput'
+import useError from '../../../hooks/useError'
+import { fetchToApi } from '../../../globals'
 
-export default function Launch() {
+export default function LaunchForm() {
     // @ts-ignore
     const [theme, mode, fetchTheme] = useContext(Context)
     const [error, throwError] = useError()

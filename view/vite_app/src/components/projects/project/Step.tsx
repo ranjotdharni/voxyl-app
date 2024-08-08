@@ -1,14 +1,14 @@
 import { ChangeEvent, MouseEvent, useContext, useState } from 'react'
-import styles from '../../assets/css/projects/components/step.module.css'
-import { themes } from '../../theme'
+import styles from '../../../assets/css/projects/components/step.module.css'
+import { themes } from '../../../theme'
 import CSS from 'csstype'
-import { Context } from '../../pages/Layout'
-import { Project } from '../../pages/projects/Project'
-import CustomInput from '../CustomInput'
-import { dateToFormat, parseDateString } from '../../globals'
-import CustomCounter from '../misc/CustomCounter'
+import { Context } from '../../../pages/Layout'
+import { Project } from '../../../pages/projects/Page'
+import CustomInput from '../../CustomInput'
+import { dateToFormat, parseDateString } from '../../../globals'
+import CustomCounter from '../../misc/CustomCounter'
 import { FiChevronDown, FiChevronUp, FiTrash2 } from 'react-icons/fi'
-import { Confirm } from '../misc/ConfirmModal'
+import { Confirm } from '../../misc/ConfirmModal'
 
 export const STATUS_LITERALS: string[] = [
     'Unassigned',
@@ -18,10 +18,10 @@ export const STATUS_LITERALS: string[] = [
 ]
 
 export const STATUS_COLORS: string[] = [
-    'lightgrey',
-    'yellow',
-    'green',
-    'darkred'
+    '#D3D3D3',
+    '#FFFF00',
+    '#008000',
+    '#8B0000'
 ]
 
 export interface StepProps {

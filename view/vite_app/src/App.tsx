@@ -1,33 +1,35 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Layout from "./pages/Layout"
-import Create from "./pages/Create"
-import Login from "./pages/Login"
+import CreatePage from "./pages/CreatePage"
+import LoginPage from "./pages/LoginPage"
 import './index.css'
-import Teams from "./pages/teams/Teams"
-import Settings from "./pages/settings/Settings"
-import Landing from "./pages/landing/Landing"
-import Project from "./pages/projects/Project"
-import Launch from "./pages/projects/Launch"
+import TeamsPage from "./pages/teams/Page"
+import SettingsPage from "./pages/settings/Page"
+import LandingPage from "./pages/landing/Page"
+import ProjectPage from "./pages/projects/Page"
+import { LaunchProjectPage } from "./pages/projects/Page"
+// import MetricsPage from "./pages/metrics/Page"
+import WIP from "./components/misc/WIP"
 
 function App() {
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<Landing />} />
+        <Route index element={<LandingPage />} />
 
-        <Route path="teams" element={<Layout><Teams /></Layout>}></Route>
-        <Route path="settings" element={<Layout><Settings/></Layout>}></Route>
+        <Route path="teams" element={<TeamsPage />}></Route>
+        <Route path="metrics" element={<WIP />}></Route>
+        <Route path="settings" element={<SettingsPage />}></Route>
 
         <Route path="project/:id?">
-          <Route index element={<Layout><Project /></Layout>} />
-          <Route path="launch" element={<Layout><Launch /></Layout>} />
+          <Route index element={<ProjectPage />} />
+          <Route path="launch" element={<LaunchProjectPage />} />
         </Route>
 
         <Route path="entry/:next?">
-          <Route index element={<Create />} />
+          <Route index element={<CreatePage />} />
 
-          <Route path="login/:next?" element={<Login />} />
+          <Route path="login/:next?" element={<LoginPage />} />
 
         </Route>
 

@@ -2,16 +2,17 @@ import { MouseEvent, useContext, useEffect, useState } from 'react'
 import styles from '../../assets/css/projects/project.module.css'
 import { themes } from '../../theme'
 import CSS from 'csstype'
-import { Context } from '../Layout'
-import Stride, { StrideProps } from '../../components/projects/Stride'
+import Layout, { Context } from '../Layout'
+import Stride, { StrideProps } from '../../components/projects/project/Stride'
 import CustomInput from '../../components/CustomInput'
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { fetchToApi, hardCopyProject, inclusiveRandomInteger, parseProjectData, projectDifferentiator, shallowCompareProjects } from '../../globals'
 import ConfirmModal, { Confirm } from '../../components/misc/ConfirmModal'
-import Members from '../../components/projects/Members'
+import Members from '../../components/projects/project/Members'
 import { useNavigate, useParams } from 'react-router-dom'
 import useError from '../../hooks/useError'
 import Loader from '../../components/misc/Loader'
+import LaunchForm from '../../components/projects/launchProject/LaunchForm'
 
 const TEMP_ID_PREFIX = 'TEMP_STRIDE_ID_'
 
@@ -21,7 +22,7 @@ export interface Project {
     strides: StrideProps[]
 }
 
-export default function Project() {
+export default function ProjectPage() {
     const navigate = useNavigate()
     const { id } = useParams()
     // @ts-ignore
@@ -197,7 +198,7 @@ export default function Project() {
     }, [])
 
     return (
-        <>
+        <Layout>
             <ConfirmModal slug={modalSlug} />
             <Members project={id} active={membersModal} setActive={setMembersModal} />
             <div className={styles.mainContainer}>
@@ -239,6 +240,15 @@ export default function Project() {
                 }
             </div>
             <p className={styles.error} style={inlineStyles.error}>{error}</p>
-        </>
+        </Layout>
+    )
+}
+
+export function LaunchProjectPage() {
+
+    return (
+        <Layout>
+            <LaunchForm />
+        </Layout>
     )
 }

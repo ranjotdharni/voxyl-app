@@ -1,14 +1,14 @@
 import { MouseEvent, useContext, useState } from "react"
 import Step, { STATUS_LITERALS, StepProps } from "./Step"
-import { Context } from "../../pages/Layout"
-import styles from '../../assets/css/projects/components/stride.module.css'
+import { Context } from "../../../pages/Layout"
+import styles from '../../../assets/css/projects/components/stride.module.css'
 import CSS from 'csstype'
-import { themes } from "../../theme"
-import CustomInput from "../CustomInput"
-import { Project } from "../../pages/projects/Project"
+import { themes } from "../../../theme"
+import CustomInput from "../../CustomInput"
+import { Project } from "../../../pages/projects/Page"
 import { FiEdit, FiTrash2 } from "react-icons/fi"
-import { inclusiveRandomInteger } from "../../globals"
-import { Confirm } from "../misc/ConfirmModal"
+import { inclusiveRandomInteger } from "../../../globals"
+import { Confirm } from "../../misc/ConfirmModal"
 
 const TEMP_ID_PREFIX: string = 'TEMP_STEP_ID_'
 

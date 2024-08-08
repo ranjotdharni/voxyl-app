@@ -1,11 +1,11 @@
 import { ChangeEvent, MouseEvent, useContext, useEffect, useRef, useState } from 'react'
-import styles from '../../assets/css/projects/components/members.module.css'
+import styles from '../../../assets/css/projects/components/members.module.css'
 import CSS from 'csstype'
-import { Context } from '../../pages/Layout'
-import { themes } from '../../theme'
+import { Context } from '../../../pages/Layout'
+import { themes } from '../../../theme'
 import { FiX } from 'react-icons/fi'
-import { fetchToApi } from '../../globals'
-import useError from '../../hooks/useError'
+import { fetchToApi } from '../../../globals'
+import useError from '../../../hooks/useError'
 
 const STRING_TRIM_LIMIT: number = 18
 

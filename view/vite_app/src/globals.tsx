@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { Project } from "./pages/projects/Project";
-import { StepProps } from "./components/projects/Step";
-import { StrideProps } from "./components/projects/Stride";
+import { Project } from "./pages/projects/Page";
+import { StepProps } from "./components/projects/project/Step";
+import { StrideProps } from "./components/projects/project/Stride";
 
 export const bakedOrigin: string = window.location.origin
 export const SUCCESS_PATH: string = '/teams'

@@ -3,6 +3,7 @@ import styles from '../../assets/css/misc/navBar.module.css'
 import CSS from 'csstype'
 import { Context } from '../../pages/Layout'
 import { themes } from '../../theme'
+import statsIcon from '../../assets/img/png/pie.png'
 import flagIcon from '../../assets/img/png/flag.png'
 import rocketIcon from '../../assets/img/png/rocket.png'
 import toolsIcon from '../../assets/img/png/tools.png'
@@ -33,6 +34,7 @@ export default function Navbar() {
     return (
         <div className={styles.mainContainer} style={inlineStyles.mainContainer}>
             <div className={styles.linkContainer}>
+                <NavIcon src={statsIcon} link='/metrics' />
                 <NavIcon src={flagIcon} link='/teams' />
                 <NavIcon src={rocketIcon} link='/project/launch' />
                 <NavIcon src={toolsIcon} link='/settings' />

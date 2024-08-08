@@ -46,14 +46,18 @@
 }
 
 .iconContainer:nth-child(1):hover::after {  /* Keep in sync with component*/
-    content: 'Teams';
+    content: 'Metrics';
 }
 
 .iconContainer:nth-child(2):hover::after {
-    content: 'Launch Project';
+    content: 'Teams';
 }
 
 .iconContainer:nth-child(3):hover::after {
+    content: 'Launch Project';
+}
+
+.iconContainer:nth-child(4):hover::after {
     content: 'Settings';
 }
 

@@ -365,7 +365,7 @@
 @media (max-width: 1386px) or (max-height: 800px) {
     .gridItemWrapper {
         width: 90%;
-        min-height: 800px;
+        min-height: 820px;
     }
 
     .titleContainer {
