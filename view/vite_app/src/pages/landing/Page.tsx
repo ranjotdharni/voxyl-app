@@ -1,6 +1,4 @@
 import styles from '../../assets/css/landing/landing.module.css'
-import FloatingParticle from '../../components/misc/FloatingParticle'
-import { generateArray, inclusiveRandomInteger } from '../../globals'
 import FlagVisual from '../../assets/img/png/flag.png'
 import RocketVisual from '../../assets/img/png/rocket.png'
 import PieVisual from '../../assets/img/png/pie.png'
@@ -46,14 +44,6 @@ export default function LandingPage() {
                 <div className={styles.welcomeContent}>
                     <div className={styles.welcomeWrapper}>
                         <p className={styles.welcomeHeader}>Voxyl</p>
-                        {
-                            
-                            generateArray(0).map((_, index: number) => {
-                                return (
-                                    <FloatingParticle fadeIn={3} left={12.5} reverse={index % 2 === 0} width={inclusiveRandomInteger(8, 20)} duration={inclusiveRandomInteger(26, 42)} particleWidth={inclusiveRandomInteger(1, 3)} glowBase='#fad7ff' glowColor='#d608f1' />
-                                )
-                            })
-                        }
                     </div>
                     <div className={styles.welcomeContentTextHeaderWrapper}>
                     </div>
