@@ -33,22 +33,22 @@ export default function LandingPage() {
                 </video>
                 <div className={styles.welcomeGlass}>
                     <img src={FlagVisual} />
-                    <div>Find other people and formulate teams</div>
+                    <div>Search for other people on Voxyl and formulate teams. Easily connect with all your peers, co-workers, or friends in a single, easy-to-use web application!</div>
                 </div>
                 <div className={styles.welcomeGlass}>
                     <img src={RocketVisual} />
-                    <div>Make endless projects and collaborate on them</div>
+                    <div>Make endless projects and collaborate on them! Voxyl features a built-in, layered approach to project planning so you never have to worry about organization.</div>
                 </div>
                 <div className={styles.welcomeGlass}>
                     <img src={PieVisual} />
-                    <div>Track your progress and monitor team performance</div>
+                    <div>Easily monitor progress and performance. Voxyl will visualize various metrics across projects, teams, and team members using a range of charts and graphs!</div>
                 </div>
                 <div className={styles.welcomeContent}>
                     <div className={styles.welcomeWrapper}>
                         <p className={styles.welcomeHeader}>Voxyl</p>
                         {
-                            // @ts-ignore Ignore unused generateArray item
-                            generateArray(0).map((item, index) => {
+                            
+                            generateArray(0).map((_, index: number) => {
                                 return (
                                     <FloatingParticle fadeIn={3} left={12.5} reverse={index % 2 === 0} width={inclusiveRandomInteger(8, 20)} duration={inclusiveRandomInteger(26, 42)} particleWidth={inclusiveRandomInteger(1, 3)} glowBase='#fad7ff' glowColor='#d608f1' />
                                 )
