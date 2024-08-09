@@ -12,7 +12,7 @@ export default function LandingNav() {
                 <a href='/' className={(window.location.pathname === '' || window.location.pathname === '/' ? styles.highlight : '')}>Home</a>
                 <a href='/teams' className={(window.location.pathname === '/teams' ? styles.highlight : '')}>Teams</a>
                 <a href='/project/launch' className={(window.location.pathname === '/project/launch' ? styles.highlight : '')}>Projects</a>
-                <a href='https://github.com/ranjotdharni/voxyl-app' className={(window.location.pathname === 'https://github.com/ranjotdharni/voxyl-app' ? styles.highlight : '')}>GitHub</a>
+                <a href='https://github.com/ranjotdharni/voxyl-app?tab=readme-ov-file#usage' className={(window.location.pathname === 'https://github.com/ranjotdharni/voxyl-app?tab=readme-ov-file#usage' ? styles.highlight : '')}>Usage</a>
             </div>
         </div>
     )
